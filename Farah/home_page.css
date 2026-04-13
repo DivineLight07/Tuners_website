@@ -2,11 +2,23 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    flex: 1;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .nav {
     background: #20479a;
-    padding: 10px;
+    padding: 15px 10px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .nav ul {
@@ -32,7 +44,10 @@ body {
     font-size: 16px;
 }
 
-.hero, .overview, .featured-event, .highlights {
+.hero, 
+.overview, 
+.featured-event, 
+.highlights {
     padding: 20px;
     margin: 20px;
     border: 1px solid #ddd;
@@ -43,7 +58,8 @@ h1, h2, h3 {
     margin-top: 0;
 }
 
-.overview, .hero{
+.overview, 
+.hero{
     text-align: center;
 }
 
@@ -59,4 +75,59 @@ h1, h2, h3 {
 img {
     max-width: 100%;
     height: auto;
+}
+
+
+.footer {
+    background: #122a5c;
+    color: white;
+    padding: 40px 20px 20px 20px;
+    margin-top: 40px;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
+    padding: 0 15px;
+}
+
+.footer-section h3 {
+    color: #6f8fcf;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.footer-section p {
+    margin: 8px 0;
+    line-height: 1.5;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 8px;
+}
+
+.footer-section a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-section a:hover {
+    color: #949ba9;
 }

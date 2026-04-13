@@ -1,0 +1,178 @@
+html {
+    scroll-behavior: smooth;
+}
+
+.nav {
+    background: #20479a;
+    padding: 15px 10px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+}
+
+.nav button {
+    background: #1a397d;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    font-size: 16px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.welcome_msg,
+.my_courses,
+.my_room_bookings,
+.booking_request,
+.profile_summary,
+.quick_links {
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid #ddd;
+    background: #f9f9f9;
+}
+
+h1, h2 {
+    margin-top: 0;
+}
+
+.welcome_msg {
+    text-align: center;
+}
+
+button {
+    background: #20479a;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #1a397d;
+}
+
+.booking_request form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto; 
+    max-width: 300px;
+}
+
+.booking_request input {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.footer {
+    background: #122a5c;
+    color: white;
+    padding: 40px 20px 20px 20px;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+/* MATCHED STRUCTURE (same as your other page) */
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
+    padding: 0 15px;
+}
+
+.footer-section h3 {
+    color: #6f8fcf;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.footer-section p {
+    margin: 8px 0;
+    line-height: 1.5;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 8px;
+}
+
+.footer-section a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-section a:hover {
+    color: #949ba9;
+}
+
+.quick_links {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
+    padding: 0 15px;
+}
+
+.quick_links h2 {
+    color: #6f8fcf;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.quick_links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.quick_links ul li {
+    margin-bottom: 8px;
+}
+
+.quick_links button {
+    background: transparent;
+    color: white;
+    border: none;
+    padding: 0;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.quick_links button:hover {
+    color: #949ba9;
+}
