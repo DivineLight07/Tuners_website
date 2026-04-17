@@ -1,80 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-   
+    <meta charset="UTF-8">
     <title>MIU Tuners Club - Apply</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>MIU Tuners Club Application</h1>
-    <p>Fill out the form below to apply for membership.</p>
-    
-        
-    <form action="#" method="post">
-   
-        <label for="fullname">Full Name:</label><br>
-        <input type="text" id="fullname" name="fullname">
-        <br><br>
 
-      
-        <label for="student_id">Student ID:</label><br>
-        <input type="text" id="student_id" name="student_id">
-        <br><br>
-    
-    
-    
-    <label for="year">Year:</label><br>
-        <select id="year" name="year" required>
-            <option value="">Select your year</option>
-            <option value="1st">1st Year</option>
-            <option value="2nd">2nd Year</option>
-            <option value="3rd">3rd Year</option>
-            <option value="4th">4th Year</option>
-            <option value="graduate">Graduate</option>
-        </select>
-        <br><br>
+    <div class="container">
+        <h1>MIU Tuners Club Application</h1>
+        <p>Fill out the form below to apply for membership.</p>
 
-<label for = "committee"> Which committee are you interested in?</label><br>
+        <form id="applicationForm">
 
-<select id="committee" name="committee" required>
-    <option value ="">Select a commmittee</option>
-    <option value="events">Events committee</option>
-    <option value="media">Social media committee</option>
-    <option value="technical">Technical committee</option>
-    <option value="academic">Academic committee</option>
-    <option value="musician">Musician committee</option>
-</select>
-<br><br>
+            <label>Full Name:</label>
+            <input type="text" id="fullname">
 
-<label for="major">Major:</label><br>
-        <input type="text" id="major" name="major" placeholder="e.g. Computer Science" >
-        <br><br>
+            <label>Student ID:</label>
+            <input type="text" id="student_id">
 
-      
-       
+            <label>Year:</label>
+            <select id="year">
+                <option value="">Select your year</option>
+                <option value="1st">1st Year</option>
+                <option value="2nd">2nd Year</option>
+                <option value="3rd">3rd Year</option>
+                <option value="4th">4th Year</option>
+                <option value="graduate">Graduate</option>
+            </select>
 
-     
-        <label for="hear_about">How did you hear about the MIU Tuners Club?</label><br>
-        <input type="text" id="hear_about" name="hear_about" placeholder="e.g. Instagram, friend, university..." >
-        <br><br>
+            <label>Which committee are you interested in?</label>
+            <select id="committee">
+                <option value="">Select a committee</option>
+                <option value="events">Events committee</option>
+                <option value="media">Social media committee</option>
+                <option value="technical">Technical committee</option>
+                <option value="academic">Academic committee</option>
+                <option value="musician">Musician committee</option>
+            </select>
 
-      
-        <label for="reason">Why do you want to join the club?</label><br>
-        <textarea id="reason" name="reason" rows="4" placeholder="Tell us more..." ></textarea>
-        <br><br>
+            <label>Major:</label>
+            <input type="text" id="major" placeholder="e.g. Computer Science">
 
-       
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" placeholder="student@miu.edu.eg" >
-        <br><br>
+            <!-- Hidden by default -->
+            <div id="musician_fields">
+                <label>What instrument do you play?</label>
+                <input type="text" id="instrument" placeholder="e.g. Guitar, Piano...">
+            </div>
 
-        <button type="submit">Submit Application</button>
-        <button type="reset">Reset Form</button>
-    </form>
+            <label>How did you hear about the club?</label>
+            <input type="text" id="hear_about">
 
-    
-    
-    <script src="tuners.js"></script>
+            <label>Why do you want to join?</label>
+            <textarea id="reason" rows="4"></textarea>
 
+            <label>Email:</label>
+            <input type="email" id="email" placeholder="student@miu.edu.eg">
 
+            <div class="buttons">
+                <button type="submit">Submit</button>
+                <button type="reset">Reset</button>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
