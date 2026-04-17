@@ -3,68 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <title>MIU Tuners Club - Apply</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
-        <h1>MIU Tuners Club Application</h1>
-        <p>Fill out the form below to apply for membership.</p>
+    <h1>MIU Tuners Club Application</h1>
+    <p>Fill out the form below to apply for membership.</p>
 
-        <form id="applicationForm">
+    <form id="applicationForm">
 
-            <label>Full Name:</label>
-            <input type="text" id="fullname">
+        <label for="fullname">Full Name:</label><br>
+        <input type="text" id="fullname"><br><br>
 
-            <label>Student ID:</label>
-            <input type="text" id="student_id">
+        <label for="student_id">Student ID:</label><br>
+        <input type="text" id="student_id" placeholder="e.g. 24/12345"><br><br>
 
-            <label>Year:</label>
-            <select id="year">
-                <option value="">Select your year</option>
-                <option value="1st">1st Year</option>
-                <option value="2nd">2nd Year</option>
-                <option value="3rd">3rd Year</option>
-                <option value="4th">4th Year</option>
-                <option value="graduate">Graduate</option>
-            </select>
+        <label for="year">Year:</label><br>
+        <select id="year">
+            <option value="">Select your year</option>
+            <option value="1st">1st Year</option>
+            <option value="2nd">2nd Year</option>
+            <option value="3rd">3rd Year</option>
+            <option value="4th">4th Year</option>
+            <option value="graduate">Graduate</option>
+        </select><br><br>
 
-            <label>Which committee are you interested in?</label>
-            <select id="committee">
-                <option value="">Select a committee</option>
-                <option value="events">Events committee</option>
-                <option value="media">Social media committee</option>
-                <option value="technical">Technical committee</option>
-                <option value="academic">Academic committee</option>
-                <option value="musician">Musician committee</option>
-            </select>
+        <label for="committee">Which committee are you interested in?</label><br>
+        <select id="committee">
+            <option value="">Select a committee</option>
+            <option value="events">Events committee</option>
+            <option value="media">Social media committee</option>
+            <option value="technical">Technical committee</option>
+            <option value="academic">Academic committee</option>
+            <option value="musician">Musician committee</option>
+        </select><br><br>
 
-            <label>Major:</label>
-            <input type="text" id="major" placeholder="e.g. Computer Science">
+        <!-- Musician field -->
+        <div id="musician_fields" style="display: none;">
+            <label for="instrument">What instrument do you play?</label><br>
+            <input type="text" id="instrument" placeholder="e.g. Guitar, Piano, Drums"><br><br>
+        </div>
 
-            <!-- Hidden by default -->
-            <div id="musician_fields">
-                <label>What instrument do you play?</label>
-                <input type="text" id="instrument" placeholder="e.g. Guitar, Piano...">
-            </div>
+        <label for="major">Major:</label><br>
+        <input type="text" id="major" placeholder="e.g. Computer Science"><br><br>
 
-            <label>How did you hear about the club?</label>
-            <input type="text" id="hear_about">
+        <label for="hear_about">How did you hear about the club?</label><br>
+        <input type="text" id="hear_about" placeholder="e.g. Instagram, Friend, Campus event"><br><br>
 
-            <label>Why do you want to join?</label>
-            <textarea id="reason" rows="4"></textarea>
+        <label for="reason">Why do you want to join the club?</label><br>
+        <textarea id="reason" rows="4" placeholder="e.g. I want to improve my skills and meet people with the same passion..."></textarea><br><br>
 
-            <label>Email:</label>
-            <input type="email" id="email" placeholder="student@miu.edu.eg">
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" placeholder="e.g. student@miu.edu.eg"><br><br>
 
-            <div class="buttons">
-                <button type="submit">Submit</button>
-                <button type="reset">Reset</button>
-            </div>
+        <button type="submit">Submit Application</button>
+        <button type="reset">Reset Form</button>
 
-        </form>
-    </div>
+    </form>
 
-    <script src="script.js"></script>
+    <script src="tuners.js"></script>
+
 </body>
 </html>
