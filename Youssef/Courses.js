@@ -22,10 +22,10 @@ function updateView() {
         document.getElementById("adminView").hidden = false;
     }
 
-    loadcourses();
+    renderCourses();
 }
 
-function loadcourses() {
+function renderCourses() {
     let pub = document.getElementById("publicCourses");
     let mem = document.getElementById("memberCourses");
 
