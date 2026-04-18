@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tuners Courses</title>
+</head>
+<body>
+
+<h1>Tuners Courses</h1>
+
+<button onclick="setRole('guest')">Guest</button>
+<button onclick="setRole('member')">Member</button>
+<button onclick="setRole('admin')">Admin</button>
+
+<hr>
+
+<div id="publicView">
+    <h2>Available Courses</h2>
+    <div id="publicCourses"></div>
+    <p>Register to access full courses.</p>
+</div>
+
+<div id="memberView" hidden>
+    <h2>Member Courses</h2>
+    <div id="memberCourses"></div>
+</div>
+
+<div id="adminView" hidden>
+    <h2>Admin Panel</h2>
+
+    <input id="title" placeholder="Course Title"><br><br>
+    <input id="desc" placeholder="Description"><br><br>
+
+    <button onclick="addCourse()">Add Course</button>
+</div>
+
+<script src="courses.js"></script>
+
+</body>
+</html>
