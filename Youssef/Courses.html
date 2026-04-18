@@ -1,40 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Tuners Courses</title>
+  <title>Tuners Courses</title>
+  <link rel="stylesheet" href="Courses.css">
 </head>
 <body>
 
-<h1>Tuners Courses</h1>
+<header>
+  <div class="header-inner">
+    <img src="Tuners-Logo.png" alt="Tuners Club logo" class="site-logo">
+    <nav>
+      <a href="page1.html">Home</a>
+      <a href="About_us.html">About us</a>
+      <a href="page3.html">Apply</a>
+      <a href="page4.html">Contact</a>
+      <a href="#">Dashboard</a>
+    </nav>
+  </div>
+</header>
 
-<button onclick="setRole('guest')">Guest</button>
-<button onclick="setRole('member')">Member</button>
-<button onclick="setRole('admin')">Admin</button>
+<h1>Courses</h1>
 
-<hr>
+<p>Explore our music courses. Register to access full content.</p>
 
-<div id="publicView">
-    <h2>Available Courses</h2>
-    <div id="publicCourses"></div>
-    <p>Register to access full courses.</p>
-</div>
+<div id="courses"></div>
 
-<div id="memberView" hidden>
-    <h2>Member Courses</h2>
-    <div id="memberCourses"></div>
-</div>
+<h2>Add Course (Demo Admin)</h2>
 
-<div id="adminView" hidden>
-    <h2>Admin Panel</h2>
+<input id="title" placeholder="Course Title"><br><br>
+<input id="desc" placeholder="Description"><br><br>
+<button onclick="addCourse()">Add Course</button>
 
-    <input id="title" placeholder="Course Title"><br><br>
-    <input id="desc" placeholder="Description"><br><br>
+<footer>
+  <a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a>
+  <a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a>
+  <a href="https://www.youtube.com/channel/UC4Ck5inRE8dQyfGKsRbADug" target="_blank">YouTube</a>
+  <a href="https://soundcloud.com/user-302918831" target="_blank">SoundCloud</a>
+  <a href="https://tiktok.com/@tunersclubmiu" target="_blank">TikTok</a>
+</footer>
 
-    <button onclick="addCourse()">Add Course</button>
-</div>
-
-<script src="courses.js"></script>
+<script src="Courses.js"></script>
 
 </body>
 </html>

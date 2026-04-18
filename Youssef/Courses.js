@@ -1,78 +1,53 @@
-let role = "guest";
-
-let courses = [
-    { id: 1, title: "Intro to Music Theory", desc: "Basics of music." },
-    { id: 2, title: "Scales & Chords", desc: "Learn scales and chords." }
+let courses = JSON.parse(localStorage.getItem("courses")) || [
+  { id: 1, title: "Intro to Music Theory", desc: "Basics of music" }
 ];
 
-function setRole(r) {
-    role = r;
-    updateView();
+function saveCourses() {
+  localStorage.setItem("courses", JSON.stringify(courses));
 }
 
-function updateView() {
-    document.getElementById("memberView").hidden = true;
-    document.getElementById("adminView").hidden = true;
+function render() {
+  let div = document.getElementById("courses");
+  div.innerHTML = "";
 
-    if (role === "member" || role === "admin") {
-        document.getElementById("memberView").hidden = false;
-    }
+  courses.forEach(c => {
+    let el = document.createElement("div");
 
-    if (role === "admin") {
-        document.getElementById("adminView").hidden = false;
-    }
+    el.innerHTML = `
+      <h3>${c.title}</h3>
+      <p>${c.desc}</p>
+      <button onclick="preview()">Preview</button>
+      <button onclick="deleteCourse(${c.id})">Delete</button>
+    `;
 
-    renderCourses();
-}
-
-function renderCourses() {
-    let pub = document.getElementById("publicCourses");
-    let mem = document.getElementById("memberCourses");
-
-    pub.innerHTML = "";
-    mem.innerHTML = "";
-
-    courses.forEach(c => {
-        let p = document.createElement("div");
-        p.innerHTML = `
-            <h3>${c.title}</h3>
-            <p>${c.desc}</p>
-            <button onclick="preview()">Preview</button>
-        `;
-        pub.appendChild(p);
-
-        if (role === "member" || role === "admin") {
-            let m = document.createElement("div");
-            m.innerHTML = `
-                <h3>${c.title}</h3>
-                <p>${c.desc}</p>
-                <button onclick="comingSoon()">Open Course</button>
-            `;
-            mem.appendChild(m);
-        }
-    });
+    div.appendChild(el);
+  });
 }
 
 function preview() {
-    alert("Preview coming soon!");
-}
-
-function comingSoon() {
-    alert("Courses are currently being prepared. Stay tuned!");
+  alert("Register as a member to access full courses.");
 }
 
 function addCourse() {
-    let title = document.getElementById("title").value;
-    let desc = document.getElementById("desc").value;
+  let title = document.getElementById("title").value;
+  let desc = document.getElementById("desc").value;
 
-    if (title && desc) {
-        courses.push({
-            id: courses.length + 1,
-            title: title,
-            desc: desc
-        });
-        renderCourses();
-    }
+  if (title && desc) {
+    courses.push({
+      id: Date.now(),
+      title,
+      desc
+    });
+
+    saveCourses();
+    render();
+  }
 }
 
-updateView();
+function deleteCourse(id) {
+  courses = courses.filter(c => c.id !== id);
+  saveCourses();
+  render();
+}
+
+render();
