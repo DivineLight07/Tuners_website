@@ -1,5 +1,14 @@
-html {
-    scroll-behavior: smooth;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    flex: 1;
 }
 
 .nav {
@@ -31,32 +40,26 @@ html {
     border: none;
     padding: 8px 20px;
     font-size: 16px;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    cursor: pointer;
 }
 
 .welcome_msg,
 .my_courses,
 .my_room_bookings,
 .booking_request,
-.profile_summary,
-.quick_links {
+.profile_summary {
     padding: 20px;
     margin: 20px;
     border: 1px solid #ddd;
     background: #f9f9f9;
 }
 
-h1, h2 {
-    margin-top: 0;
-}
-
 .welcome_msg {
     text-align: center;
+}
+
+h1, h2 {
+    margin-top: 0;
 }
 
 button {
@@ -77,7 +80,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: auto; 
+    margin: auto;
     max-width: 300px;
 }
 
@@ -101,7 +104,6 @@ button:hover {
     flex-wrap: wrap;
 }
 
-/* MATCHED STRUCTURE (same as your other page) */
 .footer-section {
     flex: 1;
     min-width: 200px;
@@ -113,11 +115,6 @@ button:hover {
     color: #6f8fcf;
     margin-bottom: 15px;
     font-size: 18px;
-}
-
-.footer-section p {
-    margin: 8px 0;
-    line-height: 1.5;
 }
 
 .footer-section ul {
@@ -133,37 +130,13 @@ button:hover {
 .footer-section a {
     color: white;
     text-decoration: none;
-    transition: color 0.3s;
 }
 
 .footer-section a:hover {
     color: #949ba9;
 }
 
-.quick_links {
-    flex: 1;
-    min-width: 200px;
-    margin-bottom: 20px;
-    padding: 0 15px;
-}
-
-.quick_links h2 {
-    color: #6f8fcf;
-    margin-bottom: 15px;
-    font-size: 18px;
-}
-
-.quick_links ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.quick_links ul li {
-    margin-bottom: 8px;
-}
-
-.quick_links button {
+.footer-section button {
     background: transparent;
     color: white;
     border: none;
@@ -171,8 +144,9 @@ button:hover {
     font-size: 16px;
     cursor: pointer;
     text-align: left;
+    font-family: inherit;
 }
 
-.quick_links button:hover {
+.footer-section button:hover {
     color: #949ba9;
 }
