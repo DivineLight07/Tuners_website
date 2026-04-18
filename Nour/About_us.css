@@ -1,0 +1,87 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-image: url('IMG_4362.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+header {
+  background: #1f6feb;
+  padding: 16px 0;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header nav a {
+  color: #ffffff;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 10px;
+}
+
+header nav a + a {
+  margin-left: 20px;
+}
+
+header nav a:hover {
+  text-decoration: underline;
+}
+
+h1 {
+  text-align: center;
+  margin: 32px auto 0;
+  font-size: 2.2rem;
+  color: #0a2354;
+}
+
+.page-content {
+  max-width: 900px;
+  margin: 32px auto 48px;
+  padding: 0 20px;
+  color: #1f2d44;
+}
+
+.page-content p {
+  margin: 18px 0;
+  line-height: 1.75;
+}
+
+.intro,
+.feature-block {
+  background: rgba(255, 255, 255, 0.93);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(31, 111, 235, 0.08);
+  padding: 28px;
+}
+
+.intro{
+  margin-bottom: 24px;
+}
+
+.intro h1 {
+    text-align: center;
+    margin: 0 0 16px;
+    font-size: 2.5rem;
+    color: #1f4fb4;
+}
+
+.feature-block {
+  margin-bottom: 24px;
+}
+
+.feature-block h2 {
+  text-align: center;
+  margin: 0 0 16px;
+  font-size: 1.4rem;
+  color: #1f4fb4;
+}
+
+.feature-block strong {
+  color: #13418a;
+}
