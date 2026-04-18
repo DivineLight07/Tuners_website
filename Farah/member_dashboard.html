@@ -10,7 +10,7 @@
 
         <div class="nav">
             <ul>
-                <li><a href="home_page.html"><img src="tuners.png" alt="home" style="height:50px; width: auto;"></a></li>
+                <li><a href="home_page.html"><img src="tuners.png" alt="home" class="nav-logo"></a></li>
                 <li><a href="">About Us</a></li>
                 <li><a href="">Events</a></li>
                 <li><a href="#courses">My Courses</a></li>
@@ -30,28 +30,16 @@
         </div>
 
         <div id="roomBooking" class="my_room_bookings">
-            <h2>My Room Bookings</h2>
-            <div id="bookingsList"></div>
-            <button type="button" id="showBookingFormBtn">Request New Booking</button>
-        </div>
-        
-        <div id="roomRequest" class="booking_request" style="display: none;">
-            <h2>Booking Request Form</h2>
-            <form id="bookingForm">
-                <label>Date:</label>
-                <input type="date" id="bookingDate">
-
-                <label>Time:</label>
-                <input type="time" id="bookingTime">
-
-                <label>Duration (hours): </label>
-                <input type="number" id="bookingDuration">
-
-                <label>Purpose:</label>
-                <input type="text" id="bookingPurpose">
-
-                <button type="submit">Submit Request</button>
-            </form>
+            <h2>Room Booking</h2>
+            
+            <div class="room-status-indicator">
+                <strong>Current Room Status:</strong> <span id="currentRoomStatus" class="status-available">Available</span>
+            </div>
+            
+            <div id="bookingsList" class="bookings-list">
+            </div>
+            
+            <button type="button" id="requestRoomBtn">Request Room Now</button>
         </div>
 
         <div id="profile" class="profile_summary">

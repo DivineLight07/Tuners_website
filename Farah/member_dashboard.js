@@ -56,60 +56,66 @@ function loadProfile() {
 }
 
 
-let bookings = [];
+let currentRoomStatus = "Available";
+let pendingRequest = null;
 
-function loadBookings() {
-    const container = document.getElementById("bookingsList");
-    if (!container) return;
-
-    container.innerHTML = "";
-
-    if (bookings.length === 0) {
-        container.textContent = "No room bookings yet.";
-        return;
+function updateRoomStatusUI() {
+    const statusSpan = document.getElementById("currentRoomStatus");
+    if (!statusSpan) return;
+    
+    statusSpan.textContent = currentRoomStatus;
+    statusSpan.className = '';
+    
+    if (currentRoomStatus === "Available") {
+        statusSpan.classList.add("status-available");
+    } else if (currentRoomStatus === "Occupied") {
+        statusSpan.classList.add("status-occupied");
+    } else {
+        statusSpan.classList.add("status-maintenance");
     }
-
-    bookings.forEach(b => {
-        const div = document.createElement("div");
-        div.textContent = `${b.date} at ${b.time} for ${b.duration}h - ${b.purpose}`;
-        container.appendChild(div);
-    });
 }
 
-const showFormBtn = document.getElementById("showBookingFormBtn");
-const roomRequestDiv = document.getElementById("roomRequest");
+function loadMemberRequestUI() {
+    const container = document.getElementById("bookingsList");
+    const requestBtn = document.getElementById("requestRoomBtn");
+    if (!container || !requestBtn) return;
 
-if (showFormBtn && roomRequestDiv) {
-    showFormBtn.addEventListener("click", function () {
-        roomRequestDiv.style.display = roomRequestDiv.style.display === "none" ? "block" : "none";
-    });
+    if (!pendingRequest) {
+        container.innerHTML = "<p>No active room requests.</p>";
+        requestBtn.style.display = "block";
+    } else {
+        let statusClass = pendingRequest.status === "Approved" ? "status-available" : (pendingRequest.status === "Rejected" ? "status-occupied" : "status-maintenance");
+        container.innerHTML = `
+            <div class="request-card">
+                <strong>My Request Status:</strong> <span class="request-status-text ${statusClass}">${pendingRequest.status}</span>
+                <p class="request-time">Requested at: ${pendingRequest.time}</p>
+            </div>
+        `;
+        requestBtn.style.display = "none";
+    }
 }
 
-const form = document.getElementById("bookingForm");
 
-if (form) {
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
 
-        const date = document.getElementById("bookingDate").value;
-        const time = document.getElementById("bookingTime").value;
-        const duration = document.getElementById("bookingDuration").value;
-        const purpose = document.getElementById("bookingPurpose").value;
-
-        if (!date || !time || !duration || !purpose) {
-            alert("Please fill all fields.");
-            return;
-        }
-
-        const booking = { date, time, duration, purpose };
-        bookings.push(booking);
-        
-        loadBookings();
-
-        alert("Booking submitted.");
-        form.reset();
-        roomRequestDiv.style.display = "none";
-    });
+function setupRoomBooking() {
+    const requestBtn = document.getElementById("requestRoomBtn");
+    if (requestBtn) {
+        requestBtn.addEventListener("click", () => {
+            if (currentRoomStatus !== "Available") {
+                alert("Room is currently " + currentRoomStatus + ". You cannot request it right now.");
+                return;
+            }
+            
+            pendingRequest = {
+                member: student.name,
+                time: new Date().toLocaleTimeString(),
+                status: "Pending"
+            };
+            
+            alert("Room requested successfully!");
+            loadMemberRequestUI();
+        });
+    }
 }
 
 
@@ -135,5 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
     loadWelcome();
     loadCourses();
     loadProfile();
-    loadBookings();
+    updateRoomStatusUI();
+    loadMemberRequestUI();
+    setupRoomBooking();
 });
