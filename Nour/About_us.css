@@ -8,12 +8,35 @@ body {
 }
 
 header {
-  background: #1f6feb;
-  padding: 16px 0;
-  text-align: center;
+  background: #133785;
   position: sticky;
   top: 0;
   z-index: 100;
+}
+
+.header-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 30px 0;
+}
+
+.site-logo {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: auto;
+}
+
+header nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
 }
 
 header nav a {
@@ -22,7 +45,6 @@ header nav a {
   display: inline-block;
   font-size: 16px;
   font-weight: 600;
-  margin: 0 10px;
 }
 
 header nav a + a {
@@ -84,4 +106,128 @@ h1 {
 
 .feature-block strong {
   color: #13418a;
+}
+
+.board-section {
+  margin-top: 40px;
+  margin-bottom: 48px;
+}
+
+.board-section h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #1f4fb4;
+  margin-bottom: 32px;
+}
+
+.board-members {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.member-card {
+  background: rgba(255, 255, 255, 0.93);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(31, 111, 235, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.member-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(31, 111, 235, 0.15);
+}
+
+.member-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 16px;
+  border: 3px solid #1f6feb;
+}
+
+.member-card h3 {
+  margin: 12px 0 6px;
+  font-size: 1.1rem;
+  color: #0a2354;
+}
+
+.member-card .position {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #1f6feb;
+  font-weight: 600;
+}
+
+.site-footer {
+  background: #05004d;
+  color: #ffffff;
+  padding: 32px 0 32px 0;
+  position: relative;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-left: 72px;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 220px;
+}
+
+.footer-logo {
+  position: absolute;
+  left: 0;
+  top: 32px;
+  width: 48px;
+  height: auto;
+}
+
+.footer-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.footer-note {
+  margin: 6px 0 0;
+  font-size: 0.95rem;
+  color: #d1d1ff;
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.footer-links a:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.14);
 }
