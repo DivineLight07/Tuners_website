@@ -7,22 +7,27 @@
 
     <body>
 
-        <div class="nav">
+        <nav id="navbar">
+            <img src="Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/>
             <ul>
-                <li><a href="home_page.html"><img src="tuners.png" alt="home" class="nav-logo"></a></li>
-                <li><a href="">About Us</a></li>
-                <li><a href="">Events</a></li>
-                <li><a href="">Courses</a></li>
-                <li><a href=""><button>Apply</button></a></li>
-                <li><a href="member_dashboard.html"><button>Login</button></a></li>
-            </ul>
-        </div>
+                <li><a href="../Farah/home_page.html">Home</a></li>
+                <li><a href="../Nour/About_us.html">About Us</a></li>
+                <li><a href="../Hussein/tuners.html">Apply</a></li>
+                <li><a href="#site-footer">Contact</a></li>
+                <li><a href="../Youssef/Courses.html">Courses</a></li>
+                <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
+    </ul>
+    <div class="nav-auth">
+        <a href="../Mohamed/index.html" id="nav-login-btn">Login</a>
+        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
+    </div>
+        </nav>
 
         <div class="hero">
             <h1>Welcome to Tuners MIU</h1>
             <p><i>Play. Learn. Perform.</i></p>
             <p>Connect with musicians, book practice rooms, and take music theory courses</p>
-            <a href=""><button>Become a Member</button></a>
+            <a href="C:\Users\Nour Azmy\Desktop\Tuners\Hussein\tuners.html"><button>Become a Member</button></a>
         </div>
 
         <div class="overview">
@@ -33,6 +38,7 @@
                 collaborate, perform, and grow as artists. 
                 Whether you've been playing for years or just picked up an instrument yesterday, 
                 Tuners MIU welcomes you.</p>
+                <a href="C:\Users\Nour Azmy\Desktop\Tuners\Nour\About_us.html">Learn more...</a></a>
         </div>
 
         <div class="featured-event">
@@ -49,35 +55,31 @@
 
         </div>
 
-         <div class="footer">
-            <div class="footer-content">
-                
-                <div class="footer-section">
-                    <h3>Contact Us</h3>
-                    
-                </div>
-
-                <div class="footer-section">
-                    <h3>Follow Us</h3>
-                    <ul>
-                        <li><a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></li>
-                        <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
-                        <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="home_page.html">Home</a></li>
-                        <li><a href="">About Us</a></li>
-                        <li><a href="">Events</a></li>
-                        <li><a href="">Courses</a></li>
-                        <li><a href="">Apply</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+  <footer class="footer" id="site-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+      </div>
+      <div class="footer-section">
+        <h3>Follow Us</h3>
+        <ul>
+          <li><a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></li>
+          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
+          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="../Farah/home_page.html">Home</a></li>
+          <li><a href="../Nour/About_us.html">About Us</a></li>
+          <li><a href="">Events</a></li>
+          <li><a href="../Youssef/Courses.html">Courses</a></li>
+          <li><a href="../Hussein/tuners.html">Apply</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
 
         <script src="home_page.js"></script>
 

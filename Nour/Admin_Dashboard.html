@@ -1,20 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="Admin_Dashboard.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tuners — Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Admin_Dashboard.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <a href="page1.html">Home</a>
-      <a href="About_us.html">About Us</a>
-      <a href="Admin_Dashboard.html">Dashboard</a>
-      <a href="page3.html">Apply</a>
-      <a href="page4.html">Courses</a>
-    </nav>
-  </header>
-  <h1>Admin Dashboard</h1>
+
+  <nav id="navbar">
+    <img src="Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/>
+    <ul>
+      <li><a href="../Farah/home_page.html">Home</a></li>
+      <li><a href="../Nour/About_us.html">About Us</a></li>
+      <li><a href="../Hussein/tuners.html">Apply</a></li>
+      <li><a href="#site-footer">Contact</a></li>
+      <li><a href="../Youssef/Courses.html">Courses</a></li>
+      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
+    </ul>
+    <div class="nav-auth">
+        <a href="../Mohamed/index.html" id="nav-login-btn">Login</a>
+        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="dashboard-container">
+    <h1>Admin Dashboard</h1>
+
+    <div class="grid-layout">
+      <!-- Section: Room Control -->
+      <div class="admin-card room-control">
+        <h2>Room Control</h2>
+        <div class="status-display">
+          Current Status: <span id="adminRoomStatus" class="status-available">Open</span>
+        </div>
+        <div class="control-buttons">
+          <button onclick="setRoomStatus('Open')" class="btn-status available">Open</button>
+          <button onclick="setRoomStatus('Closed')" class="btn-status occupied">Closed</button>
+        </div>
+      </div>
+
+      <!-- Section: User Management -->
+      <div class="admin-card user-management">
+        <h2>Manage Accounts</h2>
+        <div class="add-user-form">
+          <input type="email" id="new-user-email" placeholder="Email Address">
+          <input type="password" id="new-user-pass" placeholder="Password">
+          <select id="new-user-role">
+            <option value="member">Member</option>
+            <option value="admin">Admin</option>
+          </select>
+          <button onclick="addUser()" class="btn-primary">Add Account</button>
+        </div>
+        <div class="user-list-container">
+          <table id="user-table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="user-list">
+              <!-- Users will be injected here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section: Guest Applications -->
+      <div class="admin-card guest-applications">
+        <h2>Guest Applications</h2>
+        <div class="applications-container" id="applications-list">
+          <!-- Applications will be injected here -->
+          <p class="empty-msg">No applications received yet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="Msg"></div>
+
+  <footer class="footer" id="site-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+      </div>
+      <div class="footer-section">
+        <h3>Follow Us</h3>
+        <ul>
+          <li><a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></li>
+          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
+          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="../Farah/home_page.html">Home</a></li>
+          <li><a href="../Nour/About_us.html">About Us</a></li>
+          <li><a href="">Events</a></li>
+          <li><a href="../Youssef/Courses.html">Courses</a></li>
+          <li><a href="../Hussein/tuners.html">Apply</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
   <script src="Admin_Dashboard.js"></script>
 </body>
 </html>

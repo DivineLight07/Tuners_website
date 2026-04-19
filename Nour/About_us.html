@@ -5,18 +5,21 @@
   <link rel="stylesheet" href="About_us.css" />
 </head>
 <body>
-  <header>
-    <div class="header-inner">
-      <img src="Tuners-Logo.png" alt="Tuners Club logo" class="site-logo">
-      <nav>
-        <a href="page1.html">Home</a>
-        <a href="About_us.html">About us</a>
-        <a href="page3.html">Apply</a>
-        <a href="page4.html">Contact</a>
-        <a href="Admin_Dashboard.html">Dashboard</a>
-      </nav>
+  <nav id="navbar">
+    <img src="Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/>
+    <ul>
+      <li><a href="../Farah/home_page.html">Home</a></li>
+      <li><a href="../Nour/About_us.html">About Us</a></li>
+      <li><a href="../Hussein/tuners.html">Apply</a></li>
+      <li><a href="#site-footer">Contact</a></li>
+      <li><a href="../Youssef/Courses.html">Courses</a></li>
+      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
+    </ul>
+    <div class="nav-auth">
+        <a href="../Mohamed/index.html" id="nav-login-btn">Login</a>
+        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
     </div>
-  </header>
+  </nav>
   <main class="page-content">
       <section class="intro">
       <h1>About Us</h1>
@@ -45,13 +48,13 @@
       <h2>👥 Meet the Board</h2>
       <div class="board-members">
         <div class="member-card">
-          <img src="member1.jpg" alt="Member 1" class="member-photo">
+          <img src="Screenshot 2026-04-19 231028.png" alt="Member 1" class="member-photo">
           <h3>Johny</h3>
           <p class="position">President</p>
         </div>
         <div class="member-card">
-          <img src="member2.jpg" alt="Member 2" class="member-photo">
-          <h3>Sarah Mitchell</h3>
+          <img src="DSC03068.jpg" alt="Member 2" class="member-photo">
+          <h3>Rana Elkelany</h3>
           <p class="position">Vice President</p>
         </div>
         <div class="member-card">
@@ -72,24 +75,32 @@
       </div>
     </section>
   </main>
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <img src="Tuners-Logo.png" alt="Tuners Club logo" class="footer-logo">
-        <div>
-          <p class="footer-title">Tuners Club MIU</p>
-          <p class="footer-note">Find Your Harmony.</p>
-        </div>
+  <footer class="footer" id="site-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Contact Us</h3>
       </div>
-      <div class="footer-links">
-        <a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a>
-        <a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a>
-        <a href="https://www.youtube.com/channel/UC4Ck5inRE8dQyfGKsRbADug" target="_blank">YouTube</a>
-        <a href="https://soundcloud.com/user-302918831" target="_blank">SoundCloud</a>
-        <a href="https://tiktok.com/@tunersclubmiu" target="_blank">TikTok</a>
+      <div class="footer-section">
+        <h3>Follow Us</h3>
+        <ul>
+          <li><a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></li>
+          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
+          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="../Farah/home_page.html">Home</a></li>
+          <li><a href="../Nour/About_us.html">About Us</a></li>
+          <li><a href="">Events</a></li>
+          <li><a href="../Youssef/Courses.html">Courses</a></li>
+          <li><a href="../Hussein/tuners.html">Apply</a></li>
+        </ul>
       </div>
     </div>
   </footer>
   <script src="About_us.js"></script>
 </body>
 </html>
+

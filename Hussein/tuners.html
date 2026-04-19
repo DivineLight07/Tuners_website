@@ -11,21 +11,21 @@
 <body>
 
 <!-- ✅ HEADER FIRST -->
-<header>
-  <div class="header-inner">
-    <img src="Tuners-Logo.png" class="site-logo" alt="Logo">
-
-    <nav>
-      <ul>
-        <li>Home</li>
-        <li>About us</li>
-        <li>About</li>
-        <li>Contact</li>
-        <li>Dashboard</li>
-      </ul>
-    </nav>
-  </div>
-</header>
+<nav id="navbar">
+  <img src="Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/>
+  <ul>
+    <li><a href="../Farah/home_page.html">Home</a></li>
+    <li><a href="../Nour/About_us.html">About Us</a></li>
+    <li><a href="../Hussein/tuners.html">Apply</a></li>
+    <li><a href="#site-footer">Contact</a></li>
+    <li><a href="../Youssef/Courses.html">Courses</a></li>
+    <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
+    </ul>
+    <div class="nav-auth">
+        <a href="../Mohamed/index.html" id="nav-login-btn">Login</a>
+        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
+    </div>
+</nav>
 
 <!-- ✅ MAIN CONTENT -->
 <div class="container">
@@ -81,43 +81,43 @@
             <label for="email">Email:</label><br>
             <input type="email" id="email" placeholder="e.g. student@miu.edu.eg"><br><br>
 
+            <label for="phone">Phone Number:</label><br>
+            <input type="tel" id="phone" placeholder="e.g. 01234567890"><br><br>
+
             <button type="submit">Submit Application</button>
             <button type="reset">Reset Form</button>
 
         </form>
     </div>
 
-    <!-- INFO SECTION -->
-    <div class="card">
-        <h2>🔎 What We Do</h2>
-        <p><strong>Music Room:</strong> A fully equipped space on campus.</p>
-        <p><strong>Courses & Workshops:</strong> Structured sessions.</p>
-        <p><strong>Jamming Sessions:</strong> Relaxed gatherings.</p>
-        <p><strong>Community Building:</strong> Connecting students through music.</p>
-    </div>
-
-    <div class="card">
-        <h2>🌟 Our Vision</h2>
-        <p>
-            Tuners Club strives to be more than just a student organization.
-            We envision a vibrant music community on campus.
-        </p>
-    </div>
-
 </div>
 
 
-<div class="card social-card">
-    <h2>🌐 Follow Us</h2>
-
-    <div class="social-links">
-        <a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a>
-        <a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a>
-        <a href="https://www.youtube.com/channel/UC4Ck5inRE8dQyfGKsRbADug" target="_blank">YouTube</a>
-        <a href="https://soundcloud.com/user-302918831" target="_blank">SoundCloud</a>
-        <a href="https://tiktok.com/@tunersclubmiu" target="_blank">TikTok</a>
+  <footer class="footer" id="site-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+      </div>
+      <div class="footer-section">
+        <h3>Follow Us</h3>
+        <ul>
+          <li><a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></li>
+          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
+          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="../Farah/home_page.html">Home</a></li>
+          <li><a href="../Nour/About_us.html">About Us</a></li>
+          <li><a href="">Events</a></li>
+          <li><a href="../Youssef/Courses.html">Courses</a></li>
+          <li><a href="../Hussein/tuners.html">Apply</a></li>
+        </ul>
+      </div>
     </div>
-</div>
+  </footer>
 
 <!-- ✅ JS -->
 <script src="tuners.js"></script>

@@ -13,18 +13,22 @@
   <nav id="navbar">
     <img src="Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/>
     <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="#">About Us</a></li>
-      <li><a href="#">Apply</a></li>
-      <li><a href="#">Contact</a></li>
-      <li><a href="#">Dashboard</a></li>
+      <li><a href="../Farah/home_page.html">Home</a></li>
+      <li><a href="../Nour/About_us.html">About Us</a></li>
+      <li><a href="../Hussein/tuners.html">Apply</a></li>
+      <li><a href="#site-footer">Contact</a></li>
+      <li><a href="../Youssef/Courses.html">Courses</a></li>
+      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
     </ul>
+    <div class="nav-auth">
+        <a href="../Mohamed/index.html" id="nav-login-btn">Login</a>
+        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
+    </div>
   </nav>
 
   
   <div class="pages-wrap">
 
-    <!-- LOGIN -->
     <div id="page-login" class="page active">
       <div class="card">
         <h2>Welcome Back</h2>
@@ -67,6 +71,32 @@
   </div>
 
   <div id="Msg"></div>
+
+  <footer class="footer" id="site-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+      </div>
+      <div class="footer-section">
+        <h3>Follow Us</h3>
+        <ul>
+          <li><a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></li>
+          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
+          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="../Farah/home_page.html">Home</a></li>
+          <li><a href="../Nour/About_us.html">About Us</a></li>
+          <li><a href="">Events</a></li>
+          <li><a href="../Youssef/Courses.html">Courses</a></li>
+          <li><a href="../Hussein/tuners.html">Apply</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>

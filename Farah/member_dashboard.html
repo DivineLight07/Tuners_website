@@ -8,17 +8,21 @@
 
     <body>
 
-        <div class="nav">
+        <nav id="navbar">
+            <img src="Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/>
             <ul>
-                <li><a href="home_page.html"><img src="tuners.png" alt="home" class="nav-logo"></a></li>
-                <li><a href="">About Us</a></li>
-                <li><a href="">Events</a></li>
-                <li><a href="#courses">My Courses</a></li>
-                <li><a href="#roomBooking">Room Bookings</a></li>
-                <li><a href="#roomRequest">Room Request</a></li>
-                <li><a href="#profile"><button type="button">Profile</button></a></li>
-            </ul>
-        </div>
+                <li><a href="../Farah/home_page.html">Home</a></li>
+                <li><a href="../Nour/About_us.html">About Us</a></li>
+                <li><a href="../Hussein/tuners.html">Apply</a></li>
+                <li><a href="#site-footer">Contact</a></li>
+                <li><a href="../Youssef/Courses.html">Courses</a></li>
+                <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
+    </ul>
+    <div class="nav-auth">
+        <a href="../Mohamed/index.html" id="nav-login-btn">Login</a>
+        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
+    </div>
+        </nav>
         
         <div class="welcome_msg">
             <h1 id="welcomeTitle">Welcome back!</h1>
@@ -33,7 +37,7 @@
             <h2>Room Booking</h2>
             
             <div class="room-status-indicator">
-                <strong>Current Room Status:</strong> <span id="currentRoomStatus" class="status-available">Available</span>
+                <strong>Current Room Status:</strong> <span id="currentRoomStatus" class="status-available">Open</span>
             </div>
             
             <div id="bookingsList" class="bookings-list">
@@ -47,34 +51,31 @@
             <div id="profileData"></div>
         </div>
 
-        <div class="footer">
-            <div class="footer-content">
-                
-                <div class="footer-section">
-                    <h3>Contact Us</h3>
-                    
-                </div>
-
-                <div class="footer-section">
-                    <h3>Follow Us</h3>
-                    <ul>
-                        <li><a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></li>
-                        <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
-                        <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="home_page.html">Home</a></li>
-                        <li><a href="">Events</a></li>
-                        <li><button type="button" id="logoutBtn">Logout</button></li>
-                    </ul>
-                </div>
-
-            </div>
-        </div>
+  <footer class="footer" id="site-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+      </div>
+      <div class="footer-section">
+        <h3>Follow Us</h3>
+        <ul>
+          <li><a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></li>
+          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
+          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="../Farah/home_page.html">Home</a></li>
+          <li><a href="../Nour/About_us.html">About Us</a></li>
+          <li><a href="">Events</a></li>
+          <li><a href="../Youssef/Courses.html">Courses</a></li>
+          <li><a href="../Hussein/tuners.html">Apply</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
 
         <script src="member_dashboard.js"></script>
 

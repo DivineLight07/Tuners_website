@@ -1,19 +1,42 @@
-/* RESET */
+html {
+  scroll-behavior: smooth;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* BODY + BACKGROUND IMAGE */
+
 body {
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  background: url("picc.jpeg") no-repeat center center/cover;
-  min-height: 100vh;
-  color: #111;
+    flex: 1;
+    background-image: url('../Farah/IMG_4362.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    color: #fff;
+    position: relative;
+    z-index: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
 }
 
-/* Optional dark overlay for readability */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 26, 62, 0.65);
+    z-index: -1;
+}
+
+body > *:not(#navbar):not(.footer) {
+    position: relative;
+    z-index: 1;
+}
+
+
 body::before {
   content: "";
   position: fixed;
@@ -22,48 +45,47 @@ body::before {
   z-index: -1;
 }
 
-/* HEADER */
-header {
-  background: #133785;
+
+#navbar {
+  width: 100%;
+  background-color: rgba(19, 55, 133, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 0.6rem 2rem;
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
-.header-inner {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 18px 0;
+#nav-logo {
+  height: 48px;
+  width: auto;
+  filter: drop-shadow(0 0 6px rgba(0,0,0,0.4));
 }
 
-/* LOGO */
-.site-logo {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 50px;
-}
-
-/* NAV */
-nav ul {
+#navbar ul {
   list-style: none;
   display: flex;
-  gap: 35px;
+  gap: 2.5rem;
+  justify-content: center;
 }
 
-nav ul li {
+#navbar ul li a {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+
+#navbar ul li a:hover {
   color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-nav ul li:hover {
-  color: #ffd700;
 }
 
 /* MAIN CONTAINER */
@@ -79,7 +101,11 @@ nav ul li:hover {
 .card {
   width: 70%;
   max-width: 700px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(10, 26, 62, 0.45);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: #fff;
   backdrop-filter: blur(15px);
   border-radius: 18px;
   padding: 30px;
@@ -104,7 +130,7 @@ nav ul li:hover {
 .card p {
   line-height: 1.6;
   margin-bottom: 10px;
-  color: #222;
+  color: #fff;
 }
 
 /* FORM STYLING */
@@ -169,34 +195,99 @@ button[type="reset"]:hover {
 }
 
 
-/* Center the social card itself */
-.social-card {
-  text-align: center;
-  margin: 0 auto;
-}
-/* Links container */
-.social-links {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 15px;
+.footer {
+    background: rgba(10, 26, 62, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(255,255,255,0.15);
+    color: #ffffff;
+    padding: 32px 0;
+    position: relative;
+    margin-top: auto;
+    width: 100%;
 }
 
-/* Each link styled like a button */
-.social-links a {
-  text-decoration: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  background: #133785;
-  color: white;
-  font-weight: 500;
-  transition: 0.3s;
+.footer-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0 20px;
 }
 
-/* Hover effect */
-.social-links a:hover {
-  background: #0f2b66;
-  transform: translateY(-2px);
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
 }
+
+.footer-section h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-section a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.footer-section a:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.14);
+}
+
+
+#navbar {
+    transition: transform 0.3s ease-in-out;
+}
+#navbar.hidden {
+    transform: translateY(-100%);
+}
+
+
+.nav-auth {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+#nav-login-btn, #nav-logout-btn {
+    padding: 8px 18px;
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+#nav-login-btn:hover, #nav-logout-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
 

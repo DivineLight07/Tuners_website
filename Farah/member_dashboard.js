@@ -56,22 +56,21 @@ function loadProfile() {
 }
 
 
-let currentRoomStatus = "Available";
-let pendingRequest = null;
+let currentRoomStatus = localStorage.getItem('roomStatus') || "Available";
+let pendingRequest = JSON.parse(localStorage.getItem('pendingRequest')) || null;
 
 function updateRoomStatusUI() {
+    currentRoomStatus = localStorage.getItem('roomStatus') || "Open";
     const statusSpan = document.getElementById("currentRoomStatus");
     if (!statusSpan) return;
     
     statusSpan.textContent = currentRoomStatus;
     statusSpan.className = '';
     
-    if (currentRoomStatus === "Available") {
+    if (currentRoomStatus === "Open") {
         statusSpan.classList.add("status-available");
-    } else if (currentRoomStatus === "Occupied") {
-        statusSpan.classList.add("status-occupied");
     } else {
-        statusSpan.classList.add("status-maintenance");
+        statusSpan.classList.add("status-occupied");
     }
 }
 
@@ -84,7 +83,7 @@ function loadMemberRequestUI() {
         container.innerHTML = "<p>No active room requests.</p>";
         requestBtn.style.display = "block";
     } else {
-        let statusClass = pendingRequest.status === "Approved" ? "status-available" : (pendingRequest.status === "Rejected" ? "status-occupied" : "status-maintenance");
+        let statusClass = pendingRequest.status === "Approved" ? "status-available" : "status-occupied";
         container.innerHTML = `
             <div class="request-card">
                 <strong>My Request Status:</strong> <span class="request-status-text ${statusClass}">${pendingRequest.status}</span>
@@ -101,7 +100,8 @@ function setupRoomBooking() {
     const requestBtn = document.getElementById("requestRoomBtn");
     if (requestBtn) {
         requestBtn.addEventListener("click", () => {
-            if (currentRoomStatus !== "Available") {
+            currentRoomStatus = localStorage.getItem('roomStatus') || "Open";
+            if (currentRoomStatus !== "Open") {
                 alert("Room is currently " + currentRoomStatus + ". You cannot request it right now.");
                 return;
             }
@@ -112,6 +112,7 @@ function setupRoomBooking() {
                 status: "Pending"
             };
             
+            localStorage.setItem('pendingRequest', JSON.stringify(pendingRequest));
             alert("Room requested successfully!");
             loadMemberRequestUI();
         });
@@ -119,21 +120,16 @@ function setupRoomBooking() {
 }
 
 
-const logoutBtn = document.getElementById("logoutBtn");
-
-if (logoutBtn) {
-    logoutBtn.addEventListener("click", function () {
-        if (confirm("Logout?")) {
-            window.location.href = "home_page.html";
-        }
-    });
-}
-
-
 function loadWelcome() {
     const welcomeTitle = document.getElementById("welcomeTitle");
     if (welcomeTitle) {
-        welcomeTitle.textContent = `Welcome back, ${student.name}!`;
+        const userJson = localStorage.getItem('loggedInUser');
+        if (userJson) {
+            const user = JSON.parse(userJson);
+            welcomeTitle.textContent = `Welcome back, ${user.email.split('@')[0]}!`;
+        } else {
+            welcomeTitle.textContent = `Welcome back, ${student.name}!`;
+        }
     }
 }
 
@@ -144,4 +140,67 @@ document.addEventListener("DOMContentLoaded", function () {
     updateRoomStatusUI();
     loadMemberRequestUI();
     setupRoomBooking();
+    
+    // Listen for storage changes to update room status in real-time if multiple tabs are open
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'roomStatus') {
+            updateRoomStatusUI();
+        }
+    });
 });
+
+// Auto-hide navbar on scroll
+(function() {
+    let lastScrollTop = 0;
+    window.addEventListener('scroll', function() {
+        let navbar = document.getElementById('navbar');
+        if (!navbar) return;
+        
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > lastScrollTop) {
+            navbar.classList.add('hidden');
+        } else {
+            navbar.classList.remove('hidden');
+        }
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    }, false);
+})();
+
+// Global Authentication Logic
+function updateNavAuth() {
+    const userJson = localStorage.getItem('loggedInUser');
+    const loginBtn = document.getElementById('nav-login-btn');
+    const logoutBtn = document.getElementById('nav-logout-btn');
+    const dashboardLi = document.getElementById('nav-dashboard');
+    const dashboardLink = document.getElementById('nav-dashboard-link');
+    const applyLink = document.querySelector('nav ul li a[href*="tuners.html"]');
+
+    if (userJson) {
+        const user = JSON.parse(userJson);
+        if (loginBtn) loginBtn.style.display = 'none';
+        if (logoutBtn) logoutBtn.style.display = 'inline-block';
+        if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'none';
+        if (dashboardLi && dashboardLink) {
+            dashboardLi.style.display = 'inline-block';
+            if (user.role === 'admin') {
+                dashboardLink.href = '../Nour/Admin_Dashboard.html';
+            } else {
+                dashboardLink.href = '../Farah/member_dashboard.html';
+            }
+        }
+    } else {
+        if (loginBtn) loginBtn.style.display = 'inline-block';
+        if (logoutBtn) logoutBtn.style.display = 'none';
+        if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'inline-block';
+        if (dashboardLi) {
+            dashboardLi.style.display = 'none';
+        }
+    }
+}
+
+function globalLogout() {
+    localStorage.removeItem('loggedInUser');
+    window.location.href = '../Mohamed/index.html';
+}
+
+document.addEventListener('DOMContentLoaded', updateNavAuth);
