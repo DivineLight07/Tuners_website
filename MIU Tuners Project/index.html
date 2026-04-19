@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TUNERS — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  
+  <nav id="navbar">
+    <img src="Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About Us</a></li>
+      <li><a href="#">Apply</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">Dashboard</a></li>
+    </ul>
+  </nav>
+
+  
+  <div class="pages-wrap">
+
+    <!-- LOGIN -->
+    <div id="page-login" class="page active">
+      <div class="card">
+        <h2>Welcome Back</h2>
+        <p>Sign in to your Tuners account</p>
+
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="you@miuegypt.edu.eg"/>
+        <span class="err" id="login-email-err">Enter a valid email address.</span>
+
+        <label>Password</label>
+        <input type="password" id="login-pass" placeholder="Password"/>
+        <span class="err" id="login-pass-err">Password is required.</span>
+
+        <span id="login-wrong-err">Incorrect email or password.</span>
+
+        <button class="btn" onclick="handleLogin()">Login</button>
+      </div>
+    </div>
+
+   
+    <div id="page-admin" class="page">
+      <div class="card">
+        <span class="badge admin">Admin</span>
+        <h2>Admin Dashboard</h2>
+        <p>Welcome back, <strong>Administrator</strong>. You have full access.</p>
+        <button class="btn outline" onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    
+    <div id="page-member" class="page">
+      <div class="card">
+        <span class="badge member">Member</span>
+        <h2>Member Area</h2>
+        <p>Welcome to <strong>Tuners Club</strong>. Good to have you here.</p>
+        <button class="btn outline" onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="Msg"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
