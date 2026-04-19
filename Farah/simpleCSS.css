@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.nav {
+    background: #20479a;
+    padding: 10px;
+}
+
+.nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+}
+
+.nav button {
+    background: #1a397d;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    font-size: 16px;
+}
+
+.hero, .overview, .featured-event, .highlights {
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid #ddd;
+    background: #f9f9f9;
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+}
+
+.overview, .hero{
+    text-align: center;
+}
+
+.hero button {
+    background: #20479a;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    display: block;
+    margin: auto;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
