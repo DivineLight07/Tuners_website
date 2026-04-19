@@ -5,13 +5,13 @@ let courses = JSON.parse(localStorage.getItem("courses")) || [
     id: 1,
     title: "Intro to Music Theory",
     desc: "Learn notes, rhythm, and scales.",
-    img: "https://via.placeholder.com/250"
+    img: "music.png"
   },
   {
     id: 2,
     title: "Chord Progressions",
     desc: "Understand how chords work together.",
-    img: "https://via.placeholder.com/250"
+    img: "chord.webp"
   }
 ];
 

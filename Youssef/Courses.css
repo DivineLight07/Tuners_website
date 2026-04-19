@@ -3,9 +3,9 @@ body {
   font-family: Arial;
   background: #0d2f6f;
   color: white;
+    padding-bottom: 100px;
 }
 
-/* NAVBAR */
 header {
   background: #133785;
   position: sticky;
@@ -37,7 +37,6 @@ nav a {
   text-decoration: none;
 }
 
-/* PAGE */
 h1 {
   text-align: center;
   margin-top: 30px;
@@ -48,7 +47,6 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* COURSES */
 .courses-grid {
   display: flex;
   flex-wrap: wrap;
@@ -76,16 +74,16 @@ h1 {
   margin: 10px;
 }
 
-/* ADMIN */
 #adminPanel {
   text-align: center;
+  
 }
 
 .hidden {
   display: none;
 }
 
-/* FOOTER */
+
 footer {
   background: #133785;
   position: fixed;
