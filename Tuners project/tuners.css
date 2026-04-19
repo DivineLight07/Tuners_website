@@ -1,28 +1,23 @@
-/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* BODY + BACKGROUND IMAGE */
 body {
   font-family: 'Segoe UI', Tahoma, sans-serif;
   background: url("picc.jpeg") no-repeat center center/cover;
   min-height: 100vh;
-  color: #111;
 }
 
-/* Optional dark overlay for readability */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.35);
+  background: rgba(0,0,0,0.5); 
   z-index: -1;
 }
 
-/* HEADER */
 header {
   background: #133785;
   position: sticky;
@@ -32,41 +27,38 @@ header {
 }
 
 .header-inner {
-  position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 18px 0;
+  align-items: center;
+  padding: 15px 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
 }
 
-/* LOGO */
 .site-logo {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
   width: 50px;
+  position: absolute;
+  left: 30px; 
 }
 
-/* NAV */
 nav ul {
   list-style: none;
   display: flex;
   gap: 35px;
 }
 
-nav ul li {
+nav ul li a {
   color: #fff;
+  text-decoration: none;
   font-weight: 600;
-  cursor: pointer;
   transition: 0.2s;
 }
 
-nav ul li:hover {
+nav ul li a:hover {
   color: #ffd700;
 }
 
-/* MAIN CONTAINER */
 .container {
   display: flex;
   flex-direction: column;
@@ -75,7 +67,6 @@ nav ul li:hover {
   gap: 25px;
 }
 
-/* GLASS CARDS */
 .card {
   width: 70%;
   max-width: 700px;
@@ -87,29 +78,27 @@ nav ul li:hover {
   transition: 0.3s;
 }
 
-/* Hover effect (feels premium) */
 .card:hover {
   transform: translateY(-5px);
 }
 
-/* TITLES */
 .card h1,
 .card h2 {
   text-align: center;
-  color: #133785;
+  color: #ffd700;
   margin-bottom: 15px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
 }
 
-/* TEXT */
 .card p {
   line-height: 1.6;
   margin-bottom: 10px;
-  color: #222;
+  color: #f8f9fa;
 }
 
-/* FORM STYLING */
 form label {
   font-weight: 600;
+  color: #f8f9fa;
 }
 
 input, select, textarea {
@@ -118,25 +107,46 @@ input, select, textarea {
   margin-top: 5px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
   transition: 0.2s;
+  background: rgba(255, 255, 255, 0.95);
 }
 
-/* Input focus glow */
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: #133785;
-  box-shadow: 0 0 5px rgba(19,55,133,0.5);
+  border-color: #ffd700;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
 }
 
-/* BUTTONS */
+#form-messages {
+  display: none;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.error-msg {
+  background-color: rgba(255, 77, 77, 0.2);
+  color: #ff6b6b;
+  border: 1px solid #ff6b6b;
+}
+
+.success-msg {
+  background-color: rgba(76, 175, 80, 0.2);
+  color: #69f0ae;
+  border: 1px solid #69f0ae;
+}
+
 button {
-  padding: 10px 15px;
+  padding: 12px 20px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   margin-right: 10px;
   transition: 0.3s;
+  font-weight: bold;
 }
 
 button[type="submit"] {
@@ -156,25 +166,15 @@ button[type="reset"]:hover {
   background: #aaa;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .card {
-    width: 90%;
-  }
-
-  nav ul {
-    gap: 15px;
-    font-size: 14px;
-  }
+.social-footer {
+  padding-bottom: 50px;
 }
 
-
-/* Center the social card itself */
 .social-card {
   text-align: center;
   margin: 0 auto;
 }
-/* Links container */
+
 .social-links {
   display: flex;
   justify-content: center;
@@ -183,7 +183,6 @@ button[type="reset"]:hover {
   margin-top: 15px;
 }
 
-/* Each link styled like a button */
 .social-links a {
   text-decoration: none;
   padding: 10px 15px;
@@ -194,9 +193,31 @@ button[type="reset"]:hover {
   transition: 0.3s;
 }
 
-/* Hover effect */
 .social-links a:hover {
-  background: #0f2b66;
+  background: #ffd700;
+  color: #133785;
   transform: translateY(-2px);
 }
 
+@media (max-width: 768px) {
+  .header-inner {
+    flex-direction: column;
+    padding: 15px;
+  }
+  
+  .site-logo {
+    position: static;
+    margin-bottom: 15px;
+  }
+  
+  .card {
+    width: 90%;
+  }
+
+  nav ul {
+    gap: 15px;
+    font-size: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

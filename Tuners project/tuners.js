@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-
     const committee = document.getElementById('committee');
     const musicianDiv = document.getElementById('musician_fields');
     const form = document.getElementById('applicationForm');
+    const messageDiv = document.getElementById('form-messages');
 
     musicianDiv.style.display = "none";
 
@@ -14,14 +14,29 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    function showMessage(message, isError) {
+        messageDiv.style.display = 'block';
+        messageDiv.textContent = message;
+        
+        if (isError) {
+            messageDiv.className = 'error-msg';
+        } else {
+            messageDiv.className = 'success-msg';
+        }
+        
+        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
+        
+        messageDiv.style.display = 'none';
+        messageDiv.className = '';
 
         let name = document.getElementById('fullname').value.trim();
         let studentId = document.getElementById('student_id').value.trim();
-        let year = document.getElementById('year').value;
-        let committeeVal = document.getElementById('committee').value;
+        let year = document.getElementById('year').value.trim();
+        let committeeVal = document.getElementById('committee').value.trim();
         let major = document.getElementById('major').value.trim();
         let instrument = document.getElementById('instrument').value.trim();
         let hear = document.getElementById('hear_about').value.trim();
@@ -29,46 +44,37 @@ document.addEventListener("DOMContentLoaded", function () {
         let email = document.getElementById('email').value.trim();
 
         if (!name || !studentId || !year || !committeeVal || !major || !hear || !reason || !email) {
-            alert('Please fill all required fields.');
+            showMessage('Please fill out all required fields.', true);
             return;
         }
 
         if (committeeVal === 'musician' && !instrument) {
-            alert('Please enter your instrument.');
+            showMessage('Please enter your instrument.', true);
             return;
         }
 
         if (reason.length < 20) {
-            alert('Please write at least 20 characters.');
+            showMessage('Please write at least 20 characters for your reason.', true);
             return;
         }
 
         if (!email.includes('@')) {
-            alert('Please enter a valid email.');
+            showMessage('Please enter a valid email address.', true);
             return;
         }
 
-        let message = "Application Submitted!\n\n";
-        message += "Name: " + name + "\n";
-        message += "Student ID: " + studentId + "\n";
-        message += "Year: " + year + "\n";
-        message += "Committee: " + committeeVal + "\n";
-        message += "Major: " + major + "\n";
-
-        if (committeeVal === 'musician') {
-            message += "Instrument: " + instrument + "\n";
-        }
-
-        message += "Email: " + email + "\n\n";
-        message += "The admin will review your application.";
-
-        alert(message);
+        showMessage('Application Submitted Successfully! The admin will review your application.', false);
+        
+        form.reset();
+        musicianDiv.style.display = 'none';
     });
 
     document.querySelector('button[type="reset"]').addEventListener('click', function (e) {
         if (!confirm('Reset all fields?')) {
             e.preventDefault();
+        } else {
+            messageDiv.style.display = 'none';
+            musicianDiv.style.display = 'none';
         }
     });
-
 });
