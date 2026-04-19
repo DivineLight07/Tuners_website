@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background: #1f6feb;
+    padding: 16px 0;
+    text-align: center;
+}
+
+header nav a {
+    color: #ffffff;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 10px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header nav a + a {
+    margin-left: 20px;
+}
+
+header nav a:hover {
+    text-decoration: underline;
+}
