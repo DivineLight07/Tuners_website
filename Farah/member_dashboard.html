@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Tuners MIU - Member Dashboard</title>
+        <link rel="stylesheet" href="member_dashboard.css">
+    </head>
+
+    <body>
+
+        <div class="nav">
+            <ul>
+                <li><a href="home_page.html"><img src="tuners.png" alt="home" class="nav-logo"></a></li>
+                <li><a href="">About Us</a></li>
+                <li><a href="">Events</a></li>
+                <li><a href="#courses">My Courses</a></li>
+                <li><a href="#roomBooking">Room Bookings</a></li>
+                <li><a href="#roomRequest">Room Request</a></li>
+                <li><a href="#profile"><button type="button">Profile</button></a></li>
+            </ul>
+        </div>
+        
+        <div class="welcome_msg">
+            <h1 id="welcomeTitle">Welcome back!</h1>
+        </div>
+
+        <div id="courses" class="my_courses">
+            <h2>My Music Theory Courses</h2>
+            <div id="coursesList"></div>
+        </div>
+
+        <div id="roomBooking" class="my_room_bookings">
+            <h2>Room Booking</h2>
+            
+            <div class="room-status-indicator">
+                <strong>Current Room Status:</strong> <span id="currentRoomStatus" class="status-available">Available</span>
+            </div>
+            
+            <div id="bookingsList" class="bookings-list">
+            </div>
+            
+            <button type="button" id="requestRoomBtn">Request Room Now</button>
+        </div>
+
+        <div id="profile" class="profile_summary">
+            <h2>My Profile Summary</h2>
+            <div id="profileData"></div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-content">
+                
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    
+                </div>
+
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></li>
+                        <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
+                        <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="home_page.html">Home</a></li>
+                        <li><a href="">Events</a></li>
+                        <li><button type="button" id="logoutBtn">Logout</button></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <script src="member_dashboard.js"></script>
+
+    </body>
+
+</html>
