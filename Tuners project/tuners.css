@@ -1,0 +1,202 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY + BACKGROUND IMAGE */
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: url("picc.jpeg") no-repeat center center/cover;
+  min-height: 100vh;
+  color: #111;
+}
+
+/* Optional dark overlay for readability */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: -1;
+}
+
+/* HEADER */
+header {
+  background: #133785;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.header-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 0;
+}
+
+/* LOGO */
+.site-logo {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+}
+
+/* NAV */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 35px;
+}
+
+nav ul li {
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+nav ul li:hover {
+  color: #ffd700;
+}
+
+/* MAIN CONTAINER */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 20px;
+  gap: 25px;
+}
+
+/* GLASS CARDS */
+.card {
+  width: 70%;
+  max-width: 700px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(15px);
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+  transition: 0.3s;
+}
+
+/* Hover effect (feels premium) */
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* TITLES */
+.card h1,
+.card h2 {
+  text-align: center;
+  color: #133785;
+  margin-bottom: 15px;
+}
+
+/* TEXT */
+.card p {
+  line-height: 1.6;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+/* FORM STYLING */
+form label {
+  font-weight: 600;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 12px;
+  transition: 0.2s;
+}
+
+/* Input focus glow */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #133785;
+  box-shadow: 0 0 5px rgba(19,55,133,0.5);
+}
+
+/* BUTTONS */
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: 0.3s;
+}
+
+button[type="submit"] {
+  background: #133785;
+  color: white;
+}
+
+button[type="submit"]:hover {
+  background: #0f2b66;
+}
+
+button[type="reset"] {
+  background: #ccc;
+}
+
+button[type="reset"]:hover {
+  background: #aaa;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .card {
+    width: 90%;
+  }
+
+  nav ul {
+    gap: 15px;
+    font-size: 14px;
+  }
+}
+
+
+/* Center the social card itself */
+.social-card {
+  text-align: center;
+  margin: 0 auto;
+}
+/* Links container */
+.social-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+/* Each link styled like a button */
+.social-links a {
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  background: #133785;
+  color: white;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+/* Hover effect */
+.social-links a:hover {
+  background: #0f2b66;
+  transform: translateY(-2px);
+}
+

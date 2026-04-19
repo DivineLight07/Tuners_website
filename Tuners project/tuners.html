@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MIU Tuners Club - Apply</title>
+
+    <!-- ✅ CSS -->
+    <link rel="stylesheet" href="tuners.css">
+</head>
+
+<body>
+
+<!-- ✅ HEADER FIRST -->
+<header>
+  <div class="header-inner">
+    <img src="Tuners-Logo.png" class="site-logo" alt="Logo">
+
+    <nav>
+      <ul>
+        <li>Home</li>
+        <li>About us</li>
+        <li>About</li>
+        <li>Contact</li>
+        <li>Dashboard</li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- ✅ MAIN CONTENT -->
+<div class="container">
+
+    <!-- FORM SECTION -->
+    <div class="card">
+        <h1>MIU Tuners Club Application</h1>
+        <p>Fill out the form below to apply for membership.</p>
+
+        <form id="applicationForm">
+
+            <label for="fullname">Full Name:</label><br>
+            <input type="text" id="fullname" placeholder="e.g. Ahmed Mohamed"><br><br>
+
+            <label for="student_id">Student ID:</label><br>
+            <input type="text" id="student_id" placeholder="e.g. 24/12345"><br><br>
+
+            <label for="year">Year:</label><br>
+            <select id="year">
+                <option value="">Select your year</option>
+                <option value="1st">1st Year</option>
+                <option value="2nd">2nd Year</option>
+                <option value="3rd">3rd Year</option>
+                <option value="4th">4th Year</option>
+                <option value="graduate">Graduate</option>
+            </select><br><br>
+
+            <label for="committee">Which committee are you interested in?</label><br>
+            <select id="committee">
+                <option value="">Select a committee</option>
+                <option value="events">Events committee</option>
+                <option value="media">Social media committee</option>
+                <option value="technical">Technical committee</option>
+                <option value="academic">Academic committee</option>
+                <option value="musician">Musician committee</option>
+            </select><br><br>
+
+            <!-- Musician field -->
+            <div id="musician_fields" style="display: none;">
+                <label for="instrument">What instrument do you play?</label><br>
+                <input type="text" id="instrument" placeholder="e.g. Guitar, Piano, Drums"><br><br>
+            </div>
+
+            <label for="major">Major:</label><br>
+            <input type="text" id="major" placeholder="e.g. Computer Science"><br><br>
+
+            <label for="hear_about">How did you hear about the club?</label><br>
+            <input type="text" id="hear_about" placeholder="e.g. Instagram, Friend"><br><br>
+
+            <label for="reason">Why do you want to join the club?</label><br>
+            <textarea id="reason" rows="4" placeholder="e.g. I want to improve my skills..."></textarea><br><br>
+
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" placeholder="e.g. student@miu.edu.eg"><br><br>
+
+            <button type="submit">Submit Application</button>
+            <button type="reset">Reset Form</button>
+
+        </form>
+    </div>
+
+    <!-- INFO SECTION -->
+    <div class="card">
+        <h2>🔎 What We Do</h2>
+        <p><strong>Music Room:</strong> A fully equipped space on campus.</p>
+        <p><strong>Courses & Workshops:</strong> Structured sessions.</p>
+        <p><strong>Jamming Sessions:</strong> Relaxed gatherings.</p>
+        <p><strong>Community Building:</strong> Connecting students through music.</p>
+    </div>
+
+    <div class="card">
+        <h2>🌟 Our Vision</h2>
+        <p>
+            Tuners Club strives to be more than just a student organization.
+            We envision a vibrant music community on campus.
+        </p>
+    </div>
+
+</div>
+
+
+<div class="card social-card">
+    <h2>🌐 Follow Us</h2>
+
+    <div class="social-links">
+        <a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a>
+        <a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a>
+        <a href="https://www.youtube.com/channel/UC4Ck5inRE8dQyfGKsRbADug" target="_blank">YouTube</a>
+        <a href="https://soundcloud.com/user-302918831" target="_blank">SoundCloud</a>
+        <a href="https://tiktok.com/@tunersclubmiu" target="_blank">TikTok</a>
+    </div>
+</div>
+
+<!-- ✅ JS -->
+<script src="tuners.js"></script>
+
+</body>
+</html>
