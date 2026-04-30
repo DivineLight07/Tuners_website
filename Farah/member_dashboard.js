@@ -8,12 +8,6 @@ const courses = [
     { title: "Advanced Composition", instructor: "Ms. Sara", progress: 40 }
 ];
 
-const profile = {
-    xp: 1200,
-    badges: 5,
-    level: 3
-};
-
 
 function loadCourses() {
     const container = document.getElementById("coursesList");
@@ -40,20 +34,111 @@ function loadProfile() {
 
     container.innerHTML = "";
 
-    const info = [
-        `Name: ${student.name}`,
-        `University ID: ${student.universityId}`,
-        `XP: ${profile.xp}`,
-        `Badges: ${profile.badges}`,
-        `Level: ${profile.level}`
-    ];
+    const userJson = localStorage.getItem('loggedInUser');
+    let uName = student.name;
+    let uid = student.universityId;
+    let uBadges = [];
+    
+    if (userJson) {
+        const user = JSON.parse(userJson);
+        uName = user.name || uName;
+        uid = user.universityId || uid;
+        uBadges = user.badges || [];
+    }
 
-    info.forEach(text => {
-        const p = document.createElement("p");
-        p.textContent = text;
-        container.appendChild(p);
-    });
+    const pName = document.createElement("p");
+    pName.textContent = `Name: ${uName}`;
+    container.appendChild(pName);
+    
+    const pUid = document.createElement("p");
+    pUid.textContent = `University ID: ${uid}`;
+    container.appendChild(pUid);
+    
+    const badgesDiv = document.createElement("div");
+    badgesDiv.className = "badges-container";
+    
+    const pBadgesLabel = document.createElement("p");
+    pBadgesLabel.textContent = "My Badges:";
+    pBadgesLabel.style.fontWeight = "bold";
+    pBadgesLabel.style.marginTop = "15px";
+    pBadgesLabel.style.marginBottom = "8px";
+    badgesDiv.appendChild(pBadgesLabel);
+    
+    if (uBadges.length > 0) {
+        uBadges.forEach(badge => {
+            const span = document.createElement("span");
+            span.className = "badge-pill";
+            span.textContent = badge;
+            badgesDiv.appendChild(span);
+        });
+    } else {
+        const pNone = document.createElement("p");
+        pNone.textContent = "No badges earned yet.";
+        pNone.style.fontSize = "0.9rem";
+        pNone.style.color = "rgba(255,255,255,0.7)";
+        badgesDiv.appendChild(pNone);
+    }
+    
+    container.appendChild(badgesDiv);
 }
+
+// Profile Editing Logic
+function openEditProfile() {
+    const userJson = localStorage.getItem('loggedInUser');
+    if (!userJson) return;
+    const user = JSON.parse(userJson);
+    
+    document.getElementById('edit-name').value = user.name || student.name;
+    document.getElementById('edit-email').value = user.email || '';
+    document.getElementById('edit-pass').value = user.password || '';
+    document.getElementById('edit-uid').value = user.universityId || student.universityId;
+    
+    document.getElementById('profileData').style.display = 'none';
+    document.getElementById('editProfileBtn').style.display = 'none';
+    document.getElementById('inlineEditProfile').style.display = 'block';
+}
+
+function closeEditProfile() {
+    document.getElementById('profileData').style.display = 'block';
+    document.getElementById('editProfileBtn').style.display = 'inline-block';
+    document.getElementById('inlineEditProfile').style.display = 'none';
+}
+
+function saveProfile(event) {
+    event.preventDefault();
+    
+    const userJson = localStorage.getItem('loggedInUser');
+    if (!userJson) return;
+    const user = JSON.parse(userJson);
+    const originalEmail = user.email;
+    
+    const newName = document.getElementById('edit-name').value;
+    const newEmail = document.getElementById('edit-email').value;
+    const newPass = document.getElementById('edit-pass').value;
+    const newUid = document.getElementById('edit-uid').value;
+    
+    user.name = newName;
+    user.email = newEmail;
+    user.password = newPass;
+    user.universityId = newUid;
+    
+    // Update loggedInUser
+    localStorage.setItem('loggedInUser', JSON.stringify(user));
+    
+    // Update main users array
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    const userIndex = users.findIndex(u => u.email === originalEmail);
+    if (userIndex !== -1) {
+        users[userIndex] = { ...users[userIndex], ...user };
+        localStorage.setItem('users', JSON.stringify(users));
+    }
+    
+    closeEditProfile();
+    loadProfile();
+    loadWelcome();
+    alert('Profile updated successfully!');
+}
+
 
 
 let currentRoomStatus = localStorage.getItem('roomStatus') || "Available";

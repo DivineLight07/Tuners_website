@@ -1,6 +1,6 @@
 const DEFAULT_USERS = [
-  { email: 'admin@miuegypt.edu.eg',  password: 'Admin123!',  role: 'admin'  },
-  { email: 'member@miuegypt.edu.eg', password: 'Member123!', role: 'member' }
+  { email: 'admin@miuegypt.edu.eg',  password: 'Admin123!',  role: 'admin', name: 'Admin User', universityId: 'MIU000', badges: ['🎵 Perfect Pitch', '🎸 Guitar Hero'] },
+  { email: 'member@miuegypt.edu.eg', password: 'Member123!', role: 'member', name: 'Farah', universityId: 'MIU123', badges: ['🎤 Vocal Virtuoso'] }
 ];
 
 // Initialize users in localStorage if they don't exist

@@ -47,10 +47,84 @@ function loadUsers() {
             <td>${user.email}</td>
             <td>${user.role}</td>
             <td>
-                ${user.email !== 'admin@miuegypt.edu.eg' ? `<button onclick="deleteUser('${user.email}')" class="btn-delete">Delete</button>` : 'System'}
+                <button onclick="editUser('${user.email}')" class="btn-primary" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
+                ${user.email !== 'admin@miuegypt.edu.eg' ? `<button onclick="deleteUser('${user.email}')" class="btn-delete">Delete</button>` : '<span style="font-size:0.8rem;color:#888;">System</span>'}
             </td>
         </tr>
     `).join('');
+}
+
+function editUser(email) {
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find(u => u.email === email);
+    if (!user) return;
+    
+    document.getElementById('edit-original-email').value = user.email;
+    document.getElementById('edit-user-name').value = user.name || '';
+    document.getElementById('edit-user-email').value = user.email;
+    document.getElementById('edit-user-pass').value = user.password;
+    document.getElementById('edit-user-role').value = user.role;
+    document.getElementById('edit-user-uid').value = user.universityId || '';
+    
+    // Handle badges
+    const badgeCheckboxes = document.querySelectorAll('#edit-user-badges input[type="checkbox"]');
+    const userBadges = user.badges || [];
+    badgeCheckboxes.forEach(cb => {
+        cb.checked = userBadges.includes(cb.value);
+    });
+    
+    document.getElementById('editUserModal').style.display = 'block';
+}
+
+function closeEditUserModal() {
+    document.getElementById('editUserModal').style.display = 'none';
+}
+
+function saveUserEdit(event) {
+    event.preventDefault();
+    
+    const originalEmail = document.getElementById('edit-original-email').value;
+    const newName = document.getElementById('edit-user-name').value;
+    const newEmail = document.getElementById('edit-user-email').value;
+    const newPass = document.getElementById('edit-user-pass').value;
+    const newRole = document.getElementById('edit-user-role').value;
+    const newUid = document.getElementById('edit-user-uid').value;
+    
+    // Collect badges
+    const badgeCheckboxes = document.querySelectorAll('#edit-user-badges input[type="checkbox"]:checked');
+    const newBadges = Array.from(badgeCheckboxes).map(cb => cb.value);
+    
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    const userIndex = users.findIndex(u => u.email === originalEmail);
+    if (userIndex === -1) return;
+    
+    // Check if new email is taken by someone else
+    if (newEmail !== originalEmail && users.find(u => u.email === newEmail)) {
+        showMsg('Email is already taken by another user.');
+        return;
+    }
+    
+    users[userIndex].name = newName;
+    users[userIndex].email = newEmail;
+    users[userIndex].password = newPass;
+    users[userIndex].role = newRole;
+    users[userIndex].universityId = newUid;
+    users[userIndex].badges = newBadges;
+    
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    // Update loggedInUser if admin edited their own profile
+    const loggedInUserJson = localStorage.getItem('loggedInUser');
+    if (loggedInUserJson) {
+        const loggedInUser = JSON.parse(loggedInUserJson);
+        if (loggedInUser.email === originalEmail) {
+            localStorage.setItem('loggedInUser', JSON.stringify(users[userIndex]));
+        }
+    }
+    
+    closeEditUserModal();
+    loadUsers();
+    showMsg('User details updated.');
 }
 
 function addUser() {
