@@ -90,6 +90,7 @@ function openEditProfile() {
     
     document.getElementById('edit-name').value = user.name || student.name;
     document.getElementById('edit-email').value = user.email || '';
+    document.getElementById('edit-old-pass').value = '';
     document.getElementById('edit-pass').value = user.password || '';
     document.getElementById('edit-uid').value = user.universityId || student.universityId;
     
@@ -104,6 +105,18 @@ function closeEditProfile() {
     document.getElementById('inlineEditProfile').style.display = 'none';
 }
 
+function togglePasswordVisibility() {
+    const passInput = document.getElementById('edit-pass');
+    const toggleBtn = document.getElementById('toggle-pass-btn');
+    if (passInput.type === 'password') {
+        passInput.type = 'text';
+        toggleBtn.textContent = 'Hide';
+    } else {
+        passInput.type = 'password';
+        toggleBtn.textContent = 'Show';
+    }
+}
+
 function saveProfile(event) {
     event.preventDefault();
     
@@ -111,6 +124,12 @@ function saveProfile(event) {
     if (!userJson) return;
     const user = JSON.parse(userJson);
     const originalEmail = user.email;
+    
+    const oldPass = document.getElementById('edit-old-pass').value;
+    if (oldPass !== user.password) {
+        alert('Incorrect old password. Changes not saved.');
+        return;
+    }
     
     const newName = document.getElementById('edit-name').value;
     const newEmail = document.getElementById('edit-email').value;

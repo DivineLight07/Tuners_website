@@ -63,8 +63,15 @@
                         <input type="email" id="edit-email" required>
                     </div>
                     <div class="form-group">
-                        <label for="edit-pass">Password</label>
-                        <input type="password" id="edit-pass" required>
+                        <label for="edit-old-pass">Old Password (Required)</label>
+                        <input type="password" id="edit-old-pass" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-pass">New Password</label>
+                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 10px;">
+                            <input type="password" id="edit-pass" required>
+                            <button type="button" id="toggle-pass-btn" onclick="togglePasswordVisibility()" class="btn-primary" style="margin-top:0; padding: 0 15px; font-size: 0.9rem;">Show</button>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="edit-uid">University ID</label>
