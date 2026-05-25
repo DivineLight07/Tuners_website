@@ -50,6 +50,7 @@
                 <option value="2nd">2nd Year</option>
                 <option value="3rd">3rd Year</option>
                 <option value="4th">4th Year</option>
+                <option value="5th">5th Year</option>
                 <option value="graduate">Graduate</option>
             </select><br><br>
 
@@ -66,11 +67,40 @@
             <!-- Musician field -->
             <div id="musician_fields" style="display: none;">
                 <label for="instrument">What instrument do you play?</label><br>
-                <input type="text" id="instrument" placeholder="e.g. Guitar, Piano, Drums"><br><br>
+                <select id="instrument">
+                    <option value="">Select your instrument</option>
+                    <option value="Guitar">Guitar</option>
+                    <option value="Piano">Piano</option>
+                    <option value="Drums">Drums</option>
+                    <option value="Violin">Violin</option>
+                    <option value="Bass Guitar">Bass Guitar</option>
+                    <option value="Keyboard">Keyboard</option>
+                    <option value="Vocals">Vocals</option>
+                    <option value="Saxophone">Saxophone</option>
+                    <option value="Flute">Flute</option>
+                    <option value="Other">Other</option>
+                </select>
+                <div id="other_instrument_container" style="display: none; margin-top: 10px;">
+                    <label for="other_instrument">Specify your instrument:</label><br>
+                    <input type="text" id="other_instrument" placeholder="e.g. Oud, Cello, etc.">
+                </div>
+                <br>
             </div>
 
             <label for="major">Major:</label><br>
-            <input type="text" id="major" placeholder="e.g. Computer Science"><br><br>
+            <select id="major">
+                <option value="">Select your major</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Computer Engineering">Computer Engineering</option>
+                <option value="Al-Alsun">Al-Alsun</option>
+                <option value="Visual Communication">Visual Communication</option>
+                <option value="Architecture">Architecture</option>
+                <option value="Business Administration">Business Administration</option>
+                <option value="Dental Medicine">Dental Medicine</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Pharmacy">Pharmacy</option>
+                <option value="Mass Communication">Mass Communication</option>
+            </select><br><br>
 
             <label for="hear_about">How did you hear about the club?</label><br>
             <input type="text" id="hear_about" placeholder="e.g. Instagram, Friend"><br><br>

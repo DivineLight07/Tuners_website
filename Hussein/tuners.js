@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     const committeeSelect = document.getElementById('committee');
     const musicianDiv = document.getElementById('musician_fields');
+    const instrumentSelect = document.getElementById('instrument');
+    const otherInstrumentContainer = document.getElementById('other_instrument_container');
+    const otherInstrumentInput = document.getElementById('other_instrument');
     const form = document.getElementById('applicationForm');
 
     if (committeeSelect && musicianDiv) {
@@ -9,6 +12,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 musicianDiv.style.display = 'block';
             } else {
                 musicianDiv.style.display = 'none';
+                if (instrumentSelect) instrumentSelect.value = '';
+                if (otherInstrumentContainer) otherInstrumentContainer.style.display = 'none';
+                if (otherInstrumentInput) otherInstrumentInput.value = '';
+            }
+        });
+    }
+
+    if (instrumentSelect && otherInstrumentContainer) {
+        instrumentSelect.addEventListener('change', function() {
+            if (this.value === 'Other') {
+                otherInstrumentContainer.style.display = 'block';
+            } else {
+                otherInstrumentContainer.style.display = 'none';
+                if (otherInstrumentInput) otherInstrumentInput.value = '';
             }
         });
     }
@@ -22,7 +39,16 @@ document.addEventListener('DOMContentLoaded', function() {
             let year = document.getElementById('year').value;
             let committeeVal = document.getElementById('committee').value;
             let major = document.getElementById('major').value.trim();
-            let instrument = document.getElementById('instrument') ? document.getElementById('instrument').value.trim() : '';
+
+            let instrument = '';
+            if (committeeVal === 'musician' && instrumentSelect) {
+                if (instrumentSelect.value === 'Other') {
+                    instrument = otherInstrumentInput ? otherInstrumentInput.value.trim() : '';
+                } else {
+                    instrument = instrumentSelect.value.trim();
+                }
+            }
+
             let hear = document.getElementById('hear_about').value.trim();
             let reason = document.getElementById('reason').value.trim();
             let email = document.getElementById('email').value.trim();
@@ -73,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert(message);
             form.reset();
             if (musicianDiv) musicianDiv.style.display = 'none';
+            if (otherInstrumentContainer) otherInstrumentContainer.style.display = 'none';
         });
     }
 
@@ -81,6 +108,9 @@ document.addEventListener('DOMContentLoaded', function() {
         resetBtn.addEventListener('click', function (e) {
             if (!confirm('Reset all fields?')) {
                 e.preventDefault();
+            } else {
+                if (musicianDiv) musicianDiv.style.display = 'none';
+                if (otherInstrumentContainer) otherInstrumentContainer.style.display = 'none';
             }
         });
     }
