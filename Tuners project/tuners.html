@@ -2,40 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MIU Tuners Club - Apply</title>
+
+    <!-- ✅ CSS -->
     <link rel="stylesheet" href="tuners.css">
 </head>
+
 <body>
 
-<header>
-  <div class="header-inner">
-    <img src="Tuners-Logo.png" class="site-logo" alt="Logo">
-    <nav>
-      <ul>
-        <li><a href="home.html">Home</a></li>
-        <li><a href="about_us.html">About us</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="dashboard.html">Dashboard</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
+<!-- ✅ HEADER FIRST -->
+<nav id="navbar">
+  <img src="Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/>
+  <ul>
+    <li><a href="../Farah/home_page.html">Home</a></li>
+    <li><a href="../Nour/About_us.html">About Us</a></li>
+    <li><a href="../Hussein/tuners.html">Apply</a></li>
+    <li><a href="#site-footer">Contact</a></li>
+    <li><a href="../Youssef/Courses.html">Courses</a></li>
+    <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
+    </ul>
+    <div class="nav-auth">
+        <a href="../Mohamed/index.html" id="nav-login-btn">Login</a>
+        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
+    </div>
+</nav>
 
-<main class="container">
+<!-- ✅ MAIN CONTENT -->
+<div class="container">
+
+    <!-- FORM SECTION -->
     <div class="card">
         <h1>MIU Tuners Club Application</h1>
         <p>Fill out the form below to apply for membership.</p>
 
-        <div id="form-messages"></div>
+        <form id="applicationForm">
 
-        <form id="applicationForm" action="#" method="POST">
             <label for="fullname">Full Name:</label><br>
-            <input type="text" id="fullname" placeholder="e.g. Ahmed Mohamed"><br>
+            <input type="text" id="fullname" oninput="validateName(this)"><br>
+            <small id="nameError" style="color:red; display:none;">Name can only contain letters and spaces.</small><br><br>
 
             <label for="student_id">Student ID:</label><br>
-            <input type="text" id="student_id" placeholder="e.g. 24/12345"><br>
+            <input type="text" id="student_id" placeholder="e.g. 24/12345" oninput="formatStudentId(this)"><br>
+            <small id="studentIdError" style="color:red; display:none;">Student ID must be format: XX/XXXXX (e.g., 24/12345)</small><br><br>
 
             <label for="year">Year:</label><br>
             <select id="year">
@@ -44,8 +52,9 @@
                 <option value="2nd">2nd Year</option>
                 <option value="3rd">3rd Year</option>
                 <option value="4th">4th Year</option>
+                <option value="5th">5th Year</option>
                 <option value="graduate">Graduate</option>
-            </select><br>
+            </select><br><br>
 
             <label for="committee">Which committee are you interested in?</label><br>
             <select id="committee">
@@ -55,60 +64,169 @@
                 <option value="technical">Technical committee</option>
                 <option value="academic">Academic committee</option>
                 <option value="musician">Musician committee</option>
-            </select><br>
+            </select><br><br>
 
+            <!-- Musician field -->
             <div id="musician_fields" style="display: none;">
                 <label for="instrument">What instrument do you play?</label><br>
-                <input type="text" id="instrument" placeholder="e.g. Guitar, Piano, Drums"><br>
+                <select id="instrument">
+                    <option value="">Select your instrument</option>
+                    <option value="Guitar">Guitar</option>
+                    <option value="Piano">Piano</option>
+                    <option value="Drums">Drums</option>
+                    <option value="Violin">Violin</option>
+                    <option value="Bass Guitar">Bass Guitar</option>
+                    <option value="Keyboard">Keyboard</option>
+                    <option value="Vocals">Vocals</option>
+                    <option value="Saxophone">Saxophone</option>
+                    <option value="Flute">Flute</option>
+                    <option value="Other">Other</option>
+                </select>
+                <div id="other_instrument_container" style="display: none; margin-top: 10px;">
+                    <label for="other_instrument">Specify your instrument:</label><br>
+                    <input type="text" id="other_instrument" placeholder="e.g. Oud, Cello, etc.">
+                </div>
+                <br>
             </div>
 
             <label for="major">Major:</label><br>
-            <input type="text" id="major" placeholder="e.g. Computer Science"><br>
+            <select id="major">
+                <option value="">Select your major</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Computer Engineering">Computer Engineering</option>
+                <option value="Al-Alsun">Al-Alsun</option>
+                <option value="Visual Communication">Visual Communication</option>
+                <option value="Architecture">Architecture</option>
+                <option value="Business Administration">Business Administration</option>
+                <option value="Dental Medicine">Dental Medicine</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Pharmacy">Pharmacy</option>
+                <option value="Mass Communication">Mass Communication</option>
+            </select><br><br>
 
             <label for="hear_about">How did you hear about the club?</label><br>
-            <input type="text" id="hear_about" placeholder="e.g. Instagram, Friend"><br>
+            <input type="text" id="hear_about" placeholder="e.g. Instagram, Friend"><br><br>
 
             <label for="reason">Why do you want to join the club?</label><br>
-            <textarea id="reason" rows="4" placeholder="e.g. I want to improve my skills..."></textarea><br>
-
+            <textarea id="reason" rows="4" placeholder="e.g. I want to improve my skills..."></textarea><br><br>
             <label for="email">Email:</label><br>
-            <input type="email" id="email" placeholder="e.g. student@miu.edu.eg"><br>
+            <input type="email" id="email" placeholder="e.g. student@miu.edu.eg" oninput="validateEmail(this)"><br>
+            <small id="emailError" style="color:red; display:none;">Email must end with @miuegypt.edu.eg</small><br><br>
+
+            <label for="phone">Phone Number:</label><br>
+            <input type="tel" id="phone" placeholder="e.g. 01234567890" oninput="validatePhone(this)"><br>
+            <small id="phoneError" style="color:red; display:none;">Phone must be exactly 11 digits starting with 01</small><br><br>
 
             <button type="submit">Submit Application</button>
             <button type="reset">Reset Form</button>
+
         </form>
     </div>
 
-    <div class="card">
-        <h2>🔎 What We Do</h2>
-        <p><strong>Music Room:</strong> A fully equipped space on campus.</p>
-        <p><strong>Courses & Workshops:</strong> Structured sessions.</p>
-        <p><strong>Jamming Sessions:</strong> Relaxed gatherings.</p>
-        <p><strong>Community Building:</strong> Connecting students through music.</p>
-    </div>
+</div>
 
-    <div class="card">
-        <h2>🌟 Our Vision</h2>
-        <p>
-            Tuners Club strives to be more than just a student organization.
-            We envision a vibrant music community on campus.
-        </p>
-    </div>
-</main>
 
-<footer class="social-footer">
-    <div class="card social-card">
-        <h2>🌐 Follow Us</h2>
-        <div class="social-links">
-            <a href="https://www.instagram.com/tunersclubmiu" target="_blank">Instagram</a>
-            <a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a>
-            <a href="https://www.youtube.com/channel/UC4Ck5inRE8dQyfGKsRbADug" target="_blank">YouTube</a>
-            <a href="https://soundcloud.com/user-302918831" target="_blank">SoundCloud</a>
-            <a href="https://tiktok.com/@tunersclubmiu" target="_blank">TikTok</a>
+<footer class="footer" id="site-footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>📍 Contact Us</h3>
+      
+            <p>🏫Misr International University (MIU)</p>
+            <p>📧 <strong>Email:</strong> tuners@miu.edu.eg</p>
+        
         </div>
+        <div class="footer-section">
+            <h3>📱 Follow Us</h3>
+            <ul>
+                <li><a href="https://www.instagram.com/tunersclubmiu" target="_blank">📸 Instagram</a></li>
+                <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">📘 Facebook</a></li>
+                <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">🎵 TikTok</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>🔗 Quick Links</h3>
+            <ul>
+                <li><a href="../Farah/home_page.html">Home</a></li>
+                <li><a href="../Nour/About_us.html">About Us</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="../Youssef/Courses.html">Courses</a></li>
+                <li><a href="../Hussein/tuners.html">Apply</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; MIU Tuners Club. All rights reserved.</p>
     </div>
 </footer>
 
+<!-- ✅ JS -->
 <script src="tuners.js"></script>
+
+<script>
+    // Name validation - only letters and spaces
+    function validateName(input) {
+        const nameError = document.getElementById('nameError');
+        const regex = /^[A-Za-z\s]*$/;
+        if (!regex.test(input.value)) {
+            nameError.style.display = 'inline';
+            input.style.borderColor = 'red';
+        } else {
+            nameError.style.display = 'none';
+            input.style.borderColor = '';
+        }
+    }
+
+    // Student ID format: XX/XXXXX
+    function formatStudentId(input) {
+        let val = input.value.replace(/[^0-9]/g, '');
+        if (val.length > 2) {
+            val = val.slice(0, 2) + '/' + val.slice(2, 7);
+        }
+        input.value = val.slice(0, 10);
+        
+        const studentIdError = document.getElementById('studentIdError');
+        const regex = /^\d{2}\/\d{4,5}$/;
+        if (input.value && !regex.test(input.value)) {
+            studentIdError.style.display = 'inline';
+            input.style.borderColor = 'red';
+        } else {
+            studentIdError.style.display = 'none';
+            input.style.borderColor = '';
+        }
+    }
+
+    // Phone validation - exactly 11 digits starting with 01
+    function validatePhone(input) {
+        let val = input.value.replace(/[^0-9]/g, '');
+        if (val.length > 11) val = val.slice(0, 11);
+        input.value = val;
+        
+        const phoneError = document.getElementById('phoneError');
+        const regex = /^01[0-9]{9}$/;
+        if (input.value && !regex.test(input.value)) {
+            phoneError.style.display = 'inline';
+            input.style.borderColor = 'red';
+        } else {
+            phoneError.style.display = 'none';
+            input.style.borderColor = '';
+        }
+    }
+
+
+    // Email validation - must end with @miu.edu.eg
+function validateEmail(input) {
+    const emailError = document.getElementById('emailError');
+    const value = input.value.trim();
+    
+    if (value && !value.toLowerCase().endsWith('@miuegypt.edu.eg')) {
+        emailError.style.display = 'inline';
+        input.style.borderColor = 'red';
+    } else {
+        emailError.style.display = 'none';
+        input.style.borderColor = '';
+    }
+}
+</script>
+
 </body>
 </html>
