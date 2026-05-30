@@ -19,6 +19,43 @@ exports.submitApplication = async (req, res, next) => {
       phone
     } = req.body;
 
+    // CHECK FOR DUPLICATES ON MULTIPLE FIELDS
+    // Check if ANY existing application matches email, studentId, phone, OR name
+    const existingApplication = await Application.findOne({
+      $or: [
+        { email: email },
+        { studentId: studentId },
+        { phone: phone },
+        { name: name }
+      ]
+    });
+
+    if (existingApplication) {
+      // Determine which field caused the duplicate
+      let duplicateField = '';
+      let duplicateValue = '';
+      
+      if (existingApplication.email === email) {
+        duplicateField = 'Email';
+        duplicateValue = email;
+      } else if (existingApplication.studentId === studentId) {
+        duplicateField = 'Student ID';
+        duplicateValue = studentId;
+      } else if (existingApplication.phone === phone) {
+        duplicateField = 'Phone number';
+        duplicateValue = phone;
+      } else if (existingApplication.name === name) {
+        duplicateField = 'Full name';
+        duplicateValue = name;
+      }
+      
+      return res.status(409).json({
+        success: false,
+        error: `You have already submitted an application with this ${duplicateField}: "${duplicateValue}". Duplicate applications are not allowed.`
+      });
+    }
+
+    // No duplicate found — create new application
     const application = await Application.create({
       name,
       email,
@@ -39,9 +76,12 @@ exports.submitApplication = async (req, res, next) => {
     });
 
   } catch (err) {
-    // Duplicate key — same email + studentId already applied
+    // Duplicate key — MongoDB unique index (backup safety)
     if (err.code === 11000) {
-      return next(new ErrorResponse('You have already submitted an application.', 409));
+      return res.status(409).json({
+        success: false,
+        error: 'You have already submitted an application. Duplicate applications are not allowed.'
+      });
     }
 
     // Mongoose validation errors — return all field messages as an array
@@ -57,7 +97,7 @@ exports.submitApplication = async (req, res, next) => {
   }
 };
 
-// @desc    Get all applications  (admin only — used by Nour)
+// @desc    Get all applications (admin only — used by Nour)
 // @route   GET /api/v1/applications
 // @access  Admin
 exports.getAllApplications = async (req, res, next) => {
@@ -73,7 +113,7 @@ exports.getAllApplications = async (req, res, next) => {
   }
 };
 
-// @desc    Update application status  (admin only — used by Nour)
+// @desc    Update application status (admin only — used by Nour)
 // @route   PATCH /api/v1/applications/:id
 // @access  Admin
 exports.updateApplicationStatus = async (req, res, next) => {
@@ -100,7 +140,7 @@ exports.updateApplicationStatus = async (req, res, next) => {
   }
 };
 
-// @desc    Delete an application  (admin only — used by Nour)
+// @desc    Delete an application (admin only — used by Nour)
 // @route   DELETE /api/v1/applications/:id
 // @access  Admin
 exports.deleteApplication = async (req, res, next) => {

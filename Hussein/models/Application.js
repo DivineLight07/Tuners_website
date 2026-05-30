@@ -65,7 +65,13 @@ const ApplicationSchema = new mongoose.Schema({
   }
 });
 
-// Compound unique index — one application per email+studentId combination
+// Create separate indexes for faster duplicate checking
+ApplicationSchema.index({ email: 1 });
+ApplicationSchema.index({ studentId: 1 });
+ApplicationSchema.index({ phone: 1 });
+ApplicationSchema.index({ name: 1 });
+
+// Compound unique index — one application per email+studentId combination (backup safety)
 ApplicationSchema.index({ email: 1, studentId: 1 }, { unique: true });
 
 module.exports = mongoose.model('Application', ApplicationSchema);
