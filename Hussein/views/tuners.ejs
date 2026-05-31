@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <title>MIU Tuners Club - Apply</title>
 
-  
-    <link rel="stylesheet" href="tuners.css">
+   
+    <link rel="stylesheet" href="/tuners.css">  <!-- CHANGED: added / before tuners.css -->
 </head>
 
 <body>
 
 
 <nav id="navbar">
-  <img src="Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/>
+  <img src="/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/>  <!-- CHANGED: added / before Tuners-Logo.png -->
   <ul>
     <li><a href="../Farah/home_page.html">Home</a></li>
     <li><a href="../Nour/About_us.html">About Us</a></li>
@@ -30,6 +30,7 @@
 
 <div class="container">
 
+  
     <div class="card">
         <h1>MIU Tuners Club Application</h1>
         <p>Fill out the form below to apply for membership.</p>
@@ -65,6 +66,7 @@
                 <option value="musician">Musician committee</option>
             </select><br><br>
 
+        
             <div id="musician_fields" style="display: none;">
                 <label for="instrument">What instrument do you play?</label><br>
                 <select id="instrument">
@@ -127,10 +129,8 @@
     <div class="footer-content">
         <div class="footer-section">
             <h3>📍 Contact Us</h3>
-      
             <p>🏫Misr International University (MIU)</p>
             <p>📧 <strong>Email:</strong> tuners@miuegypt.edu.eg</p>
-        
         </div>
         <div class="footer-section">
             <h3>📱 Follow Us</h3>
@@ -157,10 +157,10 @@
 </footer>
 
 
-<script src="tuners.js"></script>
+<script src="/tuners.js"></script>  <!-- CHANGED: added / before tuners.js -->
 
 <script>
-    
+    // Name validation - only letters and spaces
     function validateName(input) {
         const nameError = document.getElementById('nameError');
         const regex = /^[A-Za-z\s]*$/;
@@ -173,6 +173,7 @@
         }
     }
 
+ 
     function formatStudentId(input) {
         let val = input.value.replace(/[^0-9]/g, '');
         if (val.length > 2) {
@@ -191,7 +192,7 @@
         }
     }
 
-
+  
     function validatePhone(input) {
         let val = input.value.replace(/[^0-9]/g, '');
         if (val.length > 11) val = val.slice(0, 11);
@@ -208,19 +209,18 @@
         }
     }
 
-
-function validateEmail(input) {
-    const emailError = document.getElementById('emailError');
-    const value = input.value.trim();
-    
-    if (value && !value.toLowerCase().endsWith('@miuegypt.edu.eg')) {
-        emailError.style.display = 'inline';
-        input.style.borderColor = 'red';
-    } else {
-        emailError.style.display = 'none';
-        input.style.borderColor = '';
+  
+    function validateEmail(input) {
+        const emailError = document.getElementById('emailError');
+        const value = input.value.trim();
+        if (value && !value.toLowerCase().endsWith('@miuegypt.edu.eg')) {
+            emailError.style.display = 'inline';
+            input.style.borderColor = 'red';
+        } else {
+            emailError.style.display = 'none';
+            input.style.borderColor = '';
+        }
     }
-}
 </script>
 
 </body>

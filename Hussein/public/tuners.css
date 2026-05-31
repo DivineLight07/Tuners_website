@@ -89,7 +89,7 @@ body::before {
   color: #fff;
 }
 
-/* MAIN CONTAINER */
+
 .container {
   display: grid;
   grid-auto-flow: row;
@@ -98,7 +98,7 @@ body::before {
   gap: 25px;
 }
 
-/* GLASS CARDS */
+
 .card {
   width: 70%;
   max-width: 700px;
@@ -114,12 +114,12 @@ body::before {
   transition: 0.3s;
 }
 
-/* Hover effect (feels premium) */
+
 .card:hover {
   transform: translateY(-5px);
 }
 
-/* TITLES */
+
 .card h1,
 .card h2 {
   text-align: center;
@@ -127,14 +127,14 @@ body::before {
   margin-bottom: 15px;
 }
 
-/* TEXT */
+
 .card p {
   line-height: 1.6;
   margin-bottom: 10px;
   color: #fff;
 }
 
-/* FORM STYLING */
+
 form label {
   font-weight: 600;
 }
@@ -149,14 +149,14 @@ input, select, textarea {
   transition: 0.2s;
 }
 
-/* Input focus glow */
+
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: #133785;
   box-shadow: 0 0 5px rgba(19,55,133,0.5);
 }
 
-/* BUTTONS */
+
 button {
   padding: 10px 15px;
   border: none;
@@ -183,7 +183,6 @@ button[type="reset"]:hover {
   background: #aaa;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
   .card {
     width: 90%;

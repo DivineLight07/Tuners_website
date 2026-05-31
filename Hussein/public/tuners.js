@@ -54,23 +54,20 @@ document.addEventListener('DOMContentLoaded', function() {
             const email  = document.getElementById('email').value.trim();
             const phone  = document.getElementById('phone').value.trim();
 
-            // ── Client-side validation (improved) ──────────────────────────
-            
-            // Name validation: letters and spaces only
             const nameRegex = /^[A-Za-z\s]{3,}$/;
             if (!nameRegex.test(name)) {
                 alert('Please enter a valid full name (letters and spaces only, at least 3 characters).');
                 return;
             }
 
-            // Student ID validation: format XX/XXXXX
+           
             const studentIdRegex = /^\d{2}\/\d{4,5}$/;
             if (!studentIdRegex.test(studentId)) {
                 alert('Student ID must be in format: XX/XXXXX (e.g., 24/12345)');
                 return;
             }
 
-            // Phone validation: exactly 11 digits starting with 01
+            
             const phoneRegex = /^01[0-9]{9}$/;
             if (!phoneRegex.test(phone)) {
                 alert('Phone number must be exactly 11 digits starting with 01 (e.g., 01234567890)');
@@ -93,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
 
-            // Email validation - must end with @miu.edu.eg
+          
 if (!email) {
     alert('Please enter your email.');
     return;
@@ -103,14 +100,14 @@ if (!email.toLowerCase().endsWith('@miuegypt.edu.eg')) {
     return;
 }
 
-            // ── Clear previous error banners / field errors ──────────────────
+           
             clearFormErrors();
 
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting…';
 
-            // ── POST to backend ──────────────────────────────────────────────
+            
             try {
                 const response = await fetch('/api/v1/applications', {
                     method: 'POST',
@@ -125,7 +122,7 @@ if (!email.toLowerCase().endsWith('@miuegypt.edu.eg')) {
                 const data = await response.json();
 
                 if (response.status === 201) {
-                    // ✅ Success
+                    
                     showBanner('success', '✅ Application submitted successfully! The admin will review it soon.');
                     form.reset();
                     if (musicianDiv) musicianDiv.style.display = 'none';
@@ -133,7 +130,7 @@ if (!email.toLowerCase().endsWith('@miuegypt.edu.eg')) {
                     submitBtn.textContent = 'Application Sent';
 
                 } else if (response.status === 400) {
-                    // ❌ Validation errors
+                   
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Submit Application';
                     if (data.errors && Array.isArray(data.errors)) {
@@ -143,7 +140,7 @@ if (!email.toLowerCase().endsWith('@miuegypt.edu.eg')) {
                     }
 
                 } else if (response.status === 409) {
-                    // ❌ Duplicate application
+               
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Submit Application';
                     showBanner('error', '⚠️ You have already submitted an application.');
@@ -189,7 +186,6 @@ if (!email.toLowerCase().endsWith('@miuegypt.edu.eg')) {
 
 });
 
-// ── Banner helpers ────────────────────────────────────────────────────────────
 
 function showBanner(type, message) {
     clearFormErrors();
@@ -257,7 +253,6 @@ function getAuthHeaders() {
     return token ? { 'Authorization': 'Bearer ' + token } : {};
 }
 
-// ── Auto-hide navbar on scroll ────────────────────────────────────────────────
 
 (function() {
     let lastScrollTop = 0;
@@ -274,7 +269,7 @@ function getAuthHeaders() {
     }, false);
 })();
 
-// ── Navbar auth state ─────────────────────────────────────────────────────────
+
 
 function updateNavAuth() {
     const token    = sessionStorage.getItem('token');

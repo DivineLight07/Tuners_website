@@ -9,10 +9,9 @@ const {
   deleteApplication
 } = require('../controllers/applicationController');
 
-// Import auth middleware (created by Yasser)
+
 const { protect, authorize } = require('../middleware/auth');
 
-// ─── Validation Rules ──────────────────────────────────────────────────────────
 
 const validateApplication = [
   body('name')
@@ -44,7 +43,7 @@ const validateApplication = [
     .notEmpty().withMessage('Major is required')
 ];
 
-// ─── runValidation middleware ──────────────────────────────────────────────────
+
 
 const runValidation = (req, res, next) => {
   const errors = validationResult(req);
@@ -57,12 +56,12 @@ const runValidation = (req, res, next) => {
   next();
 };
 
-// ─── Routes ───────────────────────────────────────────────────────────────────
 
-// Public — anyone can submit an application
+
+
 router.post('/', validateApplication, runValidation, submitApplication);
 
-// Admin only — Nour uses these
+
 router.get('/',     protect, authorize('admin'), getAllApplications);
 router.patch('/:id', protect, authorize('admin'), updateApplicationStatus);
 router.delete('/:id', protect, authorize('admin'), deleteApplication);
