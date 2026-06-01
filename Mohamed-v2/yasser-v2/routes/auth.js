@@ -1,23 +1,25 @@
-const express  = require('express');
-const passport = require('passport');
-const router   = express.Router();
-const auth     = require('../controllers/authController');
+const express     = require('express');
+const router      = express.Router();
+const { body }    = require('express-validator');
+const { register, login, logout, getMe } = require('../controllers/authController');
+const { protect } = require('../middleware/auth');
 
-// ─── Login ────────────────────────────────────────────────────────────────────
-router.get('/login',  auth.getLogin);
-router.post('/login', auth.postLogin);
+const validateRegister = [
+  body('name').notEmpty().withMessage('Name is required'),
+  body('email').isEmail().withMessage('Please provide a valid email'),
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+  body('universityId').notEmpty().withMessage('University ID is required')
+];
 
-// ─── Logout ───────────────────────────────────────────────────────────────────
-router.get('/logout', auth.logout);
+const validateLogin = [
+  body('email').isEmail().withMessage('Please provide a valid email'),
+  body('password').notEmpty().withMessage('Password is required')
+];
 
-// ─── Google OAuth ─────────────────────────────────────────────────────────────
-router.get('/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
-
-router.get('/google/callback',
-  passport.authenticate('google', { failureRedirect: '/auth/login?error=google_failed' }),
-  (req, res) => res.redirect('/dashboard')
-);
+router.post('/register', validateRegister, register);
+router.post('/login',    validateLogin,    login);
+router.get('/logout',                      logout);
+router.get('/me',        protect,          getMe);
 
 module.exports = router;
+

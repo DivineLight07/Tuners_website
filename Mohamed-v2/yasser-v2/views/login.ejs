@@ -17,14 +17,8 @@
         <h2>Welcome Back</h2>
         <p>Sign in to your Tuners account</p>
 
-        <% if (error === 'invalid') { %>
-          <div class="server-err">Incorrect email or password.</div>
-        <% } else if (error === 'google') { %>
-          <div class="server-err">This account uses Google Sign-In. Use the button below.</div>
-        <% } else if (error === 'google_failed') { %>
-          <div class="server-err">Google sign-in failed. Please try again.</div>
-        <% } else if (error === 'server') { %>
-          <div class="server-err">Something went wrong. Please try again.</div>
+        <% if (error) { %>
+          <div class="server-err"><%= error %></div>
         <% } %>
 
         <form action="/auth/login" method="POST" id="loginForm" novalidate>
@@ -33,7 +27,7 @@
           <input type="email" name="email" id="login-email"
                  placeholder="you@miuegypt.edu.eg"
                  autocomplete="email" required/>
-          <span class="err" id="login-email-err">Enter a valid email address.</span>
+          <span class="err" id="login-email-err">Must be a @miuegypt.edu.eg email address.</span>
 
           <label>Password</label>
           <input type="password" name="password" id="login-pass"
@@ -56,7 +50,6 @@
           Continue with Google
         </a>
 
-        <!-- No signup — members are created by admin after applying -->
         <p class="switch-link">Not a member yet? <a href="/apply">Apply to join</a></p>
 
       </div>
@@ -68,3 +61,4 @@
   <script src="/js/login.js"></script>
 </body>
 </html>
+

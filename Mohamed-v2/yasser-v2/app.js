@@ -1,70 +1,64 @@
 require('dotenv').config();
-const express  = require('express');
-const session  = require('express-session');
-const mongoose = require('mongoose');
-const passport = require('passport');
-
-require('./controllers/passportConfig');
+const express      = require('express');
+const cors         = require('cors');
+const helmet       = require('helmet');
+const session      = require('express-session');
+require('./config/passport');
+const passport     = require('passport');
+const connectDB    = require('./config/db');
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
-// ─── Database ─────────────────────────────────────────────────────────────────
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('✅ MongoDB connected');
-    app.listen(process.env.PORT || 3000, () =>
-      console.log(`🚀 Server running on http://localhost:${process.env.PORT || 3000}`)
-    );
-  })
-  .catch(err => console.error('❌ DB connection error:', err));
+connectDB();
 
-// ─── Middleware ────────────────────────────────────────────────────────────────
-app.use(express.urlencoded({ extended: true }));
+app.use(helmet({ contentSecurityPolicy: false })); 
+app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
-
+app.use(express.urlencoded({ extended: true }));
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'fallback_secret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false,
-  cookie: { maxAge: 1000 * 60 * 60 * 24 }
+  saveUninitialized: false
 }));
-
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(express.static('public'));
+app.use('/uploads', express.static('uploads'));
 
-// ─── View Engine ──────────────────────────────────────────────────────────────
 app.set('view engine', 'ejs');
 
-// ─── Routes ───────────────────────────────────────────────────────────────────
-// NOTE: Only Yasser's routes are here.
-// Each teammate adds their own route file when they're ready.
-// Example — Hussein adds:  app.use('/applications', require('./routes/applications'));
-// Example — Nour adds:     app.use('/admin',        require('./routes/admin'));
-// Example — Farah adds:    app.use('/dashboard',    require('./routes/dashboard'));
-// Example — Youssef adds:  app.use('/courses',      require('./routes/courses'));
-
-app.use('/auth', require('./routes/auth'));
-
-// ─── Home (temporary until the team merges) ───────────────────────────────────
-app.get('/', (req, res) => {
-  res.render('home', { user: req.user || null });
+app.get('/api/v1/health', (req, res) => {
+  res.status(200).json({ status: 'ok', message: 'Tuners API is running' });
 });
 
-// ─── Dashboard redirect based on role ─────────────────────────────────────────
-const { isLoggedIn } = require('./middleware/authMiddleware');
-app.get('/dashboard', isLoggedIn, (req, res) => {
-  if (req.user.role === 'admin') return res.render('dashboard-admin', { user: req.user });
-  res.render('dashboard-member', { user: req.user });
+app.use('/api/v1/auth',   require('./routes/auth'));
+app.use('/auth/google',   require('./routes/googleAuth'));
+
+app.get('/', (req, res) => res.render('home', { user: null }));
+
+app.get('/login', (req, res) => {
+  const errorMessages = {
+    google_failed: 'Google sign-in failed. Only approved MIU accounts are allowed.',
+    pending:       'Your account is pending admin approval. Please wait.',
+    banned:        'Your account has been banned. Contact an admin.'
+  };
+  const error = req.query.error ? (errorMessages[req.query.error] || req.query.error) : null;
+  res.render('login', { error, user: null });
 });
 
-// ─── 404 ──────────────────────────────────────────────────────────────────────
+app.get('/dashboard', (req, res) => res.render('dashboard', {}));
+app.get('/admin',     (req, res) => res.render('admin',     { user: {} }));
+app.get('/member',    (req, res) => res.render('member',    { user: {} }));
+
 app.use((req, res) => {
-  res.status(404).render('404', { user: req.user || null });
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ success: false, error: 'Route not found' });
+  }
+  res.status(404).render('404', { user: null });
 });
 
-// ─── Global Error Handler ─────────────────────────────────────────────────────
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).render('error', { user: req.user || null, err });
-});
+app.use(errorHandler);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+

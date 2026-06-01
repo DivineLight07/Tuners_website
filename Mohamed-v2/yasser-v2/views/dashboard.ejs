@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TUNERS — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+  <%- include('./partials/nav.ejs') %>
+
+  <div class="pages-wrap">
+    <div class="page active">
+      <div class="card" id="dashboard-card">
+        <p>Loading...</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="Msg"></div>
+  <script src="/js/utils.js"></script>
+  <script src="/js/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Redirect to login if not logged in
+      if (!isLoggedIn()) {
+        window.location.href = '/login';
+        return;
+      }
+
+      try {
+        const data = await apiFetch('/api/v1/auth/me');
+        const user = data.user;
+        const card = document.getElementById('dashboard-card');
+
+        if (user.role === 'admin') {
+          card.innerHTML = `
+            <span class="badge admin">Admin</span>
+            <h2>Admin Dashboard</h2>
+            ${user.avatar ? `<img src="${user.avatar}" class="avatar" alt="avatar"/>` : ''}
+            <p>Welcome back, <strong>${user.name}</strong>.</p>
+            <p class="user-email">${user.email}</p>
+            <a href="#" class="btn outline" onclick="handleLogout()">Logout</a>
+          `;
+        } else {
+          card.innerHTML = `
+            <span class="badge member">Member</span>
+            <h2>Member Area</h2>
+            ${user.avatar ? `<img src="${user.avatar}" class="avatar" alt="avatar"/>` : ''}
+            <p>Welcome, <strong>${user.name}</strong>.</p>
+            <p class="user-email">${user.email}</p>
+            <a href="#" class="btn outline" onclick="handleLogout()">Logout</a>
+          `;
+        }
+      } catch (err) {
+        // Token invalid or expired — redirect to login
+        clearAuth();
+        window.location.href = '/login';
+      }
+    });
+  </script>
+</body>
+</html>
