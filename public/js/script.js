@@ -60,9 +60,9 @@ function handleLogin() {
   localStorage.setItem('loggedInUser', JSON.stringify(user));
   setTimeout(() => {
       if (user.role === 'admin') {
-          window.location.href = '../Nour/Admin_Dashboard.html';
+          window.location.href = '../Nour/Admin_Dashboard.ejs';
       } else {
-          window.location.href = '../Farah/member_dashboard.html';
+          window.location.href = '../Farah/member_dashboard.ejs';
       }
   }, 1500);
 }
@@ -77,7 +77,7 @@ function logout() {
       globalLogout();
   } else {
       localStorage.removeItem('loggedInUser');
-      window.location.href = '../Mohamed/index.html';
+      window.location.href = '../Mohamed/index.ejs';
   }
 }
 
@@ -105,7 +105,7 @@ function updateNavAuth() {
     const logoutBtn = document.getElementById('nav-logout-btn');
     const dashboardLi = document.getElementById('nav-dashboard');
     const dashboardLink = document.getElementById('nav-dashboard-link');
-    const applyLink = document.querySelector('nav ul li a[href*="tuners.html"]');
+    const applyLink = document.querySelector('nav ul li a[href*="tuners.ejs"]');
 
     if (userJson) {
         const user = JSON.parse(userJson);
@@ -115,9 +115,9 @@ function updateNavAuth() {
         if (dashboardLi && dashboardLink) {
             dashboardLi.style.display = 'inline-block';
             if (user.role === 'admin') {
-                dashboardLink.href = '../Nour/Admin_Dashboard.html';
+                dashboardLink.href = '../Nour/Admin_Dashboard.ejs';
             } else {
-                dashboardLink.href = '../Farah/member_dashboard.html';
+                dashboardLink.href = '../Farah/member_dashboard.ejs';
             }
         }
     } else {
@@ -132,7 +132,7 @@ function updateNavAuth() {
 
 function globalLogout() {
     localStorage.removeItem('loggedInUser');
-    window.location.href = '../Mohamed/index.html';
+    window.location.href = '../Mohamed/index.ejs';
 }
 
 document.addEventListener('DOMContentLoaded', updateNavAuth);
