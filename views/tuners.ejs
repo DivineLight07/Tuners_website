@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <title>MIU Tuners Club - Apply</title>
 
-  
-    <link rel="stylesheet" href="tuners.css">
+   
+    <link rel="stylesheet" href="/tuners.css">  <!-- CHANGED: added / before tuners.css -->
 </head>
 
 <body>
 
 
 <nav id="navbar">
-  <img src="Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/>
+  <img src="/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/>  <!-- CHANGED: added / before Tuners-Logo.png -->
   <ul>
-    <li><a href="../Farah/home_page.ejs">Home</a></li>
-    <li><a href="../Nour/About_us.ejs">About Us</a></li>
-    <li><a href="../Hussein/tuners.ejs">Apply</a></li>
+    <li><a href="../Farah/home_page.html">Home</a></li>
+    <li><a href="../Nour/About_us.html">About Us</a></li>
+    <li><a href="../Hussein/tuners.html">Apply</a></li>
     <li><a href="#site-footer">Contact</a></li>
-    <li><a href="../Youssef/Courses.ejs">Courses</a></li>
+    <li><a href="../Youssef/Courses.html">Courses</a></li>
     <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
     </ul>
     <div class="nav-auth">
-        <a href="../Mohamed/index.ejs" id="nav-login-btn">Login</a>
+        <a href="../Mohamed/index.html" id="nav-login-btn">Login</a>
         <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
     </div>
 </nav>
@@ -30,6 +30,7 @@
 
 <div class="container">
 
+  
     <div class="card">
         <h1>MIU Tuners Club Application</h1>
         <p>Fill out the form below to apply for membership.</p>
@@ -65,6 +66,7 @@
                 <option value="musician">Musician committee</option>
             </select><br><br>
 
+        
             <div id="musician_fields" style="display: none;">
                 <label for="instrument">What instrument do you play?</label><br>
                 <select id="instrument">
@@ -125,35 +127,10 @@
 
 <footer class="footer" id="site-footer">
     <div class="footer-content">
-<<<<<<<< HEAD:views/tuners.ejs
-      <div class="footer-section">
-        <h3>Contact Us</h3>
-      </div>
-      <div class="footer-section">
-        <h3>Follow Us</h3>
-        <ul>
-          <li><a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></li>
-          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
-          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h3>Quick Links</h3>
-        <ul>
-          <li><a href="../Farah/home_page.ejs">Home</a></li>
-          <li><a href="../Nour/About_us.ejs">About Us</a></li>
-          <li><a href="">Events</a></li>
-          <li><a href="../Youssef/Courses.ejs">Courses</a></li>
-          <li><a href="../Hussein/tuners.ejs">Apply</a></li>
-        </ul>
-      </div>
-========
         <div class="footer-section">
             <h3>📍 Contact Us</h3>
-      
             <p>🏫Misr International University (MIU)</p>
             <p>📧 <strong>Email:</strong> tuners@miuegypt.edu.eg</p>
-        
         </div>
         <div class="footer-section">
             <h3>📱 Follow Us</h3>
@@ -173,7 +150,6 @@
                 <li><a href="../Hussein/tuners.html">Apply</a></li>
             </ul>
         </div>
->>>>>>>> a64d1205d87fb3dbc032426489b2a8e19638d958:public/images/public/tuners.html
     </div>
     <div class="footer-bottom">
         <p>&copy; MIU Tuners Club. All rights reserved.</p>
@@ -181,10 +157,10 @@
 </footer>
 
 
-<script src="tuners.js"></script>
+<script src="/tuners.js"></script>  <!-- CHANGED: added / before tuners.js -->
 
 <script>
-    
+    // Name validation - only letters and spaces
     function validateName(input) {
         const nameError = document.getElementById('nameError');
         const regex = /^[A-Za-z\s]*$/;
@@ -197,6 +173,7 @@
         }
     }
 
+ 
     function formatStudentId(input) {
         let val = input.value.replace(/[^0-9]/g, '');
         if (val.length > 2) {
@@ -215,7 +192,7 @@
         }
     }
 
-
+  
     function validatePhone(input) {
         let val = input.value.replace(/[^0-9]/g, '');
         if (val.length > 11) val = val.slice(0, 11);
@@ -232,19 +209,18 @@
         }
     }
 
-
-function validateEmail(input) {
-    const emailError = document.getElementById('emailError');
-    const value = input.value.trim();
-    
-    if (value && !value.toLowerCase().endsWith('@miuegypt.edu.eg')) {
-        emailError.style.display = 'inline';
-        input.style.borderColor = 'red';
-    } else {
-        emailError.style.display = 'none';
-        input.style.borderColor = '';
+  
+    function validateEmail(input) {
+        const emailError = document.getElementById('emailError');
+        const value = input.value.trim();
+        if (value && !value.toLowerCase().endsWith('@miuegypt.edu.eg')) {
+            emailError.style.display = 'inline';
+            input.style.borderColor = 'red';
+        } else {
+            emailError.style.display = 'none';
+            input.style.borderColor = '';
+        }
     }
-}
 </script>
 
 </body>
