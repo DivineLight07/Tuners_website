@@ -19,6 +19,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const applications = require('./routes/applications');
 app.use('/api/v1/applications', applications);
+const authRoutes = require('./routes/auth');
+app.use('/api/v1/auth', authRoutes);
 
 app.get('/', (req, res) => {
   res.render('Apply_Form');

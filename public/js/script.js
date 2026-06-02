@@ -3,9 +3,9 @@ const DEFAULT_USERS = [
   { email: 'member@miuegypt.edu.eg', password: 'Member123!', role: 'member', name: 'Farah', universityId: 'MIU123', badges: ['🎤 Vocal Virtuoso'] }
 ];
 
-// Initialize users in localStorage if they don't exist
+// Keep default users for local admin UI only (fallback)
 if (!localStorage.getItem('users')) {
-    localStorage.setItem('users', JSON.stringify(DEFAULT_USERS));
+  localStorage.setItem('users', JSON.stringify(DEFAULT_USERS));
 }
 
 function showPage(id) {
@@ -51,20 +51,35 @@ function handleLogin() {
   if (!pass)                 { setErr('login-pass-err',  true); valid = false; }
   if (!valid) return;
  
-  const users = JSON.parse(localStorage.getItem('users'));
-  const user = users.find(u => u.email === email && u.password === pass);
- 
-  if (!user) { setErr('login-wrong-err', true); return; }
- 
-  showMsg('Login successful! Redirecting…');
-  localStorage.setItem('loggedInUser', JSON.stringify(user));
-  setTimeout(() => {
-      if (user.role === 'admin') {
-          window.location.href = '/admin';
-      } else {
-          window.location.href = '/member';
-      }
-  }, 1500);
+  // Call backend auth API
+  fetch('/api/v1/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password: pass })
+  })
+  .then(async res => {
+    const body = await res.json();
+    if (!res.ok) {
+      const msg = body.error || (body.errors && body.errors.map(e=>e.message).join(', ')) || 'Login failed';
+      setErr('login-wrong-err', true);
+      return Promise.reject(msg);
+    }
+    return body;
+  })
+  .then(data => {
+    showMsg('Login successful! Redirecting…');
+    // Persist token and user in sessionStorage
+    if (data.token) sessionStorage.setItem('token', data.token);
+    if (data.user)  sessionStorage.setItem('loggedInUser', JSON.stringify(data.user));
+    setTimeout(() => {
+      const user = data.user || JSON.parse(sessionStorage.getItem('loggedInUser') || '{}');
+      if (user.role === 'admin') window.location.href = '/admin';
+      else window.location.href = '/member';
+    }, 800);
+  })
+  .catch(err => {
+    console.warn('Login error', err);
+  });
 }
  
 function logout() {
@@ -76,7 +91,8 @@ function logout() {
   if (typeof globalLogout === 'function') {
       globalLogout();
   } else {
-    localStorage.removeItem('loggedInUser');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('loggedInUser');
     window.location.href = '/login';
   }
 }
@@ -99,8 +115,13 @@ function logout() {
 })();
 
 // Global Authentication Logic
+function getAuthHeaders() {
+  const token = sessionStorage.getItem('token');
+  return token ? { Authorization: 'Bearer ' + token } : {};
+}
+
 function updateNavAuth() {
-    const userJson = localStorage.getItem('loggedInUser');
+  const userJson = sessionStorage.getItem('loggedInUser');
     const loginBtn = document.getElementById('nav-login-btn');
     const logoutBtn = document.getElementById('nav-logout-btn');
     const dashboardLi = document.getElementById('nav-dashboard');
@@ -108,7 +129,7 @@ function updateNavAuth() {
     const applyLink = document.querySelector('nav ul li a[href*="/apply"]');
 
     if (userJson) {
-        const user = JSON.parse(userJson);
+      const user = JSON.parse(userJson);
         if (loginBtn) loginBtn.style.display = 'none';
         if (logoutBtn) logoutBtn.style.display = 'inline-block';
         if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'none';
@@ -121,12 +142,12 @@ function updateNavAuth() {
                 }
             }
     } else {
-        if (loginBtn) loginBtn.style.display = 'inline-block';
-        if (logoutBtn) logoutBtn.style.display = 'none';
-        if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'inline-block';
-        if (dashboardLi) {
-            dashboardLi.style.display = 'none';
-        }
+      if (loginBtn) loginBtn.style.display = 'inline-block';
+      if (logoutBtn) logoutBtn.style.display = 'none';
+      if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'inline-block';
+      if (dashboardLi) {
+        dashboardLi.style.display = 'none';
+      }
     }
 }
 

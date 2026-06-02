@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 
+const { runValidation } = require('../middleware/validation');
+
 const {
   submitApplication,
   getAllApplications,
@@ -45,16 +47,7 @@ const validateApplication = [
 
 
 
-const runValidation = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      success: false,
-      errors: errors.array().map(e => ({ field: e.path, message: e.msg }))
-    });
-  }
-  next();
-};
+// Using shared `runValidation` from middleware/validation.js
 
 
 
