@@ -1,0 +1,41 @@
+const mongoose = require('mongoose');
+const bcrypt   = require('bcryptjs');
+const jwt      = require('jsonwebtoken');
+
+const userSchema = new mongoose.Schema({
+  name:         { type: String, required: true, trim: true },
+  email:        { type: String, required: true, unique: true, lowercase: true, trim: true },
+  password:     { type: String, default: null, select: false },
+  googleId:     { type: String, default: null },
+  role:         { type: String, enum: ['member', 'admin'], default: 'member' },
+  status:       { type: String, enum: ['pending', 'approved', 'rejected', 'banned'], default: 'pending' },
+  universityId: { type: String, default: '' },
+  avatar:       { type: String, default: null },
+  badges:       { type: [String], default: [] }
+}, { timestamps: true });
+
+// Hash password before saving
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password') || !this.password) return next();
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+// Compare entered password with hashed one
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  if (!this.password) return false;
+  return bcrypt.compare(enteredPassword, this.password);
+};
+
+// Generate signed JWT
+userSchema.methods.getSignedJwt = function () {
+  return jwt.sign(
+    { id: this._id, role: this.role },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRE || '7d' }
+  );
+};
+
+module.exports = mongoose.model('User', userSchema);
+
