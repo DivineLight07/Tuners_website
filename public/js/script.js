@@ -60,9 +60,9 @@ function handleLogin() {
   localStorage.setItem('loggedInUser', JSON.stringify(user));
   setTimeout(() => {
       if (user.role === 'admin') {
-          window.location.href = '../Nour/Admin_Dashboard.ejs';
+          window.location.href = '/admin';
       } else {
-          window.location.href = '../Farah/member_dashboard.ejs';
+          window.location.href = '/member';
       }
   }, 1500);
 }
@@ -76,8 +76,8 @@ function logout() {
   if (typeof globalLogout === 'function') {
       globalLogout();
   } else {
-      localStorage.removeItem('loggedInUser');
-      window.location.href = '../Mohamed/index.ejs';
+    localStorage.removeItem('loggedInUser');
+    window.location.href = '/login';
   }
 }
 
@@ -105,21 +105,21 @@ function updateNavAuth() {
     const logoutBtn = document.getElementById('nav-logout-btn');
     const dashboardLi = document.getElementById('nav-dashboard');
     const dashboardLink = document.getElementById('nav-dashboard-link');
-    const applyLink = document.querySelector('nav ul li a[href*="tuners.ejs"]');
+    const applyLink = document.querySelector('nav ul li a[href*="/apply"]');
 
     if (userJson) {
         const user = JSON.parse(userJson);
         if (loginBtn) loginBtn.style.display = 'none';
         if (logoutBtn) logoutBtn.style.display = 'inline-block';
         if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'none';
-        if (dashboardLi && dashboardLink) {
-            dashboardLi.style.display = 'inline-block';
-            if (user.role === 'admin') {
-                dashboardLink.href = '../Nour/Admin_Dashboard.ejs';
-            } else {
-                dashboardLink.href = '../Farah/member_dashboard.ejs';
+          if (dashboardLi && dashboardLink) {
+                dashboardLi.style.display = 'inline-block';
+                if (user.role === 'admin') {
+                    dashboardLink.href = '/admin';
+                } else {
+                    dashboardLink.href = '/member';
+                }
             }
-        }
     } else {
         if (loginBtn) loginBtn.style.display = 'inline-block';
         if (logoutBtn) logoutBtn.style.display = 'none';
@@ -132,7 +132,7 @@ function updateNavAuth() {
 
 function globalLogout() {
     localStorage.removeItem('loggedInUser');
-    window.location.href = '../Mohamed/index.ejs';
+    window.location.href = '/login';
 }
 
 document.addEventListener('DOMContentLoaded', updateNavAuth);

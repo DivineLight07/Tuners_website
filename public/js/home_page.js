@@ -76,7 +76,7 @@ function updateNavAuth() {
     const logoutBtn = document.getElementById('nav-logout-btn');
     const dashboardLi = document.getElementById('nav-dashboard');
     const dashboardLink = document.getElementById('nav-dashboard-link');
-    const applyLink = document.querySelector('nav ul li a[href*="tuners.ejs"]');
+    const applyLink = document.querySelector('nav ul li a[href*="/apply"]');
 
     if (userJson) {
         const user = JSON.parse(userJson);
@@ -86,10 +86,10 @@ function updateNavAuth() {
         if (dashboardLi && dashboardLink) {
             dashboardLi.style.display = 'inline-block';
             if (user.role === 'admin') {
-                dashboardLink.href = '../Nour/Admin_Dashboard.ejs';
-            } else {
-                dashboardLink.href = '../Farah/member_dashboard.ejs';
-            }
+                dashboardLink.href = '/admin';
+              } else {
+                dashboardLink.href = '/member';
+              }
         }
     } else {
         if (loginBtn) loginBtn.style.display = 'inline-block';
@@ -103,7 +103,7 @@ function updateNavAuth() {
 
 function globalLogout() {
     localStorage.removeItem('loggedInUser');
-    window.location.href = '../Mohamed/index.ejs';
+    window.location.href = '/login';
 }
 
 document.addEventListener('DOMContentLoaded', updateNavAuth);

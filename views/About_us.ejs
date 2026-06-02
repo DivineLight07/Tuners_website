@@ -3,22 +3,22 @@
 
 <head>
   <title>About Us</title>
-  <link rel="stylesheet" href="About_us.css" />
+  <link rel="stylesheet" href="/css/About_us.css" />
 </head>
 
-<body>
+<body style="background-image: url('/images/IMG_4362.png'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
   <nav id="navbar">
-    <img src="Tuners-Logo.png" alt="Tuners Logo" id="nav-logo" />
+    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo" /></a>
     <ul>
-      <li><a href="../Farah/home_page.ejs">Home</a></li>
-      <li><a href="../Nour/About_us.ejs">About Us</a></li>
-      <li><a href="../Hussein/tuners.ejs">Apply</a></li>
+      <li><a href="/home">Home</a></li>
+      <li><a href="/about">About Us</a></li>
+      <li><a href="/apply">Apply</a></li>
       <li><a href="#site-footer">Contact</a></li>
-      <li><a href="../Youssef/Courses.ejs">Courses</a></li>
+      <li><a href="/courses">Courses</a></li>
       <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
     </ul>
     <div class="nav-auth">
-      <a href="../Mohamed/index.ejs" id="nav-login-btn">Login</a>
+      <a href="/login" id="nav-login-btn">Login</a>
       <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
     </div>
   </nav>
@@ -61,27 +61,27 @@
       <h2>👥 Meet the Board</h2>
       <div class="board-members">
         <div class="member-card">
-          <img src="Screenshot 2026-04-19 231028.png" alt="Member 1" class="member-photo">
+          <img src="/images/Screenshot 2026-04-19 231028.png" alt="No Photo Available" onerror="this.onerror=null;this.src='/images/Default-pfp.png';" class="member-photo">
           <h3>Johny</h3>
           <p class="position">President</p>
         </div>
         <div class="member-card">
-          <img src="DSC03068.jpg" alt="Member 2" class="member-photo">
+          <img src="/images/DSC03068.jpg" alt="No Photo Available" onerror="this.onerror=null;this.src='/images/Default-pfp.png';" class="member-photo">
           <h3>Rana Elkelany</h3>
           <p class="position">Vice President</p>
         </div>
         <div class="member-card">
-          <img src="Screenshot 2026-05-06 224613.png" alt="Member 3" class="member-photo">
+          <img src="/images/Screenshot 2026-05-06 224613.png" alt="No Photo Available" onerror="this.onerror=null;this.src='/images/Default-pfp.png';" class="member-photo">
           <h3>Omar Hussein</h3>
           <p class="position">HR</p>
         </div>
         <div class="member-card">
-          <img src="member4.jpg" alt="Member 4" class="member-photo">
+          <img src="/images/member4.jpg" alt="No Photo Available" onerror="this.onerror=null;this.src='/images/Default-pfp.png';" class="member-photo">
           <h3>Dani Ehab</h3>
           <p class="position">Head of Musicians</p>
         </div>
         <div class="member-card">
-          <img src="member5.jpg" alt="Member 5" class="member-photo">
+          <img src="/images/member5.jpg" alt="No Photo Available" onerror="this.onerror=null;this.src='/images/Default-pfp.png';" class="member-photo">
           <h3>David Chen</h3>
           <p class="position">Music Director</p>
         </div>
@@ -106,16 +106,13 @@
       <div class="footer-section">
         <h3>Quick Links</h3>
         <ul>
-          <li><a href="../Farah/home_page.ejs">Home</a></li>
-          <li><a href="../Nour/About_us.ejs">About Us</a></li>
+          <li><a href="/home">Home</a></li>
+          <li><a href="/about">About Us</a></li>
           <li><a href="">Events</a></li>
-          <li><a href="../Youssef/Courses.ejs">Courses</a></li>
-          <li><a href="../Hussein/tuners.ejs">Apply</a></li>
+          <li><a href="/courses">Courses</a></li>
+          <li><a href="/apply">Apply</a></li>
         </ul>
       </div>
     </div>
   </footer>
   <script src="About_us.js"></script>
-</body>
-
-</html>

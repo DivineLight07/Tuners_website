@@ -12,15 +12,49 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 const applications = require('./routes/applications');
 app.use('/api/v1/applications', applications);
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'tuners.html'));
+app.get('/', (req, res) => {
+  res.render('Apply_Form');
 });
 
+app.get('/home', (req, res) => {
+  res.render('home_page');
+});
+
+app.get('/about', (req, res) => {
+  res.render('About_us');
+});
+
+app.get('/apply', (req, res) => {
+  res.render('Apply_Form');
+});
+
+app.get('/courses', (req, res) => {
+  res.render('Courses');
+});
+
+app.get('/login', (req, res) => {
+  res.render('Login');
+});
+
+app.get('/admin', (req, res) => {
+  res.render('Admin_Dashboard');
+});
+
+app.get('/member', (req, res) => {
+  res.render('member_dashboard');
+});
+
+app.use((req, res) => {
+  res.render('Apply_Form');
+});
 
 app.use(errorHandler);
 
@@ -39,10 +73,3 @@ mongoose
     console.error('❌  MongoDB connection error:', err.message);
     process.exit(1);
   });
-
-
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
-
-app.get('/', (req, res) => res.render('tuners'));

@@ -3,23 +3,23 @@
 
     <head>
         <title>Tuners MIU - Member Dashboard</title>
-        <link rel="stylesheet" href="member_dashboard.css">
+        <link rel="stylesheet" href="/css/member_dashboard.css">
     </head>
 
-    <body>
+    <body style="background-image: url('/images/IMG_4362.png'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
 
         <nav id="navbar">
-            <img src="Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/>
+            <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/></a>
             <ul>
-                <li><a href="../Farah/home_page.ejs">Home</a></li>
-                <li><a href="../Nour/About_us.ejs">About Us</a></li>
-                <li><a href="../Hussein/tuners.ejs">Apply</a></li>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/apply">Apply</a></li>
                 <li><a href="#site-footer">Contact</a></li>
-                <li><a href="../Youssef/Courses.ejs">Courses</a></li>
+                <li><a href="/courses">Courses</a></li>
                 <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
     </ul>
     <div class="nav-auth">
-        <a href="../Mohamed/index.ejs" id="nav-login-btn">Login</a>
+        <a href="/login" id="nav-login-btn">Login</a>
         <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
     </div>
         </nav>
@@ -102,18 +102,14 @@
       <div class="footer-section">
         <h3>Quick Links</h3>
         <ul>
-          <li><a href="../Farah/home_page.ejs">Home</a></li>
-          <li><a href="../Nour/About_us.ejs">About Us</a></li>
-          <li><a href="">Events</a></li>
-          <li><a href="../Youssef/Courses.ejs">Courses</a></li>
-          <li><a href="../Hussein/tuners.ejs">Apply</a></li>
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="">Events</a></li>
+                    <li><a href="/courses">Courses</a></li>
+                    <li><a href="/apply">Apply</a></li>
         </ul>
       </div>
     </div>
   </footer>
 
         <script src="member_dashboard.js"></script>
-
-    </body>
-
-</html>
