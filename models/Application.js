@@ -24,8 +24,8 @@ const ApplicationSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Year is required'],
     enum: {
-      values: ['1st', '2nd', '3rd', '4th'],
-      message: 'Year must be 1st, 2nd, 3rd, or 4th'
+      values: ['1st', '2nd', '3rd', '4th', '5th', 'graduate'],
+      message: 'Year must be 1st, 2nd, 3rd, 4th, 5th or graduate.'
     }
   },
   committee: {
