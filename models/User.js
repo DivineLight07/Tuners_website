@@ -15,11 +15,10 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Hash password before saving
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password') || !this.password) return next();
+userSchema.pre('save', async function () {
+  if (!this.isModified('password') || !this.password) return;
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
-  next();
 });
 
 // Compare entered password with hashed one
@@ -30,9 +29,10 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 
 // Generate signed JWT
 userSchema.methods.getSignedJwt = function () {
+  const JWT_SECRET = process.env.JWT_SECRET || 'supersecretdevkey';
   return jwt.sign(
     { id: this._id, role: this.role },
-    process.env.JWT_SECRET,
+    JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRE || '7d' }
   );
 };

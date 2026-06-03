@@ -34,7 +34,7 @@ function loadProfile() {
 
     container.innerHTML = "";
 
-    const userJson = localStorage.getItem('loggedInUser');
+    const userJson = localStorage.getItem('user');
     let uName = student.name;
     let uid = student.universityId;
     let uBadges = [];
@@ -84,14 +84,14 @@ function loadProfile() {
 
 // Profile Editing Logic
 function openEditProfile() {
-    const userJson = localStorage.getItem('loggedInUser');
+    const userJson = localStorage.getItem('user');
     if (!userJson) return;
     const user = JSON.parse(userJson);
     
     document.getElementById('edit-name').value = user.name || student.name;
     document.getElementById('edit-email').value = user.email || '';
     document.getElementById('edit-old-pass').value = '';
-    document.getElementById('edit-pass').value = user.password || '';
+    document.getElementById('edit-pass').value = '';
     document.getElementById('edit-uid').value = user.universityId || student.universityId;
     
     document.getElementById('profileData').style.display = 'none';
@@ -120,37 +120,19 @@ function togglePasswordVisibility() {
 function saveProfile(event) {
     event.preventDefault();
     
-    const userJson = localStorage.getItem('loggedInUser');
+    const userJson = localStorage.getItem('user');
     if (!userJson) return;
     const user = JSON.parse(userJson);
-    const originalEmail = user.email;
-    
-    const oldPass = document.getElementById('edit-old-pass').value;
-    if (oldPass !== user.password) {
-        alert('Incorrect old password. Changes not saved.');
-        return;
-    }
     
     const newName = document.getElementById('edit-name').value;
     const newEmail = document.getElementById('edit-email').value;
-    const newPass = document.getElementById('edit-pass').value;
     const newUid = document.getElementById('edit-uid').value;
     
     user.name = newName;
     user.email = newEmail;
-    user.password = newPass;
     user.universityId = newUid;
     
-    // Update loggedInUser
-    localStorage.setItem('loggedInUser', JSON.stringify(user));
-    
-    // Update main users array
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    const userIndex = users.findIndex(u => u.email === originalEmail);
-    if (userIndex !== -1) {
-        users[userIndex] = { ...users[userIndex], ...user };
-        localStorage.setItem('users', JSON.stringify(users));
-    }
+    localStorage.setItem('user', JSON.stringify(user));
     
     closeEditProfile();
     loadProfile();
@@ -227,7 +209,7 @@ function setupRoomBooking() {
 function loadWelcome() {
     const welcomeTitle = document.getElementById("welcomeTitle");
     if (welcomeTitle) {
-        const userJson = localStorage.getItem('loggedInUser');
+        const userJson = localStorage.getItem('user');
         if (userJson) {
             const user = JSON.parse(userJson);
             welcomeTitle.textContent = `Welcome back, ${user.email.split('@')[0]}!`;
@@ -272,7 +254,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Global Authentication Logic
 function updateNavAuth() {
-    const userJson = localStorage.getItem('loggedInUser');
+    const userJson = localStorage.getItem('user');
     const loginBtn = document.getElementById('nav-login-btn');
     const logoutBtn = document.getElementById('nav-logout-btn');
     const dashboardLi = document.getElementById('nav-dashboard');
@@ -299,11 +281,13 @@ function updateNavAuth() {
         if (dashboardLi) {
             dashboardLi.style.display = 'none';
         }
+        window.location.href = '/login';
     }
 }
 
 function globalLogout() {
-    localStorage.removeItem('loggedInUser');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     window.location.href = '/login';
 }
 

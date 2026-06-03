@@ -13,7 +13,7 @@ let courses = JSON.parse(localStorage.getItem("courses")) || [
   }
 ];
 
-let currentUser = JSON.parse(localStorage.getItem("loggedInUser")) || null;
+let currentUser = JSON.parse(localStorage.getItem('user')) || null;
 let role = currentUser ? currentUser.role : "guest";
 
 function save() {
@@ -85,7 +85,7 @@ function deleteCourse(id) {
 
 // Global Authentication Logic
 function updateNavAuth() {
-    const userJson = localStorage.getItem('loggedInUser');
+    const userJson = localStorage.getItem('user');
     const loginBtn = document.getElementById('nav-login-btn');
     const logoutBtn = document.getElementById('nav-logout-btn');
     const dashboardLi = document.getElementById('nav-dashboard');
@@ -103,9 +103,9 @@ function updateNavAuth() {
             dashboardLi.style.display = 'inline-block';
             if (user.role === 'admin') {
                 dashboardLink.href = '/admin';
-              } else {
+            } else {
                 dashboardLink.href = '/member';
-              }
+            }
         }
     } else {
         currentUser = null;
@@ -121,7 +121,8 @@ function updateNavAuth() {
 }
 
 function globalLogout() {
-    localStorage.removeItem('loggedInUser');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     window.location.href = '/login';
 }
 

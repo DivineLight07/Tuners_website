@@ -3,6 +3,7 @@ const mongoose   = require('mongoose');
 const dotenv     = require('dotenv');
 const path       = require('path');
 const cors       = require('cors');
+const users      = require('./routes/users');
 
 const errorHandler = require('./middleware/errorHandler');
 
@@ -18,7 +19,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const applications = require('./routes/applications');
+const auth = require('./routes/auth');
+app.use('/api/v1/users', require('./routes/users'));
 app.use('/api/v1/applications', applications);
+app.use('/api/v1/auth', auth);
 
 app.get('/', (req, res) => {
   res.render('Apply_Form');
@@ -59,7 +63,7 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 const PORT     = process.env.PORT     || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/tuners_db';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/TunersWebsite';
 
 mongoose
   .connect(MONGO_URI)

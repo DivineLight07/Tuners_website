@@ -45,7 +45,9 @@
       <div class="admin-card user-management">
         <h2>Manage Accounts</h2>
         <div class="add-user-form">
+          <input type="text" id="new-user-name" placeholder="Full Name">
           <input type="email" id="new-user-email" placeholder="Email Address">
+          <input type="text" id="new-user-uid" placeholder="University ID">
           <input type="password" id="new-user-pass" placeholder="Password">
           <select id="new-user-role">
             <option value="member">Member</option>
@@ -97,7 +99,7 @@
         </div>
         <div class="form-group">
           <label>Password</label>
-          <input type="password" id="edit-user-pass" required>
+          <input type="password" id="edit-user-pass" placeholder="Leave blank to keep current password">
         </div>
         <div class="form-group">
           <label>Role</label>
@@ -153,6 +155,7 @@
     </div>
   </footer>
 
-  <script src="Admin_Dashboard.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/admin_dashboard.js"></script>
 </body>
 </html>

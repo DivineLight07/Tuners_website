@@ -21,7 +21,8 @@ const protect = async (req, res, next) => {
 
   try {
     // Verify the token using the secret — throws if expired or tampered
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const JWT_SECRET = process.env.JWT_SECRET || 'supersecretdevkey';
+    const decoded = jwt.verify(token, JWT_SECRET);
 
     // Attach the full user object to req.user
     req.user = await User.findById(decoded.id).select('-password');

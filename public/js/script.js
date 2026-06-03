@@ -1,12 +1,4 @@
-const DEFAULT_USERS = [
-  { email: 'admin@miuegypt.edu.eg',  password: 'Admin123!',  role: 'admin', name: 'Admin User', universityId: 'MIU000', badges: ['🎵 Perfect Pitch', '🎸 Guitar Hero'] },
-  { email: 'member@miuegypt.edu.eg', password: 'Member123!', role: 'member', name: 'Farah', universityId: 'MIU123', badges: ['🎤 Vocal Virtuoso'] }
-];
-
-// Initialize users in localStorage if they don't exist
-if (!localStorage.getItem('users')) {
-    localStorage.setItem('users', JSON.stringify(DEFAULT_USERS));
-}
+// Login now connects to MongoDB via API
 
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -36,7 +28,7 @@ function showMsg(message) {
   }
 }
  
-function handleLogin() {
+async function handleLogin() {
   clearErrors();
   
   const emailInput = document.getElementById('login-email');
@@ -50,21 +42,41 @@ function handleLogin() {
   if (!isValidEmail(email)) { setErr('login-email-err', true); valid = false; }
   if (!pass)                 { setErr('login-pass-err',  true); valid = false; }
   if (!valid) return;
- 
-  const users = JSON.parse(localStorage.getItem('users'));
-  const user = users.find(u => u.email === email && u.password === pass);
- 
-  if (!user) { setErr('login-wrong-err', true); return; }
- 
-  showMsg('Login successful! Redirecting…');
-  localStorage.setItem('loggedInUser', JSON.stringify(user));
-  setTimeout(() => {
-      if (user.role === 'admin') {
-          window.location.href = '/admin';
-      } else {
-          window.location.href = '/member';
+
+  try {
+    const response = await fetch('/api/v1/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pass })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      const errMsg = data.error || data.message || 'Incorrect email or password.';
+      const wrongEl = document.getElementById('login-wrong-err');
+      if (wrongEl) {
+        wrongEl.textContent = errMsg;
       }
-  }, 1500);
+      setErr('login-wrong-err', true);
+      return;
+    }
+
+    showMsg('Login successful! Redirecting…');
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    
+    setTimeout(() => {
+      if (data.user.role === 'admin') {
+        window.location.href = '/admin';
+      } else {
+        window.location.href = '/member';
+      }
+    }, 1500);
+  } catch (err) {
+    console.error('Login error:', err);
+    setErr('login-wrong-err', true);
+  }
 }
  
 function logout() {
@@ -73,12 +85,9 @@ function logout() {
   if (emailInput) emailInput.value = '';
   if (passInput) passInput.value  = '';
   clearErrors();
-  if (typeof globalLogout === 'function') {
-      globalLogout();
-  } else {
-    localStorage.removeItem('loggedInUser');
-    window.location.href = '/login';
-  }
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  window.location.href = '/login';
 }
 
 // Auto-hide navbar on scroll
@@ -100,7 +109,7 @@ function logout() {
 
 // Global Authentication Logic
 function updateNavAuth() {
-    const userJson = localStorage.getItem('loggedInUser');
+    const userJson = localStorage.getItem('user');
     const loginBtn = document.getElementById('nav-login-btn');
     const logoutBtn = document.getElementById('nav-logout-btn');
     const dashboardLi = document.getElementById('nav-dashboard');
@@ -112,14 +121,14 @@ function updateNavAuth() {
         if (loginBtn) loginBtn.style.display = 'none';
         if (logoutBtn) logoutBtn.style.display = 'inline-block';
         if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'none';
-          if (dashboardLi && dashboardLink) {
-                dashboardLi.style.display = 'inline-block';
-                if (user.role === 'admin') {
-                    dashboardLink.href = '/admin';
-                } else {
-                    dashboardLink.href = '/member';
-                }
+        if (dashboardLi && dashboardLink) {
+            dashboardLi.style.display = 'inline-block';
+            if (user.role === 'admin') {
+                dashboardLink.href = '/admin';
+            } else {
+                dashboardLink.href = '/member';
             }
+        }
     } else {
         if (loginBtn) loginBtn.style.display = 'inline-block';
         if (logoutBtn) logoutBtn.style.display = 'none';
@@ -131,7 +140,8 @@ function updateNavAuth() {
 }
 
 function globalLogout() {
-    localStorage.removeItem('loggedInUser');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     window.location.href = '/login';
 }
 
