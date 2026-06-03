@@ -25,15 +25,15 @@
   <main class="page-content">
     <section class="intro">
       <h1>About Us</h1>
-      <p>At Tuners Club – Misr International University, we believe music is more than sound; it’s a language that
-        unites people, sparks creativity, and builds community. Founded by passionate students, Tuners Club is MIU’s
+      <p>At Tuners Club – Misr International University, we believe music is more than sound; it's a language that
+        unites people, sparks creativity, and builds community. Founded by passionate students, Tuners Club is MIU's
         home for musicians, singers, and music lovers who want to share their talents, discover new rhythms, and create
         unforgettable experiences on campus.</p>
     </section>
 
     <section class="feature-block">
       <h2>🎶 Our Mission</h2>
-      <p>We aim to inspire and empower students through music. Whether you’re a seasoned performer or just beginning
+      <p>We aim to inspire and empower students through music. Whether you're a seasoned performer or just beginning
         your journey, Tuners Club provides a supportive space to explore your passion, collaborate with peers, and bring
         harmony to student life.</p>
     </section>
@@ -59,32 +59,9 @@
 
     <section class="feature-block board-section">
       <h2>👥 Meet the Board</h2>
-      <div class="board-members">
-        <div class="member-card">
-          <img src="/images/Screenshot 2026-04-19 231028.png" alt="No Photo Available" onerror="this.onerror=null;this.src='/images/Default-pfp.png';" class="member-photo">
-          <h3>Johny</h3>
-          <p class="position">President</p>
-        </div>
-        <div class="member-card">
-          <img src="/images/DSC03068.jpg" alt="No Photo Available" onerror="this.onerror=null;this.src='/images/Default-pfp.png';" class="member-photo">
-          <h3>Rana Elkelany</h3>
-          <p class="position">Vice President</p>
-        </div>
-        <div class="member-card">
-          <img src="/images/Screenshot 2026-05-06 224613.png" alt="No Photo Available" onerror="this.onerror=null;this.src='/images/Default-pfp.png';" class="member-photo">
-          <h3>Omar Hussein</h3>
-          <p class="position">HR</p>
-        </div>
-        <div class="member-card">
-          <img src="/images/member4.jpg" alt="No Photo Available" onerror="this.onerror=null;this.src='/images/Default-pfp.png';" class="member-photo">
-          <h3>Dani Ehab</h3>
-          <p class="position">Head of Musicians</p>
-        </div>
-        <div class="member-card">
-          <img src="/images/member5.jpg" alt="No Photo Available" onerror="this.onerror=null;this.src='/images/Default-pfp.png';" class="member-photo">
-          <h3>David Chen</h3>
-          <p class="position">Music Director</p>
-        </div>
+      <div class="board-members" id="boardMembersContainer">
+        <!-- Board members will be loaded here from database -->
+        <p style="text-align: center; color: rgba(255,255,255,0.6);">Loading board members...</p>
       </div>
     </section>
   </main>
@@ -116,5 +93,52 @@
     </div>
   </footer>
   <script src="/js/about_us.js"></script>
+  
+  <script>
+    // Load board members from database
+    async function loadBoardMembers() {
+      const container = document.getElementById('boardMembersContainer');
+      if (!container) return;
+
+      try {
+        const response = await fetch('/api/v1/board');
+        const data = await response.json();
+        
+        if (!response.ok || !data.success) {
+          throw new Error('Failed to load board members');
+        }
+
+        const members = data.data || [];
+        
+        if (members.length === 0) {
+          container.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.6); grid-column: 1/-1;">No board members yet.</p>';
+          return;
+        }
+
+        container.innerHTML = members.map(member => `
+          <div class="member-card">
+            <img src="${member.image}" alt="${member.name}" onerror="this.onerror=null;this.src='/images/Default-pfp.png';" class="member-photo">
+            <h3>${member.name}</h3>
+            <p class="position">${member.position}</p>
+            ${member.bio ? `<p class="bio">${member.bio}</p>` : ''}
+            ${member.socialMedia && (member.socialMedia.instagram || member.socialMedia.facebook || member.socialMedia.linkedin) ? `
+              <div class="social-links">
+                ${member.socialMedia.instagram ? `<a href="${member.socialMedia.instagram}" target="_blank" class="social-icon">📸</a>` : ''}
+                ${member.socialMedia.facebook ? `<a href="${member.socialMedia.facebook}" target="_blank" class="social-icon">📘</a>` : ''}
+                ${member.socialMedia.linkedin ? `<a href="${member.socialMedia.linkedin}" target="_blank" class="social-icon">💼</a>` : ''}
+              </div>
+            ` : ''}
+          </div>
+        `).join('');
+        
+      } catch (err) {
+        console.error('Error loading board members:', err);
+        container.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.6);">Failed to load board members.</p>';
+      }
+    }
+
+    // Load on page load
+    document.addEventListener('DOMContentLoaded', loadBoardMembers);
+  </script>
 </body>
 </html>

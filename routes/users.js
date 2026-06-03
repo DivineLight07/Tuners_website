@@ -1,51 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
+const { protect, authorize } = require('../middleware/auth');
+const { getAllUsers, createUser, updateUser, deleteUser, addBadge } = require('../controllers/userController');
 
+// Protect all routes
+router.use(protect);
+router.use(authorize('admin'));
 
-router.post('/add', async (req, res) => {
-    console.log('Received request to add user:', req.body);
-  try {
-    const { name, email, password, universityId, role } = req.body;
-    const newUser = new User({ name, email, password, universityId, role });
-    await newUser.save();
-    res.status(201).json({ message: 'User added successfully', user: newUser });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error adding user' });
-  }
-});
+// ✅ Matches: apiFetch('/api/v1/users')
+router.get('/', getAllUsers);
 
-router.get('/', async (req, res) => {
-  try {
-    const users = await User.find(); // ✅ assign result
-    res.status(200).json(users);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error loading users' });
-  }
-});
+// ✅ Matches: apiFetch('/api/v1/users/add', { method: 'POST' })
+router.post('/add', createUser);
 
+// ✅ Matches: apiFetch(`/api/v1/users/${user._id}`, { method: 'PATCH' })
+router.patch('/:id', updateUser);
 
-
-
-const {
-  getAllUsers,
-  createUser,
-  updateUser,
-  deleteUser,
-  addBadge
-} = require('../controllers/userController');
-
-router.route('/')
-  .get(getAllUsers)
-  .post(createUser);
-
-router.route('/:id')
-  .put(updateUser)
-  .delete(deleteUser);
+// ✅ Matches: apiFetch(`/api/v1/users/${userId}`, { method: 'DELETE' })
+router.delete('/:id', deleteUser);
 
 router.patch('/:id/badge', addBadge);
-
 
 module.exports = router;

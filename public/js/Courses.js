@@ -1,89 +1,141 @@
-let courses = JSON.parse(localStorage.getItem("courses")) || [
-  {
-    id: 1,
-    title: "Intro to Music Theory",
-    desc: "Learn notes, rhythm, and scales.",
-    img: "music.png"
-  },
-  {
-    id: 2,
-    title: "Chord Progressions",
-    desc: "Understand how chords work together.",
-    img: "chord.webp"
-  }
-];
+// public/js/courses.js
+// ─── GLOBAL STATE ────────────────────────────────────────────────────────────
+let allCourses = [];
+let currentFilter = 'all';
 
-let currentUser = JSON.parse(localStorage.getItem('user')) || null;
-let role = currentUser ? currentUser.role : "guest";
-
-function save() {
-  localStorage.setItem("courses", JSON.stringify(courses));
-}
-
-function render() {
-  let div = document.getElementById("courses");
-  if (!div) return;
-  div.innerHTML = "";
-
-  const adminPanel = document.getElementById("adminPanel");
-  if (adminPanel) {
-    adminPanel.classList.toggle("hidden", role !== "admin");
-  }
-
-  courses.forEach(c => {
-    let el = document.createElement("div");
-    el.className = "course-card";
-
-    el.innerHTML = `
-      <img src="${c.img}">
-      <h3>${c.title}</h3>
-      <p>${c.desc}</p>
-      <button onclick="preview()">Preview</button>
-      ${role === "member" ? `<button onclick="openCourse()">Open</button>` : ""}
-      ${role === "admin" ? `<button onclick="deleteCourse(${c.id})">Delete</button>` : ""}
-    `;
-
-    div.appendChild(el);
-  });
-}
-
-function preview() {
-  if (role === "guest") {
-    alert("Register to access full courses.");
-  } else {
-    alert("Preview lesson coming soon.");
-  }
-}
-
-function openCourse() {
-  alert("Full course content (videos, PDFs) coming soon.");
-}
-
-function addCourse() {
-  let title = document.getElementById("title").value;
-  let desc = document.getElementById("desc").value;
-  let img = document.getElementById("img").value || "https://via.placeholder.com/250";
-
-  if (title && desc) {
-    courses.push({
-      id: Date.now(),
-      title,
-      desc,
-      img
+// ─── API HELPER ──────────────────────────────────────────────────────────────
+async function apiFetch(url, options = {}) {
+    const token = localStorage.getItem('token');
+    const res = await fetch(url, {
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+            ...(options.headers || {})
+        }
     });
 
-    save();
-    render();
-  }
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Request failed');
+    return data;
 }
 
-function deleteCourse(id) {
-  courses = courses.filter(c => c.id !== id);
-  save();
-  render();
+// ─── LOAD COURSES FROM DATABASE ─────────────────────────────────────────────
+async function loadCourses() {
+    const grid = document.getElementById('coursesGrid');
+    const emptyState = document.getElementById('emptyState');
+    
+    if (!grid) return;
+
+    try {
+        const response = await apiFetch('/api/v1/courses');
+        allCourses = response.data || [];
+        
+        if (allCourses.length === 0) {
+            grid.style.display = 'none';
+            if (emptyState) emptyState.style.display = 'block';
+            return;
+        }
+
+        grid.style.display = 'grid';
+        if (emptyState) emptyState.style.display = 'none';
+        
+        displayCourses(allCourses);
+        
+    } catch (err) {
+        console.error('Error loading courses:', err);
+        if (grid) {
+            grid.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.6); grid-column: 1/-1; padding: 40px;">Failed to load courses. Please try again later.</p>';
+        }
+    }
 }
 
-// Global Authentication Logic
+// ─── DISPLAY COURSES WITH YOUTUBE EMBEDS ────────────────────────────────────
+function displayCourses(courses) {
+    const grid = document.getElementById('coursesGrid');
+    if (!grid) return;
+
+    if (courses.length === 0) {
+        grid.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.6); grid-column: 1/-1; padding: 40px;">No courses match this category.</p>';
+        return;
+    }
+
+    grid.innerHTML = courses.map(course => {
+        // Category colors for badges
+        const categoryColors = {
+            'Music Theory': '#9b59b6',
+            'Instrument': '#e74c3c', 
+            'Vocal': '#f39c12',
+            'Workshop': '#1abc9c',
+            'Other': '#95a5a6'
+        };
+        const categoryColor = categoryColors[course.category] || '#95a5a6';
+
+        return `
+            <article class="course-card" data-category="${course.category}">
+                <!-- YouTube Video Embed (Responsive 16:9) -->
+                <div class="video-container">
+                    <iframe 
+                        src="https://www.youtube.com/embed/${course.youtubeVideoId}?rel=0&modestbranding=1" 
+                        title="${course.title}"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen
+                        loading="lazy">
+                    </iframe>
+                </div>
+                
+                <!-- Course Info -->
+                <div class="course-info">
+                    <!-- Category Badge -->
+                    <span class="category-badge" style="--category-color: ${categoryColor}">
+                        ${course.category}
+                    </span>
+                    
+                    <!-- Title -->
+                    <h3>${course.title}</h3>
+                    
+                    <!-- Instructor -->
+                    <p class="instructor">👨‍🏫 ${course.instructor}</p>
+                    
+                    <!-- Duration (if available) -->
+                    ${course.duration ? `<p class="duration">⏱️ <strong>Duration:</strong> ${course.duration}</p>` : ''}
+                    
+                    <!-- Description (if available) -->
+                    ${course.description ? `<p class="description">${course.description}</p>` : ''}
+                </div>
+            </article>
+        `;
+    }).join('');
+}
+
+// ─── FILTER COURSES BY CATEGORY ─────────────────────────────────────────────
+function filterCourses(category) {
+    currentFilter = category;
+    
+    // Update active button style
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Find and activate the clicked button
+    const clickedBtn = Array.from(document.querySelectorAll('.filter-btn'))
+        .find(btn => btn.textContent.includes(category) || (category === 'all' && btn.textContent === 'All Courses'));
+    
+    if (clickedBtn) {
+        clickedBtn.classList.add('active');
+    }
+
+    // Filter and display
+    if (category === 'all') {
+        displayCourses(allCourses);
+    } else {
+        const filtered = allCourses.filter(course => course.category === category);
+        displayCourses(filtered);
+    }
+}
+
+// ─── AUTH & NAVIGATION (Shared logic) ───────────────────────────────────────
 function updateNavAuth() {
     const userJson = localStorage.getItem('user');
     const loginBtn = document.getElementById('nav-login-btn');
@@ -94,30 +146,19 @@ function updateNavAuth() {
 
     if (userJson) {
         const user = JSON.parse(userJson);
-        currentUser = user;
-        role = user.role;
         if (loginBtn) loginBtn.style.display = 'none';
         if (logoutBtn) logoutBtn.style.display = 'inline-block';
         if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'none';
         if (dashboardLi && dashboardLink) {
             dashboardLi.style.display = 'inline-block';
-            if (user.role === 'admin') {
-                dashboardLink.href = '/admin';
-            } else {
-                dashboardLink.href = '/member';
-            }
+            dashboardLink.href = user.role === 'admin' ? '/admin' : '/member';
         }
     } else {
-        currentUser = null;
-        role = "guest";
         if (loginBtn) loginBtn.style.display = 'inline-block';
         if (logoutBtn) logoutBtn.style.display = 'none';
         if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'inline-block';
-        if (dashboardLi) {
-            dashboardLi.style.display = 'none';
-        }
+        if (dashboardLi) dashboardLi.style.display = 'none';
     }
-    render();
 }
 
 function globalLogout() {
@@ -126,18 +167,14 @@ function globalLogout() {
     window.location.href = '/login';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    updateNavAuth();
-});
-
-// Auto-hide navbar on scroll
+// ─── AUTO-HIDE NAVBAR ON SCROLL ─────────────────────────────────────────────
 (function() {
     let lastScrollTop = 0;
     window.addEventListener('scroll', function() {
-        let navbar = document.getElementById('navbar');
+        const navbar = document.getElementById('navbar');
         if (!navbar) return;
         
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         if (scrollTop > lastScrollTop) {
             navbar.classList.add('hidden');
         } else {
@@ -146,3 +183,10 @@ document.addEventListener('DOMContentLoaded', () => {
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     }, false);
 })();
+
+// ─── INITIALIZATION ─────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🎵 Courses page loaded');
+    updateNavAuth();
+    loadCourses();
+});

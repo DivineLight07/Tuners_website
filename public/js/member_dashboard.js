@@ -1,3 +1,20 @@
+// API Fetch Helper
+async function apiFetch(url, options = {}) {
+    const token = localStorage.getItem('token');
+    const res = await fetch(url, {
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+            ...(options.headers || {})
+        }
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Request failed');
+    return data;
+}
+
 const student = {
     name: "Farah",
     universityId: "MIU123"
@@ -140,25 +157,31 @@ function saveProfile(event) {
     alert('Profile updated successfully!');
 }
 
-
-
-let currentRoomStatus = localStorage.getItem('roomStatus') || "Available";
-let pendingRequest = JSON.parse(localStorage.getItem('pendingRequest')) || null;
-
-function updateRoomStatusUI() {
-    currentRoomStatus = localStorage.getItem('roomStatus') || "Open";
+// ✅ NEW: Load room status from database
+async function loadRoomStatusFromDB() {
     const statusSpan = document.getElementById("currentRoomStatus");
     if (!statusSpan) return;
     
-    statusSpan.textContent = currentRoomStatus;
-    statusSpan.className = '';
-    
-    if (currentRoomStatus === "Open") {
-        statusSpan.classList.add("status-available");
-    } else {
-        statusSpan.classList.add("status-occupied");
+    try {
+        const response = await apiFetch('/api/v1/room');
+        const roomStatus = response.data?.status || "Closed";
+        
+        statusSpan.textContent = roomStatus;
+        statusSpan.className = '';
+        
+        if (roomStatus === "Open") {
+            statusSpan.classList.add("status-available");
+        } else {
+            statusSpan.classList.add("status-occupied");
+        }
+    } catch (err) {
+        console.error('Failed to load room status:', err);
+        statusSpan.textContent = "Unknown";
+        statusSpan.className = "status-occupied";
     }
 }
+
+let pendingRequest = JSON.parse(localStorage.getItem('pendingRequest')) || null;
 
 function loadMemberRequestUI() {
     const container = document.getElementById("bookingsList");
@@ -180,31 +203,35 @@ function loadMemberRequestUI() {
     }
 }
 
-
-
 function setupRoomBooking() {
     const requestBtn = document.getElementById("requestRoomBtn");
     if (requestBtn) {
-        requestBtn.addEventListener("click", () => {
-            currentRoomStatus = localStorage.getItem('roomStatus') || "Open";
-            if (currentRoomStatus !== "Open") {
-                alert("Room is currently " + currentRoomStatus + ". You cannot request it right now.");
-                return;
+        requestBtn.addEventListener("click", async () => {
+            // ✅ Fetch current status from DB before allowing request
+            try {
+                const response = await apiFetch('/api/v1/room');
+                const currentStatus = response.data?.status || "Closed";
+                
+                if (currentStatus !== "Open") {
+                    alert("Room is currently " + currentStatus + ". You cannot request it right now.");
+                    return;
+                }
+                
+                pendingRequest = {
+                    member: student.name,
+                    time: new Date().toLocaleTimeString(),
+                    status: "Pending"
+                };
+                
+                localStorage.setItem('pendingRequest', JSON.stringify(pendingRequest));
+                alert("Room requested successfully!");
+                loadMemberRequestUI();
+            } catch (err) {
+                alert("Failed to check room status. Please try again.");
             }
-            
-            pendingRequest = {
-                member: student.name,
-                time: new Date().toLocaleTimeString(),
-                status: "Pending"
-            };
-            
-            localStorage.setItem('pendingRequest', JSON.stringify(pendingRequest));
-            alert("Room requested successfully!");
-            loadMemberRequestUI();
         });
     }
 }
-
 
 function loadWelcome() {
     const welcomeTitle = document.getElementById("welcomeTitle");
@@ -223,16 +250,9 @@ document.addEventListener("DOMContentLoaded", function () {
     loadWelcome();
     loadCourses();
     loadProfile();
-    updateRoomStatusUI();
+    loadRoomStatusFromDB(); // ✅ Load from database instead of localStorage
     loadMemberRequestUI();
     setupRoomBooking();
-    
-    // Listen for storage changes to update room status in real-time if multiple tabs are open
-    window.addEventListener('storage', (e) => {
-        if (e.key === 'roomStatus') {
-            updateRoomStatusUI();
-        }
-    });
 });
 
 // Auto-hide navbar on scroll
