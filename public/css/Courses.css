@@ -90,16 +90,18 @@ h1 {
   color: rgba(255,255,255,0.7);
 }
 
+/* ─── COURSES GRID ────────────────────────────────────────────────────────── */
 .courses-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, max-content));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   justify-content: center;
   gap: 30px;
   padding: 20px;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
+/* ─── COURSE CARDS WITH YOUTUBE EMBEDS ────────────────────────────────────── */
 .course-card {
   background: rgba(10, 26, 62, 0.45);
   backdrop-filter: blur(16px);
@@ -107,135 +109,182 @@ h1 {
   border: 1px solid rgba(255,255,255,0.18);
   border-radius: 20px;
   overflow: hidden;
-  text-align: center;
-  width: 300px;
+  text-align: left;
+  width: 100%;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
 }
 
 .course-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 45px rgba(0,0,0,0.4);
+  border-color: rgba(0, 212, 170, 0.3);
 }
 
-.course-card img {
+/* Responsive YouTube Embed Container (16:9 Aspect Ratio) */
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 180px;
-  object-fit: cover;
+  height: 100%;
+  border: 0;
 }
 
-.course-card h3 {
+/* Course Info Section */
+.course-info {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Category Badge */
+.category-badge {
+  display: inline-block;
+  background: var(--category-color, #95a5a6)20;
+  color: var(--category-color, #95a5a6);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  width: fit-content;
+  border: 1px solid var(--category-color, #95a5a6)40;
+}
+
+.course-info h3 {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 1.6rem;
-  margin: 15px 0 5px;
+  margin: 0 0 10px;
   color: #fff;
   letter-spacing: 0.05em;
+  line-height: 1.2;
 }
 
-.course-card p {
-  padding: 0 20px;
+.course-info .instructor {
+  color: #00d4aa;
+  margin: 0 0 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.course-info .duration,
+.course-info .description {
+  color: rgba(255,255,255,0.7);
+  margin: 0 0 12px;
   font-size: 0.9rem;
-  color: rgba(255,255,255,0.6);
-  margin-bottom: 20px;
   line-height: 1.5;
 }
 
-.course-card button {
-  margin: 0 10px 20px;
-  padding: 0.8rem 1.5rem;
-  background: #133785;
-  border: none;
-  border-radius: 12px;
-  color: #fff;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1rem;
-  letter-spacing: 0.1em;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-  box-shadow: 0 4px 15px rgba(19, 55, 133, 0.4);
+.course-info .description {
+  color: rgba(255,255,255,0.6);
+  margin-top: auto;
 }
 
-.course-card button:hover {
-  background: #1a48a8;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(19, 55, 133, 0.6);
-}
-
-#adminPanel {
-  max-width: 420px;
-  margin: 60px auto;
-  padding: 2.5rem 2.8rem;
-  background: rgba(10, 26, 62, 0.45);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.18);
-  border-radius: 20px;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+/* ─── FILTER BUTTONS ──────────────────────────────────────────────────────── */
+.filter-section {
   text-align: center;
-}
-
-#adminPanel h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2.2rem;
-  letter-spacing: 0.05em;
-  margin-bottom: 1.2rem;
-  color: #fff;
-}
-
-#adminPanel input {
-  width: 100%;
-  max-width: 340px;
-  display: inline-block;
-  padding: 0.75rem 1rem;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
+  margin: 30px 0;
+  padding: 20px;
+  background: rgba(255,255,255,0.05);
   border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.filter-btn {
+  background: rgba(255,255,255,0.1);
   color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
   font-family: 'Poppins', sans-serif;
   font-size: 0.9rem;
-  margin-bottom: 1rem;
-  outline: none;
-  transition: all 0.3s ease;
+  transition: all 0.2s;
 }
 
-#adminPanel input:focus {
-  border-color: #133785;
-  background: rgba(19, 55, 133, 0.2);
-  box-shadow: 0 0 0 4px rgba(19, 55, 133, 0.25);
+.filter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-#adminPanel input::placeholder {
-  color: rgba(255,255,255,0.3);
+.filter-btn.active {
+  background: #00d4aa !important;
+  color: #000 !important;
+  border-color: #00d4aa !important;
 }
 
-#adminPanel button {
-  width: 100%;
-  max-width: 340px;
-  display: inline-block;
-  padding: 0.9rem;
-  background: #133785;
-  border: none;
-  border-radius: 12px;
-  color: #fff;
-  font-family: 'Bebas Neue', sans-serif;
+/* ─── EMPTY STATE ─────────────────────────────────────────────────────────── */
+#emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255,255,255,0.6);
   font-size: 1.1rem;
-  letter-spacing: 0.12em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 20px rgba(19, 55, 133, 0.4);
-  margin-top: 0.5rem;
 }
 
-#adminPanel button:hover {
-  background: #1a48a8;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(19, 55, 133, 0.6);
+/* ─── RESPONSIVE ADJUSTMENTS ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .courses-grid {
+    grid-template-columns: 1fr !important;
+    padding: 10px;
+  }
+  
+  .filter-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 15px;
+  }
+  
+  .filter-btn {
+    margin: 3px !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+  }
+  
+  .course-card {
+    max-width: 100%;
+  }
 }
 
-.hidden {
-  display: none;
+/* ─── SMOOTH LOAD ANIMATION ───────────────────────────────────────────────── */
+.course-card {
+  animation: fadeInUp 0.4s ease forwards;
+  opacity: 0;
 }
 
+.course-card:nth-child(1) { animation-delay: 0.1s; }
+.course-card:nth-child(2) { animation-delay: 0.2s; }
+.course-card:nth-child(3) { animation-delay: 0.3s; }
+.course-card:nth-child(4) { animation-delay: 0.4s; }
+.course-card:nth-child(5) { animation-delay: 0.5s; }
+.course-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── FOOTER & NAVBAR (Shared styles) ─────────────────────────────────────── */
 .footer {
     background: rgba(10, 26, 62, 0.65);
     backdrop-filter: blur(16px);

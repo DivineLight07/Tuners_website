@@ -1,3 +1,20 @@
+// API Fetch Helper
+async function apiFetch(url, options = {}) {
+    const token = localStorage.getItem('token');
+    const res = await fetch(url, {
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+            ...(options.headers || {})
+        }
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Request failed');
+    return data;
+}
+
 const student = {
     name: "Farah",
     universityId: "MIU123"
@@ -34,7 +51,7 @@ function loadProfile() {
 
     container.innerHTML = "";
 
-    const userJson = localStorage.getItem('loggedInUser');
+    const userJson = localStorage.getItem('user');
     let uName = student.name;
     let uid = student.universityId;
     let uBadges = [];
@@ -84,14 +101,14 @@ function loadProfile() {
 
 // Profile Editing Logic
 function openEditProfile() {
-    const userJson = localStorage.getItem('loggedInUser');
+    const userJson = localStorage.getItem('user');
     if (!userJson) return;
     const user = JSON.parse(userJson);
     
     document.getElementById('edit-name').value = user.name || student.name;
     document.getElementById('edit-email').value = user.email || '';
     document.getElementById('edit-old-pass').value = '';
-    document.getElementById('edit-pass').value = user.password || '';
+    document.getElementById('edit-pass').value = '';
     document.getElementById('edit-uid').value = user.universityId || student.universityId;
     
     document.getElementById('profileData').style.display = 'none';
@@ -120,37 +137,19 @@ function togglePasswordVisibility() {
 function saveProfile(event) {
     event.preventDefault();
     
-    const userJson = localStorage.getItem('loggedInUser');
+    const userJson = localStorage.getItem('user');
     if (!userJson) return;
     const user = JSON.parse(userJson);
-    const originalEmail = user.email;
-    
-    const oldPass = document.getElementById('edit-old-pass').value;
-    if (oldPass !== user.password) {
-        alert('Incorrect old password. Changes not saved.');
-        return;
-    }
     
     const newName = document.getElementById('edit-name').value;
     const newEmail = document.getElementById('edit-email').value;
-    const newPass = document.getElementById('edit-pass').value;
     const newUid = document.getElementById('edit-uid').value;
     
     user.name = newName;
     user.email = newEmail;
-    user.password = newPass;
     user.universityId = newUid;
     
-    // Update loggedInUser
-    localStorage.setItem('loggedInUser', JSON.stringify(user));
-    
-    // Update main users array
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    const userIndex = users.findIndex(u => u.email === originalEmail);
-    if (userIndex !== -1) {
-        users[userIndex] = { ...users[userIndex], ...user };
-        localStorage.setItem('users', JSON.stringify(users));
-    }
+    localStorage.setItem('user', JSON.stringify(user));
     
     closeEditProfile();
     loadProfile();
@@ -158,25 +157,31 @@ function saveProfile(event) {
     alert('Profile updated successfully!');
 }
 
-
-
-let currentRoomStatus = localStorage.getItem('roomStatus') || "Available";
-let pendingRequest = JSON.parse(localStorage.getItem('pendingRequest')) || null;
-
-function updateRoomStatusUI() {
-    currentRoomStatus = localStorage.getItem('roomStatus') || "Open";
+// ✅ NEW: Load room status from database
+async function loadRoomStatusFromDB() {
     const statusSpan = document.getElementById("currentRoomStatus");
     if (!statusSpan) return;
     
-    statusSpan.textContent = currentRoomStatus;
-    statusSpan.className = '';
-    
-    if (currentRoomStatus === "Open") {
-        statusSpan.classList.add("status-available");
-    } else {
-        statusSpan.classList.add("status-occupied");
+    try {
+        const response = await apiFetch('/api/v1/room');
+        const roomStatus = response.data?.status || "Closed";
+        
+        statusSpan.textContent = roomStatus;
+        statusSpan.className = '';
+        
+        if (roomStatus === "Open") {
+            statusSpan.classList.add("status-available");
+        } else {
+            statusSpan.classList.add("status-occupied");
+        }
+    } catch (err) {
+        console.error('Failed to load room status:', err);
+        statusSpan.textContent = "Unknown";
+        statusSpan.className = "status-occupied";
     }
 }
+
+let pendingRequest = JSON.parse(localStorage.getItem('pendingRequest')) || null;
 
 function loadMemberRequestUI() {
     const container = document.getElementById("bookingsList");
@@ -198,36 +203,40 @@ function loadMemberRequestUI() {
     }
 }
 
-
-
 function setupRoomBooking() {
     const requestBtn = document.getElementById("requestRoomBtn");
     if (requestBtn) {
-        requestBtn.addEventListener("click", () => {
-            currentRoomStatus = localStorage.getItem('roomStatus') || "Open";
-            if (currentRoomStatus !== "Open") {
-                alert("Room is currently " + currentRoomStatus + ". You cannot request it right now.");
-                return;
+        requestBtn.addEventListener("click", async () => {
+            // ✅ Fetch current status from DB before allowing request
+            try {
+                const response = await apiFetch('/api/v1/room');
+                const currentStatus = response.data?.status || "Closed";
+                
+                if (currentStatus !== "Open") {
+                    alert("Room is currently " + currentStatus + ". You cannot request it right now.");
+                    return;
+                }
+                
+                pendingRequest = {
+                    member: student.name,
+                    time: new Date().toLocaleTimeString(),
+                    status: "Pending"
+                };
+                
+                localStorage.setItem('pendingRequest', JSON.stringify(pendingRequest));
+                alert("Room requested successfully!");
+                loadMemberRequestUI();
+            } catch (err) {
+                alert("Failed to check room status. Please try again.");
             }
-            
-            pendingRequest = {
-                member: student.name,
-                time: new Date().toLocaleTimeString(),
-                status: "Pending"
-            };
-            
-            localStorage.setItem('pendingRequest', JSON.stringify(pendingRequest));
-            alert("Room requested successfully!");
-            loadMemberRequestUI();
         });
     }
 }
 
-
 function loadWelcome() {
     const welcomeTitle = document.getElementById("welcomeTitle");
     if (welcomeTitle) {
-        const userJson = localStorage.getItem('loggedInUser');
+        const userJson = localStorage.getItem('user');
         if (userJson) {
             const user = JSON.parse(userJson);
             welcomeTitle.textContent = `Welcome back, ${user.email.split('@')[0]}!`;
@@ -241,16 +250,9 @@ document.addEventListener("DOMContentLoaded", function () {
     loadWelcome();
     loadCourses();
     loadProfile();
-    updateRoomStatusUI();
+    loadRoomStatusFromDB(); // ✅ Load from database instead of localStorage
     loadMemberRequestUI();
     setupRoomBooking();
-    
-    // Listen for storage changes to update room status in real-time if multiple tabs are open
-    window.addEventListener('storage', (e) => {
-        if (e.key === 'roomStatus') {
-            updateRoomStatusUI();
-        }
-    });
 });
 
 // Auto-hide navbar on scroll
@@ -272,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Global Authentication Logic
 function updateNavAuth() {
-    const userJson = localStorage.getItem('loggedInUser');
+    const userJson = localStorage.getItem('user');
     const loginBtn = document.getElementById('nav-login-btn');
     const logoutBtn = document.getElementById('nav-logout-btn');
     const dashboardLi = document.getElementById('nav-dashboard');
@@ -299,11 +301,13 @@ function updateNavAuth() {
         if (dashboardLi) {
             dashboardLi.style.display = 'none';
         }
+        window.location.href = '/login';
     }
 }
 
 function globalLogout() {
-    localStorage.removeItem('loggedInUser');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     window.location.href = '/login';
 }
 

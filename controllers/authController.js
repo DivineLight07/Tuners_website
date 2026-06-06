@@ -51,6 +51,7 @@ const login = async (req, res, next) => {
   }
 };
 
+
 const logout = (req, res) => {
   res.status(200).json({ success: true, message: 'Logged out successfully' });
 };
@@ -64,4 +65,23 @@ const getMe = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, logout, getMe };
+// Add this to the bottom of authController.js
+const addBadge = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return next(new ErrorResponse('User not found', 404));
+
+    const newBadge = req.body.badge;
+    // Prevent duplicate badges
+    if (!user.badges.includes(newBadge)) {
+      user.badges.push(newBadge);
+    }
+    
+    await user.save();
+    res.status(200).json({ success: true, user });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { register, login, logout, getMe, addBadge };

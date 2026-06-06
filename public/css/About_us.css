@@ -331,3 +331,99 @@ h1 {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-1px);
 }
+
+/* Board Members Grid */
+.board-members {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+  padding: 20px 0;
+}
+
+.member-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.member-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.member-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.member-card h3 {
+  color: #fff;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.5rem;
+  margin: 10px 0 5px;
+  letter-spacing: 1px;
+}
+
+.member-card .position {
+  color: #00d4aa;
+  font-weight: 600;
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+}
+
+.member-card .bio {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 10px 0;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.social-icon {
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 0.2s, transform 0.2s;
+  text-decoration: none;
+}
+
+.social-icon:hover {
+  color: #00d4aa;
+  transform: scale(1.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .board-members {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .member-card {
+    padding: 20px;
+  }
+  
+  .member-photo {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .member-card h3 {
+    font-size: 1.3rem;
+  }
+}

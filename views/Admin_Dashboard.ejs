@@ -41,11 +41,167 @@
         </div>
       </div>
 
+      <!-- Section: Board Members Management -->
+<div class="admin-card board-management" style="margin-top: 30px;">
+  <h2>Manage Board Members</h2>
+  
+  <button onclick="openAddBoardMemberModal()" class="btn-primary" style="margin-bottom: 20px;">
+    + Add Board Member
+  </button>
+  
+  <div class="board-members-list" id="boardMembersList">
+    <p style="text-align: center; color: rgba(255,255,255,0.6);">Loading...</p>
+  </div>
+</div>
+
+<!-- Add/Edit Board Member Modal -->
+<div id="boardMemberModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; align-items:center; justify-content:center; padding:20px;">
+  <div style="background:#1a1a2e; border-radius:12px; padding:30px; width:100%; max-width:600px; max-height:90vh; overflow-y:auto; border:1px solid rgba(255,255,255,0.1); position:relative;">
+    <span onclick="closeBoardMemberModal()" style="position:absolute; top:20px; right:25px; font-size:2rem; color:rgba(255,255,255,0.6); cursor:pointer; line-height:1;">&times;</span>
+    
+    <h2 id="boardModalTitle" style="margin:0 0 25px 0; color:#fff; font-family:'Bebas Neue',cursive; font-size:1.8rem;">Add Board Member</h2>
+    
+    <form id="boardMemberForm" onsubmit="saveBoardMember(event)">
+      <input type="hidden" id="board-member-id">
+      
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
+        <div>
+          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Name *</label>
+          <input type="text" id="board-member-name" required style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Position *</label>
+          <input type="text" id="board-member-position" required style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
+        </div>
+      </div>
+      
+      <div style="margin-bottom:20px;">
+        <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Image URL</label>
+        <input type="text" id="board-member-image" placeholder="/images/member.jpg" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
+      </div>
+      
+      <div style="margin-bottom:20px;">
+        <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Bio</label>
+        <textarea id="board-member-bio" rows="3" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; resize:vertical; box-sizing:border-box;"></textarea>
+      </div>
+      
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; margin-bottom:20px;">
+        <div>
+          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.85rem;">Instagram</label>
+          <input type="text" id="board-member-instagram" placeholder="https://..." style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.9rem; box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.85rem;">Facebook</label>
+          <input type="text" id="board-member-facebook" placeholder="https://..." style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.9rem; box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.85rem;">LinkedIn</label>
+          <input type="text" id="board-member-linkedin" placeholder="https://..." style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.9rem; box-sizing:border-box;">
+        </div>
+      </div>
+      
+      <div style="margin-bottom:25px;">
+        <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Display Order</label>
+        <input type="number" id="board-member-order" value="0" min="0" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
+        <small style="color:rgba(255,255,255,0.5); font-size:0.8rem;">Lower numbers appear first</small>
+      </div>
+      
+      <div style="display:flex; justify-content:flex-end; gap:15px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.1);">
+        <button type="button" onclick="closeBoardMemberModal()" class="btn-primary" style="background:rgba(255,255,255,0.15);">Cancel</button>
+        <button type="submit" class="btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Section: Courses Management -->
+<div class="admin-card courses-management" style="margin-top: 30px;">
+  <h2>Manage Courses</h2>
+  
+  <button onclick="openAddCourseModal()" class="btn-primary" style="margin-bottom: 20px;">
+    + Add Course
+  </button>
+  
+  <div class="courses-list" id="coursesList">
+    <p style="text-align: center; color: rgba(255,255,255,0.6);">Loading...</p>
+  </div>
+</div>
+
+<!-- Add/Edit Course Modal -->
+<div id="courseModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10001; align-items:center; justify-content:center; padding:20px;">
+  <div style="background:#1a1a2e; border-radius:12px; padding:30px; width:100%; max-width:650px; max-height:90vh; overflow-y:auto; border:1px solid rgba(255,255,255,0.1); position:relative;">
+    <span onclick="closeCourseModal()" style="position:absolute; top:20px; right:25px; font-size:2rem; color:rgba(255,255,255,0.6); cursor:pointer; line-height:1;">&times;</span>
+    
+    <h2 id="courseModalTitle" style="margin:0 0 25px 0; color:#fff; font-family:'Bebas Neue',cursive; font-size:1.8rem;">Add Course</h2>
+    
+    <form id="courseForm" onsubmit="saveCourse(event)">
+      <input type="hidden" id="course-id">
+      
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
+        <div>
+          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Course Title *</label>
+          <input type="text" id="course-title" required style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Instructor *</label>
+          <input type="text" id="course-instructor" required style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
+        </div>
+      </div>
+      
+      <div style="margin-bottom:20px;">
+        <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">YouTube Video URL or ID *</label>
+        <input type="text" id="course-youtube-url" required placeholder="https://www.youtube.com/watch?v=VIDEO_ID or just VIDEO_ID" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
+        <small style="color:rgba(255,255,255,0.5); font-size:0.8rem;">Upload video as "Unlisted" on YouTube for privacy</small>
+      </div>
+      
+      <div style="margin-bottom:20px;">
+        <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Description</label>
+        <textarea id="course-description" rows="3" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; resize:vertical; box-sizing:border-box;"></textarea>
+      </div>
+      
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; margin-bottom:20px;">
+        <div>
+          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.85rem;">Category</label>
+          <select id="course-category" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
+            <option value="Music Theory">Music Theory</option>
+            <option value="Instrument">Instrument</option>
+            <option value="Vocal">Vocal</option>
+            <option value="Workshop">Workshop</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.85rem;">Duration</label>
+          <input type="text" id="course-duration" placeholder="e.g., 45:00 or 1 hour" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.85rem;">Order</label>
+          <input type="number" id="course-order" value="0" min="0" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
+        </div>
+      </div>
+      
+      <div style="margin-bottom:25px;">
+        <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+          <input type="checkbox" id="course-published" checked style="width:20px; height:20px;">
+          <span style="color:rgba(255,255,255,0.9); font-size:0.95rem;">Published (visible to students)</span>
+        </label>
+      </div>
+      
+      <div style="display:flex; justify-content:flex-end; gap:15px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.1);">
+        <button type="button" onclick="closeCourseModal()" class="btn-primary" style="background:rgba(255,255,255,0.15);">Cancel</button>
+        <button type="submit" class="btn-primary">Save Course</button>
+      </div>
+    </form>
+  </div>
+</div>
+
       <!-- Section: User Management -->
       <div class="admin-card user-management">
         <h2>Manage Accounts</h2>
         <div class="add-user-form">
+          <input type="text" id="new-user-name" placeholder="Full Name">
           <input type="email" id="new-user-email" placeholder="Email Address">
+          <input type="text" id="new-user-uid" placeholder="University ID">
           <input type="password" id="new-user-pass" placeholder="Password">
           <select id="new-user-role">
             <option value="member">Member</option>
@@ -80,50 +236,87 @@
     </div>
   </div>
 
-  <!-- Edit User Modal -->
-  <div id="editUserModal" class="modal" style="display:none;">
-    <div class="modal-content">
-      <span class="close" onclick="closeEditUserModal()">&times;</span>
-      <h2>Edit User</h2>
-      <form id="editUserForm" onsubmit="saveUserEdit(event)">
-        <input type="hidden" id="edit-original-email">
-        <div class="form-group">
-          <label>Name</label>
-          <input type="text" id="edit-user-name">
+
+<div id="editUserModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px;">
+  <div style="background:#1a1a2e; border-radius:12px; padding:30px; width:100%; max-width:550px; max-height:90vh; overflow-y:auto; border:1px solid rgba(255,255,255,0.1); position:relative;">
+    
+    <!-- Close Button -->
+    <span onclick="closeEditUserModal()" style="position:absolute; top:20px; right:25px; font-size:2rem; color:rgba(255,255,255,0.6); cursor:pointer; line-height:1; font-weight:300;">&times;</span>
+    
+    <h2 style="margin:0 0 25px 0; color:#fff; font-family:'Bebas Neue',cursive; font-size:1.8rem; letter-spacing:1px;">Edit User</h2>
+    
+    <form id="editUserForm" onsubmit="saveUserEdit(event)">
+      <input type="hidden" id="edit-original-email">
+      
+      <!-- Name & Email Row -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
+        <div style="margin-bottom:0;">
+          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:500;">Name</label>
+          <input type="text" id="edit-user-name" required style="width:100%; padding:12px 15px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.95rem; box-sizing:border-box;">
         </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="edit-user-email" required>
+        <div style="margin-bottom:0;">
+          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:500;">Email</label>
+          <input type="email" id="edit-user-email" required style="width:100%; padding:12px 15px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.95rem; box-sizing:border-box;">
         </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="edit-user-pass" required>
+      </div>
+      
+      <!-- Password & Role Row -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
+        <div style="margin-bottom:0;">
+          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:500;">Password</label>
+          <input type="password" id="edit-user-pass" placeholder="Leave blank to keep" style="width:100%; padding:12px 15px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.95rem; box-sizing:border-box;">
         </div>
-        <div class="form-group">
-          <label>Role</label>
-          <select id="edit-user-role" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.3); background:rgba(255,255,255,0.1); color:white;">
-            <option value="member" style="color:black;">Member</option>
-            <option value="admin" style="color:black;">Admin</option>
+        <div style="margin-bottom:0;">
+          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:500;">Role</label>
+          <select id="edit-user-role" style="width:100%; padding:12px 15px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.95rem; box-sizing:border-box;">
+            <option value="member" style="color:#000;">Member</option>
+            <option value="admin" style="color:#000;">Admin</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>University ID</label>
-          <input type="text" id="edit-user-uid">
+      </div>
+      
+      <!-- University ID - Full Width -->
+      <div style="margin-bottom:20px;">
+        <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:500;">University ID</label>
+        <input type="text" id="edit-user-uid" style="width:100%; padding:12px 15px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.95rem; box-sizing:border-box;">
+      </div>
+      
+      <!-- Badges Section -->
+      <div style="margin-bottom:25px;">
+        <label style="display:block; margin-bottom:12px; color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:500;">Badges</label>
+        <div id="edit-user-badges" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px;">
+          <label style="display:flex; align-items:center; gap:10px; padding:12px 15px; background:rgba(255,255,255,0.08); border-radius:8px; cursor:pointer; color:rgba(255,255,255,0.9); font-size:0.9rem; transition:background 0.2s;">
+            <input type="checkbox" value="🎵 Perfect Pitch" style="width:18px; height:18px; margin:0; cursor:pointer;"> 
+            <span>🎵 Perfect Pitch</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:10px; padding:12px 15px; background:rgba(255,255,255,0.08); border-radius:8px; cursor:pointer; color:rgba(255,255,255,0.9); font-size:0.9rem; transition:background 0.2s;">
+            <input type="checkbox" value="🎸 Guitar Hero" style="width:18px; height:18px; margin:0; cursor:pointer;"> 
+            <span>🎸 Guitar Hero</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:10px; padding:12px 15px; background:rgba(255,255,255,0.08); border-radius:8px; cursor:pointer; color:rgba(255,255,255,0.9); font-size:0.9rem; transition:background 0.2s;">
+            <input type="checkbox" value="🥁 Rhythm Master" style="width:18px; height:18px; margin:0; cursor:pointer;"> 
+            <span>🥁 Rhythm Master</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:10px; padding:12px 15px; background:rgba(255,255,255,0.08); border-radius:8px; cursor:pointer; color:rgba(255,255,255,0.9); font-size:0.9rem; transition:background 0.2s;">
+            <input type="checkbox" value="🎤 Vocal Virtuoso" style="width:18px; height:18px; margin:0; cursor:pointer;"> 
+            <span>🎤 Vocal Virtuoso</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:10px; padding:12px 15px; background:rgba(255,255,255,0.08); border-radius:8px; cursor:pointer; color:rgba(255,255,255,0.9); font-size:0.9rem; transition:background 0.2s;">
+            <input type="checkbox" value="🎹 Keys Maestro" style="width:18px; height:18px; margin:0; cursor:pointer;"> 
+            <span>🎹 Keys Maestro</span>
+          </label>
         </div>
-        <div class="form-group">
-          <label>Badges</label>
-          <div id="edit-user-badges" style="display: grid; grid-auto-flow: row; gap: 5px;">
-            <label style="font-weight: normal; margin-bottom: 0;"><input type="checkbox" value="🎵 Perfect Pitch" style="width:auto; display:inline-block; margin-right: 8px;">🎵 Perfect Pitch</label>
-            <label style="font-weight: normal; margin-bottom: 0;"><input type="checkbox" value="🎸 Guitar Hero" style="width:auto; display:inline-block; margin-right: 8px;">🎸 Guitar Hero</label>
-            <label style="font-weight: normal; margin-bottom: 0;"><input type="checkbox" value="🥁 Rhythm Master" style="width:auto; display:inline-block; margin-right: 8px;">🥁 Rhythm Master</label>
-            <label style="font-weight: normal; margin-bottom: 0;"><input type="checkbox" value="🎤 Vocal Virtuoso" style="width:auto; display:inline-block; margin-right: 8px;">🎤 Vocal Virtuoso</label>
-            <label style="font-weight: normal; margin-bottom: 0;"><input type="checkbox" value="🎹 Keys Maestro" style="width:auto; display:inline-block; margin-right: 8px;">🎹 Keys Maestro</label>
-          </div>
-        </div>
-        <button type="submit" class="btn-primary" style="margin-top: 10px;">Save Changes</button>
-      </form>
-    </div>
+      </div>
+      
+      <!-- Buttons -->
+      <div style="display:flex; justify-content:flex-end; gap:15px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.1); margin-top:10px;">
+        <button type="button" onclick="closeEditUserModal()" class="btn-primary" style="background:rgba(255,255,255,0.15); padding:12px 25px; font-size:0.95rem; font-weight:600; border:none; border-radius:8px; cursor:pointer; transition:all 0.2s;">Cancel</button>
+        <button type="submit" class="btn-primary" style="padding:12px 25px; font-size:0.95rem; font-weight:600; border:none; border-radius:8px; cursor:pointer; transition:all 0.2s;">Save Changes</button>
+      </div>
+    </form>
+    
   </div>
+</div>
 
   <div id="Msg"></div>
 
@@ -145,7 +338,7 @@
         <ul>
           <li><a href="/home">Home</a></li>
           <li><a href="/about">About Us</a></li>
-          <li><a href="">Events</a></li>
+          <li><a href="/events">Events</a></li>
           <li><a href="/courses">Courses</a></li>
           <li><a href="/apply">Apply</a></li>
           </ul>
@@ -153,6 +346,7 @@
     </div>
   </footer>
 
-  <script src="Admin_Dashboard.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/admin_dashboard.js"></script>
 </body>
 </html>

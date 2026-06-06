@@ -3,7 +3,7 @@
 // Used by ALL team members for every API call
 
 function getAuthHeaders() {
-  const token = sessionStorage.getItem('token');
+  const token = localStorage.getItem('token');
   return {
     'Content-Type': 'application/json',
     ...(token ? { 'Authorization': `Bearer ${token}` } : {})
@@ -16,32 +16,40 @@ async function apiFetch(url, options = {}) {
       ...options,
       headers: { ...getAuthHeaders(), ...(options.headers || {}) }
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || `Request failed with status ${res.status}`);
+
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      data = null; // fallback if response isn’t JSON
+    }
+
+    if (!res.ok) throw new Error(data?.error || `Request failed with status ${res.status}`);
     return data;
   } catch (err) {
-    console.error(`apiFetch error [${url}]:`, err.message);
+    console.error('apiFetch error:', err.message);
     throw err;
   }
 }
 
+
 function isLoggedIn() {
-  return !!sessionStorage.getItem('token');
+  return !!localStorage.getItem('token');
 }
 
 function getStoredUser() {
-  const u = sessionStorage.getItem('user');
+  const u = localStorage.getItem('user');
   return u ? JSON.parse(u) : null;
 }
 
 function saveAuth(token, user) {
-  sessionStorage.setItem('token', token);
-  sessionStorage.setItem('user', JSON.stringify(user));
+  localStorage.setItem('token', token);
+  localStorage.setItem('user', JSON.stringify(user));
 }
 
 function clearAuth() {
-  sessionStorage.removeItem('token');
-  sessionStorage.removeItem('user');
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
 }
 
 function showToast(message, type = 'success') {

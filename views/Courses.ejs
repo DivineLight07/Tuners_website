@@ -8,33 +8,52 @@
 <body style="background-image: url('/images/IMG_4362.png'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
 
   <nav id="navbar">
-  <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/></a>
-  <ul>
-    <li><a href="/home">Home</a></li>
-    <li><a href="/about">About Us</a></li>
-    <li><a href="/apply">Apply</a></li>
-    <li><a href="#site-footer">Contact</a></li>
-    <li><a href="/courses">Courses</a></li>
-    <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
+    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/></a>
+    <ul>
+      <li><a href="/home">Home</a></li>
+      <li><a href="/about">About Us</a></li>
+      <li><a href="/apply">Apply</a></li>
+      <li><a href="#site-footer">Contact</a></li>
+      <li><a href="/courses">Courses</a></li>
+      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
     </ul>
     <div class="nav-auth">
       <a href="/login" id="nav-login-btn">Login</a>
-        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
+      <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
     </div>
-</nav>
+  </nav>
 
-<h1>Courses</h1>
-<p class="cta">Explore our music courses</p>
+  <main class="page-content" style="padding: 40px 20px; max-width: 1400px; margin: 0 auto;">
+    
+    <!-- Header -->
+    <section class="intro" style="text-align: center; margin-bottom: 40px;">
+      <h1 style="color: #fff; font-family: 'Bebas Neue', cursive; font-size: 3rem; margin: 0 0 15px; letter-spacing: 2px;">🎵 Our Courses</h1>
+      <p class="cta" style="color: rgba(255,255,255,0.8); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+        Learn from experienced instructors with our exclusive video courses. From music theory to advanced techniques, we've got you covered!
+      </p>
+    </section>
 
-<div id="courses" class="courses-grid"></div>
+    <!-- Category Filter -->
+    <div class="filter-section">
+      <button onclick="filterCourses('all')" class="filter-btn active">All Courses</button>
+      <button onclick="filterCourses('Music Theory')" class="filter-btn">Music Theory</button>
+      <button onclick="filterCourses('Instrument')" class="filter-btn">Instrument</button>
+      <button onclick="filterCourses('Vocal')" class="filter-btn">Vocal</button>
+      <button onclick="filterCourses('Workshop')" class="filter-btn">Workshop</button>
+    </div>
 
-<div id="adminPanel" class="hidden">
-  <h2>Add Course</h2>
-  <input id="title" placeholder="Course Title"><br>
-  <input id="desc" placeholder="Description"><br>
-  <input id="img" placeholder="Image URL"><br>
-  <button onclick="addCourse()">Add Course</button>
-</div>
+    <!-- Courses Grid -->
+    <div id="coursesGrid" class="courses-grid">
+      <p style="text-align: center; color: rgba(255,255,255,0.6); grid-column: 1/-1; padding: 40px;">Loading courses...</p>
+    </div>
+
+    <!-- Empty State (Hidden by Default) -->
+    <div id="emptyState" style="display: none; text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.6);">
+      <p style="font-size: 1.2rem;">🎸 No courses available yet.</p>
+      <p style="margin-top: 10px;">Check back soon for new lessons!</p>
+    </div>
+
+  </main>
 
   <footer class="footer" id="site-footer">
     <div class="footer-content">
@@ -62,6 +81,8 @@
     </div>
   </footer>
 
-<script src="courses.js"></script>
+  <!-- External JavaScript File -->
+  <script src="/js/courses.js"></script>
+  
 </body>
 </html>
