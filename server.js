@@ -1,8 +1,14 @@
 const express    = require('express');
 const mongoose   = require('mongoose');
 const dotenv     = require('dotenv');
+
+dotenv.config({ path: '.env' });
+
 const path       = require('path');
 const cors       = require('cors');
+const session    = require('express-session');  // ← ADD
+const passport   = require('passport');          // ← ADD
+require('./middleware/passport');                    // ← ADD
 
 // Middleware
 const errorHandler = require('./middleware/errorHandler');
@@ -13,13 +19,18 @@ const auth = require('./routes/auth');
 const users = require('./routes/users');
 const room = require('./routes/room'); // ✅ Import room routes
 
-dotenv.config({ path: '.env' });
-
 const app = express();
 
 // Global Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));  // ← ADD (needed for form posts)
+app.use(session({                                  // ← ADD
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());                    // ← ADD
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('view engine', 'ejs');
@@ -32,6 +43,8 @@ app.use('/api/v1/auth', auth);
 app.use('/api/v1/room', room);
 app.use('/api/v1/board', require('./routes/board'));
 app.use('/api/v1/courses', require('./routes/courses'));
+app.use('/auth/google',         require('./routes/googleAuth'));  // ← ADD here
+
 
 // ─── PAGE ROUTES ─────────────────────────────────────────────────────────────
 app.get('/', (req, res) => res.render('Apply_Form'));
@@ -39,9 +52,19 @@ app.get('/home', (req, res) => res.render('home_page'));
 app.get('/about', (req, res) => res.render('About_us'));
 app.get('/apply', (req, res) => res.render('Apply_Form'));
 app.get('/courses', (req, res) => res.render('Courses'));
-app.get('/login', (req, res) => res.render('Login'));
 app.get('/admin', (req, res) => res.render('Admin_Dashboard'));
 app.get('/member', (req, res) => res.render('member_dashboard'));
+app.get('/login', (req, res) => {          // ← REPLACE your current /login route
+  const errorMessages = {
+    google_failed: 'Google sign-in failed. Only approved MIU accounts are allowed.',
+    not_registered: 'This google account isn\'t registered, still didnt join? <a href="/apply" style="color: red; font-weight: bold; text-decoration: none;">apply now</a>',
+    pending:       'Your account is pending admin approval. Please wait.',
+    banned:        'Your account has been banned. Contact an admin.'
+  };
+  const error = req.query.error ? (errorMessages[req.query.error] || req.query.error) : null;
+  res.render('Login', { error, user: null });
+});
+
 
 // ─── CATCH-ALL (MUST BE LAST) ────────────────────────────────────────────────
 app.use((req, res) => {

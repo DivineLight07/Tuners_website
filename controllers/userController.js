@@ -55,6 +55,14 @@ exports.updateUser = async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ success: false, error: 'User not found' });
 
+    // Permission checks
+    if (user.email === 'admin@miuegypt.edu.eg' && req.user.email !== 'admin@miuegypt.edu.eg') {
+      return res.status(403).json({ success: false, error: 'Cannot modify the system admin.' });
+    }
+    if (user.role === 'admin' && req.user.email !== 'admin@miuegypt.edu.eg' && req.user._id.toString() !== user._id.toString()) {
+      return res.status(403).json({ success: false, error: 'Only system admin can modify other admins.' });
+    }
+
     // Apply updates (skip password here, we handle it below so it gets hashed)
     allowedUpdates.forEach(field => {
       if (req.body[field] !== undefined && field !== 'password') {
@@ -88,8 +96,17 @@ exports.updateUser = async (req, res, next) => {
 // DELETE a user
 exports.deleteUser = async (req, res, next) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) return res.status(404).json({ success: false, error: 'User not found' });
+    const targetUser = await User.findById(req.params.id);
+    if (!targetUser) return res.status(404).json({ success: false, error: 'User not found' });
+
+    if (targetUser.email === 'admin@miuegypt.edu.eg') {
+      return res.status(403).json({ success: false, error: 'Cannot delete the system admin.' });
+    }
+    if (targetUser.role === 'admin' && req.user.email !== 'admin@miuegypt.edu.eg') {
+      return res.status(403).json({ success: false, error: 'Only system admin can delete other admins.' });
+    }
+
+    await targetUser.deleteOne();
     res.status(200).json({ success: true, message: 'User deleted' });
   } catch (err) {
     next(err);

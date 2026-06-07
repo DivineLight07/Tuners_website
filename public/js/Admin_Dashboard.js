@@ -204,16 +204,52 @@ async function loadUsers() {
             return;
         }
 
-        userList.innerHTML = usersCache.map(user => `
+        const currentUserStr = localStorage.getItem('user');
+        const currentUser = currentUserStr ? JSON.parse(currentUserStr) : null;
+        const currentUserId = currentUser ? currentUser.id : null;
+        const currentUserEmail = currentUser ? currentUser.email : null;
+
+        userList.innerHTML = usersCache.map(user => {
+            let actionsHtml = '';
+
+            if (user.email === 'admin@miuegypt.edu.eg') {
+                if (currentUserEmail === 'admin@miuegypt.edu.eg') {
+                    actionsHtml = `
+                        <button onclick="editUser('${user._id}')" class="btn-primary" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
+                        <span style="font-size:0.8rem;color:#888;">System</span>
+                    `;
+                } else {
+                    actionsHtml = '<span style="font-size:0.8rem;color:#888;">System</span>';
+                }
+            } else if (user._id === currentUserId) {
+                actionsHtml = `
+                    <button onclick="editUser('${user._id}')" class="btn-primary" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
+                    <span style="font-size:0.8rem;color:#888;">You</span>
+                `;
+            } else if (user.role === 'admin') {
+                if (currentUserEmail === 'admin@miuegypt.edu.eg') {
+                    actionsHtml = `
+                        <button onclick="editUser('${user._id}')" class="btn-primary" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
+                        <button onclick="deleteUser('${user._id}')" class="btn-delete">Delete</button>
+                    `;
+                } else {
+                    actionsHtml = '<span style="font-size:0.8rem;color:#888;">Admin</span>';
+                }
+            } else {
+                actionsHtml = `
+                    <button onclick="editUser('${user._id}')" class="btn-primary" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
+                    <button onclick="deleteUser('${user._id}')" class="btn-delete">Delete</button>
+                `;
+            }
+
+            return `
             <tr>
                 <td>${user.email}</td>
                 <td>${user.role}</td>
-                <td>
-                    <button onclick="editUser('${user._id}')" class="btn-primary" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
-                    ${user.email !== 'admin@miuegypt.edu.eg' ? `<button onclick="deleteUser('${user._id}')" class="btn-delete">Delete</button>` : '<span style="font-size:0.8rem;color:#888;">System</span>'}
-                </td>
+                <td>${actionsHtml}</td>
             </tr>
-        `).join('');
+            `;
+        }).join('');
     } catch (err) {
         console.error('Error loading users:', err);
         userList.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#fff;">Unable to load users.</td></tr>';

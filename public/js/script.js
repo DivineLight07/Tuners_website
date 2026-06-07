@@ -118,6 +118,23 @@ function updateNavAuth() {
 
     if (userJson) {
         const user = JSON.parse(userJson);
+
+        // Fix navbar instability on the login page
+        if (window.location.pathname === '/login') {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('error')) {
+                // If they landed here with an error, clear their stale login state
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                updateNavAuth(); // re-run to update UI to logged-out state
+                return;
+            } else {
+                // No error, they just navigated to /login while logged in. Redirect to dashboard!
+                window.location.href = user.role === 'admin' ? '/admin' : '/member';
+                return;
+            }
+        }
+
         if (loginBtn) loginBtn.style.display = 'none';
         if (logoutBtn) logoutBtn.style.display = 'inline-block';
         if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'none';
