@@ -1,177 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>MIU Tuners Club - Apply</title>
-    <link rel="stylesheet" href="/css/Apply_Form.css">
-</head>
-
-<body style="background-image: url('/images/IMG_4362.png'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
-
-
-<nav id="navbar">
-    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/></a>
-  <ul>
-    <li><a href="/home">Home</a></li>
-    <li><a href="/about">About Us</a></li>
-    <li><a href="/apply">Apply</a></li>
-    <li><a href="#site-footer">Contact</a></li>
-    <li><a href="/courses">Courses</a></li>
-    <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
-    </ul>
-    <div class="nav-auth">
-        <a href="/login" id="nav-login-btn">Login</a>
-        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
-    </div>
-</nav>
-
-
-<div class="container">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MIU Tuners Club - Apply</title>
   
-    <div class="card">
-        <h1>MIU Tuners Club Application</h1>
-        <p>Fill out the form below to apply for membership.</p>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#1f6feb', foreground: '#ffffff' },
+            accent: '#133785',
+            background: 'rgba(10, 26, 62, 0.65)',
+            card: { DEFAULT: 'rgba(10, 26, 62, 0.45)', foreground: '#ffffff' },
+            destructive: { DEFAULT: '#ff6b6b', foreground: '#ffffff' },
+            muted: { DEFAULT: 'rgba(255,255,255,0.1)', foreground: 'rgba(255,255,255,0.6)' },
+            border: 'rgba(255,255,255,0.18)',
+            input: 'rgba(255,255,255,0.1)',
+          },
+          fontFamily: {
+            display: ['"Bebas Neue"', 'sans-serif'],
+            sans: ['Poppins', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer base {
+      body {
+        @apply font-sans text-white bg-cover bg-center bg-fixed min-h-screen relative flex flex-col;
+        background-image: url('/images/IMG_4362.png');
+      }
+      body::after {
+        content: '';
+        @apply fixed inset-0 bg-background -z-10;
+      }
+    }
+    .lucide { width: 1em; height: 1em; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
 
-        <form id="applicationForm">
+  <!-- NAVBAR -->
+  <nav id="navbar" class="w-full bg-[#133785]/85 backdrop-blur-md border-b border-white/15 grid grid-cols-[auto_1fr_auto] items-center px-8 py-2.5 sticky top-0 z-[100] transition-transform duration-300">
+    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo" class="h-12 w-auto drop-shadow-md"/></a>
+    <ul class="flex gap-10 justify-center">
+      <li><a href="/home" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Home</a></li>
+      <li><a href="/about" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">About Us</a></li>
+      <li><a href="/apply" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Apply</a></li>
+      <li><a href="#site-footer" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Contact</a></li>
+      <li><a href="/courses" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Courses</a></li>
+      <li><a href="/gallery" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Gallery</a></li>
+      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Dashboard</a></li>
+    </ul>
+    <div class="flex gap-4 items-center">
+        <a href="/login" id="nav-login-btn" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all">Login</a>
+        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all text-destructive border-destructive/50 hover:bg-destructive/20">Logout</button>
+    </div>
+  </nav>
 
-            <label for="fullname">Full Name:</label><br>
-            <input type="text" id="fullname" oninput="validateName(this)"><br>
-            <small id="nameError" style="color:red; display:none;">Name can only contain letters and spaces.</small><br><br>
-
-            <label for="student_id">Student ID:</label><br>
-            <input type="text" id="student_id" placeholder="e.g. 24/12345" oninput="formatStudentId(this)"><br>
-            <small id="studentIdError" style="color:red; display:none;">Student ID must be format: XX/XXXXX (e.g., 24/12345)</small><br><br>
-
-            <label for="year">Year:</label><br>
-            <select id="year">
-                <option value="">Select your year</option>
-                <option value="1st">1st Year</option>
-                <option value="2nd">2nd Year</option>
-                <option value="3rd">3rd Year</option>
-                <option value="4th">4th Year</option>
-                <option value="5th">5th Year</option>
-                <option value="graduate">Graduate</option>
-            </select><br><br>
-
-            <label for="committee">Which committee are you interested in?</label><br>
-            <select id="committee">
-                <option value="">Select a committee</option>
-                <option value="events">Events committee</option>
-                <option value="media">Social media committee</option>
-                <option value="technical">Technical committee</option>
-                <option value="academic">Academic committee</option>
-                <option value="musician">Musician committee</option>
-            </select><br><br>
-
+  <!-- CONTENT -->
+  <main class="flex-1 py-16 lg:py-24">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6">
+      <div data-aos="fade-up">
         
-            <div id="musician_fields" style="display: none;">
-                <label for="instrument">What instrument do you play?</label><br>
-                <select id="instrument">
-                    <option value="">Select your instrument</option>
-                    <option value="Guitar">Guitar</option>
-                    <option value="Piano">Piano</option>
-                    <option value="Drums">Drums</option>
-                    <option value="Violin">Violin</option>
-                    <option value="Bass Guitar">Bass Guitar</option>
-                    <option value="Keyboard">Keyboard</option>
-                    <option value="Vocals">Vocals</option>
-                    <option value="Saxophone">Saxophone</option>
-                    <option value="Flute">Flute</option>
-                    <option value="Other">Other</option>
-                </select>
-                <div id="other_instrument_container" style="display: none; margin-top: 10px;">
-                    <label for="other_instrument">Specify your instrument:</label><br>
-                    <input type="text" id="other_instrument" placeholder="e.g. Oud, Cello, etc.">
+        <div class="text-center mb-10">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 text-white text-sm font-medium mb-4 backdrop-blur-sm border border-primary/30">
+            <i data-lucide="music" class="w-3.5 h-3.5"></i>
+            Join the Band
+          </div>
+          <h1 class="text-4xl sm:text-5xl font-bold font-display tracking-wide">Apply to Tuners</h1>
+          <p class="mt-3 text-white/70">Fill out the form below to join MIU's music community.</p>
+          <p class="mt-2 text-sm text-white/70">
+            Already a member? <a href="/login" class="text-primary font-medium hover:text-white transition-colors">Sign in</a>
+          </p>
+        </div>
+
+        <div class="bg-card backdrop-blur-md border border-border/50 rounded-2xl shadow-xl shadow-primary/10 overflow-hidden">
+          <div class="p-8">
+            <form id="applicationForm" class="space-y-6">
+              
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div class="space-y-2">
+                  <label for="fullname" class="text-xs font-semibold tracking-widest uppercase text-white/80">Full Name *</label>
+                  <input type="text" id="fullname" oninput="validateName(this)" required placeholder="Your full name" class="w-full h-12 px-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"/>
+                  <small id="nameError" class="text-[0.72rem] text-destructive hidden block mt-1">Name can only contain letters and spaces.</small>
                 </div>
-                <br>
-            </div>
+                <div class="space-y-2">
+                  <label for="email" class="text-xs font-semibold tracking-widest uppercase text-white/80">Email *</label>
+                  <input type="email" id="email" oninput="validateEmail(this)" required placeholder="student@miuegypt.edu.eg" class="w-full h-12 px-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"/>
+                  <small id="emailError" class="text-[0.72rem] text-destructive hidden block mt-1">Email must end with @miuegypt.edu.eg</small>
+                </div>
+              </div>
 
-            <label for="major">Major:</label><br>
-            <select id="major">
-                <option value="">Select your major</option>
-                <option value="Computer Science">Computer Science</option>
-                <option value="Engineering">Engineering</option>
-                <option value="Al-Alsun">Al-Alsun</option>
-                <option value="Architecture">Architecture</option>
-                <option value="Business Administration">Business Administration</option>
-                <option value="Oral & Dental Medicine">Dental Medicine</option>
-                <option value="Electronics">Electronics</option>
-                <option value="Pharmacy">Pharmacy</option>
-                <option value="Mass Communication">Mass Communication</option>
-            </select><br><br>
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div class="space-y-2">
+                  <label for="phone" class="text-xs font-semibold tracking-widest uppercase text-white/80">Phone *</label>
+                  <input type="tel" id="phone" oninput="validatePhone(this)" required placeholder="01x xxxx xxxx" class="w-full h-12 px-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"/>
+                  <small id="phoneError" class="text-[0.72rem] text-destructive hidden block mt-1">Phone must be 11 digits starting with 01</small>
+                </div>
+                <div class="space-y-2">
+                  <label for="student_id" class="text-xs font-semibold tracking-widest uppercase text-white/80">Student ID *</label>
+                  <input type="text" id="student_id" oninput="formatStudentId(this)" required placeholder="24/12345" class="w-full h-12 px-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"/>
+                  <small id="studentIdError" class="text-[0.72rem] text-destructive hidden block mt-1">Format: XX/XXXXX (e.g., 24/12345)</small>
+                </div>
+              </div>
 
-            <label for="hear_about">How did you hear about the club?</label><br>
-            <input type="text" id="hear_about" placeholder="e.g. Instagram, Friend"><br><br>
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div class="space-y-2">
+                  <label for="year" class="text-xs font-semibold tracking-widest uppercase text-white/80">Academic Year *</label>
+                  <select id="year" required class="w-full h-12 px-4 bg-[#11244e] border border-border rounded-lg text-sm text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all appearance-none cursor-pointer">
+                    <option value="">Select year</option>
+                    <option value="1st">1st Year</option>
+                    <option value="2nd">2nd Year</option>
+                    <option value="3rd">3rd Year</option>
+                    <option value="4th">4th Year</option>
+                    <option value="5th">5th Year</option>
+                    <option value="Graduate">Graduate</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="major" class="text-xs font-semibold tracking-widest uppercase text-white/80">Major *</label>
+                  <select id="major" required class="w-full h-12 px-4 bg-[#11244e] border border-border rounded-lg text-sm text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all appearance-none cursor-pointer">
+                    <option value="">Select major</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Al-Alsun">Al-Alsun</option>
+                    <option value="Architecture">Architecture</option>
+                    <option value="Business Administration">Business Administration</option>
+                    <option value="Oral & Dental Medicine">Dental Medicine</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Pharmacy">Pharmacy</option>
+                    <option value="Mass Communication">Mass Communication</option>
+                  </select>
+                </div>
+              </div>
 
-            <label for="reason">Why do you want to join the club?</label><br>
-            <textarea id="reason" rows="4" placeholder="e.g. I want to improve my skills..."></textarea><br><br>
-            <label for="email">Email:</label><br>
-            <input type="email" id="email" placeholder="e.g. student@miuegypt.edu.eg" oninput="validateEmail(this)"><br>
-            <small id="emailError" style="color:red; display:none;">Email must end with @miuegypt.edu.eg</small><br><br>
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div class="space-y-2">
+                  <label for="committee" class="text-xs font-semibold tracking-widest uppercase text-white/80">Preferred Committee *</label>
+                  <select id="committee" required class="w-full h-12 px-4 bg-[#11244e] border border-border rounded-lg text-sm text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all appearance-none cursor-pointer">
+                    <option value="">Select committee</option>
+                    <option value="events">Events committee</option>
+                    <option value="media">Social media committee</option>
+                    <option value="technical">Technical committee</option>
+                    <option value="academic">Academic committee</option>
+                    <option value="musician">Musician committee</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="hear_about" class="text-xs font-semibold tracking-widest uppercase text-white/80">How did you hear about us?</label>
+                  <input type="text" id="hear_about" placeholder="e.g. Instagram, Friend" class="w-full h-12 px-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"/>
+                </div>
+              </div>
 
-            <label for="phone">Phone Number:</label><br>
-            <input type="tel" id="phone" placeholder="e.g. 01234567890" oninput="validatePhone(this)"><br>
-            <small id="phoneError" style="color:red; display:none;">Phone must be exactly 11 digits starting with 01</small><br><br>
+              <div id="musician_fields" style="display: none;" class="bg-black/20 p-4 rounded-xl border border-white/5 space-y-4">
+                  <div class="space-y-2">
+                    <label for="instrument" class="text-xs font-semibold tracking-widest uppercase text-white/80">What instrument do you play?</label>
+                    <select id="instrument" class="w-full h-12 px-4 bg-[#11244e] border border-border rounded-lg text-sm text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all appearance-none cursor-pointer">
+                        <option value="">Select instrument</option>
+                        <option value="Guitar">Guitar</option>
+                        <option value="Piano">Piano</option>
+                        <option value="Drums">Drums</option>
+                        <option value="Violin">Violin</option>
+                        <option value="Bass Guitar">Bass Guitar</option>
+                        <option value="Keyboard">Keyboard</option>
+                        <option value="Vocals">Vocals</option>
+                        <option value="Saxophone">Saxophone</option>
+                        <option value="Flute">Flute</option>
+                        <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div id="other_instrument_container" style="display: none;" class="space-y-2">
+                      <label for="other_instrument" class="text-xs font-semibold tracking-widest uppercase text-white/80">Specify your instrument:</label>
+                      <input type="text" id="other_instrument" placeholder="e.g. Oud, Cello, etc." class="w-full h-12 px-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all">
+                  </div>
+              </div>
 
-            <button type="submit">Submit Application</button>
-            <button type="reset">Reset Form</button>
+              <div class="space-y-2">
+                <label for="reason" class="text-xs font-semibold tracking-widest uppercase text-white/80">Why do you want to join Tuners?</label>
+                <textarea id="reason" rows="4" placeholder="Tell us about your musical journey and what excites you about Tuners..." class="w-full p-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all resize-none"></textarea>
+              </div>
 
-        </form>
-    </div>
+              <div class="flex gap-4 pt-4">
+                <button type="submit" class="flex-1 h-12 flex items-center justify-center gap-2 bg-primary hover:bg-[#1a48a8] text-white font-display text-lg tracking-widest rounded-xl transition-all shadow-lg hover:-translate-y-[1px]">
+                  <i data-lucide="send" class="w-4 h-4"></i> Submit Application
+                </button>
+                <button type="reset" class="px-6 h-12 border-2 border-white/20 hover:border-white/50 text-white font-semibold rounded-xl transition-colors">
+                  Reset
+                </button>
+              </div>
 
-</div>
-
-
-<footer class="footer" id="site-footer">
-    <div class="footer-content">
-        <div class="footer-section">
-            <h3>📍 Contact Us</h3>
-            <p>🏫Misr International University (MIU)</p>
-            <p>📧 <strong>Email:</strong> tuners@miuegypt.edu.eg</p>
+            </form>
+          </div>
         </div>
-        <div class="footer-section">
-            <h3>📱 Follow Us</h3>
-            <ul>
-                <li><a href="https://www.instagram.com/tunersclubmiu" target="_blank">📸 Instagram</a></li>
-                <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">📘 Facebook</a></li>
-                <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">🎵 TikTok</a></li>
-            </ul>
-        </div>
-        <div class="footer-section">
-            <h3>🔗 Quick Links</h3>
-            <ul>
-                <li><a href="/home">Home</a></li>
-                <li><a href="/about">About Us</a></li>
-                <li><a href="#">Events</a></li>
-                <li><a href="/courses">Courses</a></li>
-                <li><a href="/apply">Apply</a></li>
-            </ul>
-        </div>
+      </div>
     </div>
-    <div class="footer-bottom">
-        <p>&copy; MIU Tuners Club. All rights reserved.</p>
+  </main>
+
+  <!-- Application Success Modal -->
+  <div id="application-success-modal" class="fixed inset-0 bg-black/80 z-[10000] hidden items-center justify-center p-4 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+    <div id="success-modal-content" class="bg-[#0a1a3e] rounded-[2rem] p-8 max-w-md w-full border border-white/10 text-center shadow-2xl scale-95 transition-transform duration-300 transform">
+      <div class="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-6">
+        <i data-lucide="check-circle" class="w-8 h-8 text-green-500"></i>
+      </div>
+      <h2 class="text-3xl font-bold font-display tracking-wide mb-4 text-white">Application Successful</h2>
+      <p class="text-white/70 mb-8 leading-relaxed text-sm">
+        Thank you for applying. Your application has been successfully submitted and is currently pending review from our administration team.
+      </p>
+      <button onclick="closeSuccessModal()" class="w-full h-12 bg-primary hover:bg-[#1a48a8] text-white font-display tracking-widest text-lg rounded-xl transition-all shadow-lg hover:-translate-y-[1px]">
+        OK
+      </button>
     </div>
-</footer>
+  </div>
 
+  <!-- FOOTER -->
+  <footer class="w-full bg-[#0a1a3e]/65 backdrop-blur-md border-t border-white/15 py-10 mt-auto relative overflow-hidden" id="site-footer">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[100px] bg-primary/10 blur-[80px] pointer-events-none"></div>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-8 relative z-10">
+      <div class="flex flex-col">
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider flex items-center gap-2"><i data-lucide="music"></i> Tuners MIU</h3>
+        <p class="text-white/60 text-sm mb-4 leading-relaxed">The official music club of Misr International University. Bringing harmony to campus life.</p>
+        <div class="mt-auto">
+          <h4 class="text-sm font-semibold mb-2 text-white/80">Contact Us</h4>
+          <a href="mailto:tuners.miu.eg@gmail.com" class="inline-flex items-center gap-2 text-primary-400 hover:text-white transition-colors text-sm font-medium"><i data-lucide="mail" class="w-4 h-4"></i> tuners.miu.eg@gmail.com</a>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Follow Us</h3>
+        <ul class="space-y-3">
+          <li><a href="https://www.instagram.com/tunersclubmiu" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Instagram.png" class="w-4 h-4 object-contain" alt="Instagram"> Instagram</a></li>
+          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Facebook.png" class="w-4 h-4 object-contain" alt="Facebook"> Facebook</a></li>
+          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Tiktok.png" class="w-4 h-4 object-contain" alt="TikTok"> TikTok</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Quick Links</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <a href="/home" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Home</a>
+          <a href="/about" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">About Us</a>
+          <a href="/courses" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Courses</a>
+          <a href="/gallery" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Gallery</a>
+          <a href="/apply" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Apply</a>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto px-8 mt-10 pt-6 border-t border-white/10 text-center">
+      <p class="text-white/40 text-xs">© 2026 Tuners Club MIU. All rights reserved.</p>
+    </div>
+  </footer>
 
-<script src="/js/tuners.js"></script>
-
-<script>
-    // Name validation - only letters and spaces
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  
+  <script>
+    lucide.createIcons();
+    AOS.init({ duration: 600, once: true });
+    
+    // Validation functions from old EJS
     function validateName(input) {
         const nameError = document.getElementById('nameError');
         const regex = /^[A-Za-z\s]*$/;
         if (!regex.test(input.value)) {
-            nameError.style.display = 'inline';
-            input.style.borderColor = 'red';
+            nameError.classList.remove('hidden');
+            input.classList.add('border-destructive');
         } else {
-            nameError.style.display = 'none';
-            input.style.borderColor = '';
+            nameError.classList.add('hidden');
+            input.classList.remove('border-destructive');
         }
     }
 
- 
     function formatStudentId(input) {
         let val = input.value.replace(/[^0-9]/g, '');
         if (val.length > 2) {
@@ -182,15 +287,14 @@
         const studentIdError = document.getElementById('studentIdError');
         const regex = /^\d{2}\/\d{4,5}$/;
         if (input.value && !regex.test(input.value)) {
-            studentIdError.style.display = 'inline';
-            input.style.borderColor = 'red';
+            studentIdError.classList.remove('hidden');
+            input.classList.add('border-destructive');
         } else {
-            studentIdError.style.display = 'none';
-            input.style.borderColor = '';
+            studentIdError.classList.add('hidden');
+            input.classList.remove('border-destructive');
         }
     }
 
-  
     function validatePhone(input) {
         let val = input.value.replace(/[^0-9]/g, '');
         if (val.length > 11) val = val.slice(0, 11);
@@ -199,27 +303,47 @@
         const phoneError = document.getElementById('phoneError');
         const regex = /^01[0-9]{9}$/;
         if (input.value && !regex.test(input.value)) {
-            phoneError.style.display = 'inline';
-            input.style.borderColor = 'red';
+            phoneError.classList.remove('hidden');
+            input.classList.add('border-destructive');
         } else {
-            phoneError.style.display = 'none';
-            input.style.borderColor = '';
+            phoneError.classList.add('hidden');
+            input.classList.remove('border-destructive');
         }
     }
 
-  
     function validateEmail(input) {
         const emailError = document.getElementById('emailError');
         const value = input.value.trim();
         if (value && !value.toLowerCase().endsWith('@miuegypt.edu.eg')) {
-            emailError.style.display = 'inline';
-            input.style.borderColor = 'red';
+            emailError.classList.remove('hidden');
+            input.classList.add('border-destructive');
         } else {
-            emailError.style.display = 'none';
-            input.style.borderColor = '';
+            emailError.classList.add('hidden');
+            input.classList.remove('border-destructive');
         }
     }
-</script>
 
+    // Toggle musician fields logic from tuners.js
+    document.getElementById('committee').addEventListener('change', function() {
+        const musicianFields = document.getElementById('musician_fields');
+        if (this.value === 'musician') {
+            musicianFields.style.display = 'block';
+        } else {
+            musicianFields.style.display = 'none';
+        }
+    });
+
+    document.getElementById('instrument').addEventListener('change', function() {
+        const otherInstrumentContainer = document.getElementById('other_instrument_container');
+        if (this.value === 'Other') {
+            otherInstrumentContainer.style.display = 'block';
+        } else {
+            otherInstrumentContainer.style.display = 'none';
+        }
+    });
+  </script>
+  
+  <script src="/js/script.js"></script>
+  <script src="/js/tuners.js"></script>
 </body>
 </html>

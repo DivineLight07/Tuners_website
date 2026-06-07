@@ -37,7 +37,7 @@ const validateApplication = [
     .notEmpty().withMessage('Committee selection is required'),
 
   body('year')
-    .isIn(['1st', '2nd', '3rd', '4th', '5th', 'graduate']).withMessage('Year must be 1st, 2nd, 3rd, 4th, 5th, or graduate'),
+    .isIn(['1st', '2nd', '3rd', '4th', '5th', 'Graduate']).withMessage('Year must be 1st, 2nd, 3rd, 4th, 5th, or Graduate'),
 
   body('major')
     .notEmpty().withMessage('Major is required')

@@ -1,122 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TUNERS — Login</title>
+  
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/css/Login.css"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#1f6feb', foreground: '#ffffff' },
+            accent: '#133785',
+            background: 'rgba(10, 26, 62, 0.65)',
+            card: { DEFAULT: 'rgba(10, 26, 62, 0.45)', foreground: '#ffffff' },
+            destructive: { DEFAULT: '#ff6b6b', foreground: '#ffffff' },
+            muted: { DEFAULT: 'rgba(255,255,255,0.1)', foreground: 'rgba(255,255,255,0.6)' },
+            border: 'rgba(255,255,255,0.18)',
+            input: 'rgba(255,255,255,0.1)',
+          },
+          fontFamily: {
+            display: ['"Bebas Neue"', 'sans-serif'],
+            sans: ['Poppins', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer base {
+      body {
+        @apply font-sans text-white bg-cover bg-center bg-fixed min-h-screen relative flex flex-col;
+        background-image: url('/images/IMG_4362.png');
+      }
+      body::after {
+        content: '';
+        @apply fixed inset-0 bg-background -z-10;
+      }
+    }
+    .lucide { width: 1em; height: 1em; }
+    
+    /* Global classes used by script.js */
+    .hidden { display: none !important; }
+  </style>
 </head>
-<body style="background-image: url('/images/IMG_4362.png'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
+<body>
 
-  <nav id="navbar">
-    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/></a>
-    <ul>
-      <li><a href="/home">Home</a></li>
-      <li><a href="/about">About Us</a></li>
-      <li><a href="/apply">Apply</a></li>
-      <li><a href="#site-footer">Contact</a></li>
-      <li><a href="/courses">Courses</a></li>
-      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
+  <nav id="navbar" class="w-full bg-[#133785]/85 backdrop-blur-md border-b border-white/15 grid grid-cols-[auto_1fr_auto] items-center px-8 py-2.5 sticky top-0 z-[100] transition-transform duration-300">
+    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo" class="h-12 w-auto drop-shadow-md"/></a>
+    <ul class="flex gap-10 justify-center">
+      <li><a href="/home" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Home</a></li>
+      <li><a href="/about" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">About Us</a></li>
+      <li><a href="/apply" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Apply</a></li>
+      <li><a href="#site-footer" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Contact</a></li>
+      <li><a href="/courses" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Courses</a></li>
+      <li><a href="/gallery" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Gallery</a></li>
+      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Dashboard</a></li>
     </ul>
-    <div class="nav-auth">
-        <a href="/login" id="nav-login-btn">Login</a>
-        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
+    <div class="flex gap-4 items-center">
+        <a href="/login" id="nav-login-btn" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all">Login</a>
+        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all text-destructive border-destructive/50 hover:bg-destructive/20">Logout</button>
     </div>
   </nav>
 
-  
-  <div class="pages-wrap">
+  <div class="flex-1 flex items-center justify-center p-4">
+    <div id="page-login" class="page active w-full max-w-md" data-aos="fade-up">
+      <!-- Auth Layout Structure -->
+      <div class="bg-card backdrop-blur-md border border-border rounded-[20px] p-8 sm:p-10 shadow-2xl">
+        <div class="flex justify-center mb-6">
+          <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+            <i data-lucide="log-in" class="w-6 h-6 text-primary"></i>
+          </div>
+        </div>
+        
+        <div class="text-center mb-8">
+          <h2 class="text-3xl font-display tracking-wide mb-2">Welcome back</h2>
+          <p class="text-sm text-muted-foreground">Log in to your account</p>
+        </div>
 
-    <div id="page-login" class="page active">
-      <div class="card">
-        <h2>Welcome Back</h2>
-        <p>Sign in to your Tuners account</p>
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div class="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm text-center">
+            <%- error %>
+          </div>
+        <% } %>
 
-        <!-- ADD THIS -->
-<% if (typeof error !== 'undefined' && error) { %>
-  <div class="server-err" style="color: red;"><%- error %></div>
-<% } %>
+        <a href="/auth/google" class="w-full h-12 mb-6 flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-gray-900 font-sans font-medium rounded-xl transition-all shadow border border-gray-200">
+          <svg width="18" height="18" viewBox="0 0 48 48">
+            <path fill="#EA4335" d="M24 9.5c3.1 0 5.8 1.1 8 2.9l6-6C34.5 3.1 29.6 1 24 1 14.8 1 7 6.7 3.7 14.7l7 5.4C12.5 13.6 17.8 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.4 5.7c4.3-4 6.8-9.9 6.8-16.9z"/>
+            <path fill="#FBBC05" d="M10.7 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.2.8-4.6l-7-5.4A23.9 23.9 0 0 0 .5 24c0 3.9.9 7.5 2.6 10.8l7.6-6.2z"/>
+            <path fill="#34A853" d="M24 46.5c5.5 0 10.2-1.8 13.6-4.9l-7.4-5.7c-1.8 1.2-4.1 1.9-6.2 1.9-6.2 0-11.4-4.2-13.3-9.8l-7.6 6.2C7 42.7 14.9 46.5 24 46.5z"/>
+          </svg>
+          Continue with Google
+        </a>
 
-        <label>Email</label>
-        <input type="email" id="login-email" placeholder="you@miuegypt.edu.eg"/>
-        <span class="err" id="login-email-err">Enter a valid email address.</span>
+        <div class="relative mb-6">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-border"></div>
+          </div>
+          <div class="relative flex justify-center text-xs uppercase">
+            <span class="bg-card px-3 text-muted-foreground">or</span>
+          </div>
+        </div>
 
-        <label>Password</label>
-        <input type="password" id="login-pass" placeholder="Password"/>
-        <span class="err" id="login-pass-err">Password is required.</span>
+        <div id="login-wrong-err" class="hidden mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm text-center">Incorrect email or password.</div>
 
-        <span id="login-wrong-err">Incorrect email or password.</span>
+        <div class="space-y-4">
+          <div class="space-y-2">
+            <label for="login-email" class="text-xs font-semibold tracking-widest uppercase text-muted-foreground">Email</label>
+            <div class="relative">
+              <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"></i>
+              <input
+                id="login-email"
+                type="email"
+                required
+                placeholder="you@miuegypt.edu.eg"
+                class="w-full h-12 pl-10 pr-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"
+              />
+            </div>
+            <span class="hidden text-[0.72rem] text-destructive mt-1" id="login-email-err">Enter a valid email address.</span>
+          </div>
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label for="login-pass" class="text-xs font-semibold tracking-widest uppercase text-muted-foreground">Password</label>
+            </div>
+            <div class="relative">
+              <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"></i>
+              <input
+                id="login-pass"
+                type="password"
+                required
+                placeholder="••••••••"
+                class="w-full h-12 pl-10 pr-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"
+              />
+            </div>
+            <span class="hidden text-[0.72rem] text-destructive mt-1" id="login-pass-err">Password is required.</span>
+          </div>
+          
+          <button onclick="handleLogin()" class="w-full h-12 bg-primary hover:bg-[#1a48a8] text-white font-display text-lg tracking-widest rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-[1px] flex items-center justify-center">
+            Login
+          </button>
+        </div>
 
-        <button class="btn" onclick="handleLogin()">Login</button>
-
-        <div class="divider"><span>or</span></div>
-    
-            <a href="/auth/google" class="btn google-btn">
-              <svg width="18" height="18" viewBox="0 0 48 48" style="margin-right:10px;flex-shrink:0">
-                <path fill="#EA4335" d="M24 9.5c3.1 0 5.8 1.1 8 2.9l6-6C34.5 3.1 29.6 1 24 1 14.8 1 7 6.7 3.7 14.7l7 5.4C12.5 13.6 17.8 9.5 24 9.5z"/>
-                <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.4 5.7c4.3-4 6.8-9.9 6.8-16.9z"/>
-                <path fill="#FBBC05" d="M10.7 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.2.8-4.6l-7-5.4A23.9 23.9 0 0 0 .5 24c0 3.9.9 7.5 2.6 10.8l7.6-6.2z"/>
-                <path fill="#34A853" d="M24 46.5c5.5 0 10.2-1.8 13.6-4.9l-7.4-5.7c-1.8 1.2-4.1 1.9-6.2 1.9-6.2 0-11.4-4.2-13.3-9.8l-7.6 6.2C7 42.7 14.9 46.5 24 46.5z"/>
-              </svg>
-              Continue with Google
-            </a>
-    
-            <p class="switch-link">Not a member yet? <a href="/apply">Apply to join</a></p>
+        <div class="mt-8 text-center text-sm">
+          <span class="text-muted-foreground">Not a member yet? </span>
+          <a href="/apply" class="font-medium text-primary hover:text-white transition-colors">Apply to join</a>
+        </div>
       </div>
     </div>
-
-
-
-      
-   
-    <div id="page-admin" class="page">
-      <div class="card">
-        <span class="badge admin">Admin</span>
-        <h2>Admin Dashboard</h2>
-        <p>Welcome back, <strong>Administrator</strong>. You have full access.</p>
-        <button class="btn outline" onclick="logout()">Logout</button>
-      </div>
-    </div>
-
-    
-    <div id="page-member" class="page">
-      <div class="card">
-        <span class="badge member">Member</span>
-        <h2>Member Area</h2>
-        <p>Welcome to <strong>Tuners Club</strong>. Good to have you here.</p>
-        <button class="btn outline" onclick="logout()">Logout</button>
-      </div>
-    </div>
-
   </div>
 
-  <div id="Msg"></div>
+  <div id="Msg" class="hidden fixed bottom-8 left-1/2 -translate-x-1/2 bg-[#133785] text-white font-sans text-sm font-medium px-8 py-3 rounded-full shadow-2xl z-[999]"></div>
 
-  <footer class="footer" id="site-footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>Contact Us</h3>
+  <!-- FOOTER -->
+  <footer class="w-full bg-[#0a1a3e]/65 backdrop-blur-md border-t border-white/15 py-10 mt-auto relative overflow-hidden" id="site-footer">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[100px] bg-primary/10 blur-[80px] pointer-events-none"></div>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-8 relative z-10">
+      <div class="flex flex-col">
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider flex items-center gap-2"><i data-lucide="music"></i> Tuners MIU</h3>
+        <p class="text-white/60 text-sm mb-4 leading-relaxed">The official music club of Misr International University. Bringing harmony to campus life.</p>
+        <div class="mt-auto">
+          <h4 class="text-sm font-semibold mb-2 text-white/80">Contact Us</h4>
+          <a href="mailto:tuners.miu.eg@gmail.com" class="inline-flex items-center gap-2 text-primary-400 hover:text-white transition-colors text-sm font-medium"><i data-lucide="mail" class="w-4 h-4"></i> tuners.miu.eg@gmail.com</a>
+        </div>
       </div>
-      <div class="footer-section">
-        <h3>Follow Us</h3>
-        <ul>
-          <li><a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></li>
-          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
-          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
+      <div>
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Follow Us</h3>
+        <ul class="space-y-3">
+          <li><a href="https://www.instagram.com/tunersclubmiu" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Instagram.png" class="w-4 h-4 object-contain" alt="Instagram"> Instagram</a></li>
+          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Facebook.png" class="w-4 h-4 object-contain" alt="Facebook"> Facebook</a></li>
+          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Tiktok.png" class="w-4 h-4 object-contain" alt="TikTok"> TikTok</a></li>
         </ul>
       </div>
-      <div class="footer-section">
-        <h3>Quick Links</h3>
-        <ul>
-          <li><a href="/home">Home</a></li>
-          <li><a href="/about">About Us</a></li>
-          <li><a href="">Events</a></li>
-          <li><a href="/courses">Courses</a></li>
-          <li><a href="/apply">Apply</a></li>
-        </ul>
+      <div>
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Quick Links</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <a href="/home" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Home</a>
+          <a href="/about" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">About Us</a>
+          <a href="/courses" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Courses</a>
+          <a href="/gallery" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Gallery</a>
+          <a href="/apply" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Apply</a>
+        </div>
       </div>
+    </div>
+    <div class="max-w-6xl mx-auto px-8 mt-10 pt-6 border-t border-white/10 text-center">
+      <p class="text-white/40 text-xs">© 2026 Tuners Club MIU. All rights reserved.</p>
     </div>
   </footer>
 
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="/js/script.js"></script>
+  <script>
+    lucide.createIcons();
+    AOS.init({ duration: 400, once: true });
+  </script>
+</body>
+</html>

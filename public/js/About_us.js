@@ -9,9 +9,9 @@
         
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         if (scrollTop > lastScrollTop) {
-            navbar.classList.add('hidden');
+            navbar.classList.add('-translate-y-full');
         } else {
-            navbar.classList.remove('hidden');
+            navbar.classList.remove('-translate-y-full');
         }
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     }, false);

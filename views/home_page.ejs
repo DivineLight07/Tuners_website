@@ -1,87 +1,220 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tuners MIU - Home Page</title>
-  <link rel="stylesheet" href="/css/home_page.css">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#1f6feb', foreground: '#ffffff' },
+            accent: '#133785',
+            background: 'rgba(10, 26, 62, 0.65)',
+            card: { DEFAULT: 'rgba(10, 26, 62, 0.45)', foreground: '#ffffff' },
+            destructive: { DEFAULT: '#ff6b6b', foreground: '#ffffff' },
+            muted: { DEFAULT: 'rgba(255,255,255,0.1)', foreground: 'rgba(255,255,255,0.6)' },
+            border: 'rgba(255,255,255,0.18)',
+            input: 'rgba(255,255,255,0.1)',
+          },
+          fontFamily: {
+            display: ['"Bebas Neue"', 'sans-serif'],
+            sans: ['Poppins', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer base {
+      body {
+        @apply font-sans text-white bg-cover bg-center bg-fixed min-h-screen relative flex flex-col;
+        background-image: url('/images/IMG_4362.png');
+      }
+      body::after {
+        content: '';
+        @apply fixed inset-0 bg-background -z-10;
+      }
+    }
+    .lucide { width: 1em; height: 1em; }
+    .hidden { display: none !important; }
+  </style>
 </head>
+<body>
 
-<body style="background-image: url('/images/IMG_4362.png'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
-
-  <nav id="navbar">
-    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo" /></a>
-    <ul>
-      <li><a href="/home">Home</a></li>
-      <li><a href="/about">About Us</a></li>
-      <li><a href="/apply">Apply</a></li>
-      <li><a href="#site-footer">Contact</a></li>
-      <li><a href="/courses">Courses</a></li>
-      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
+  <!-- NAVBAR -->
+  <nav id="navbar" class="w-full bg-[#133785]/85 backdrop-blur-md border-b border-white/15 grid grid-cols-[auto_1fr_auto] items-center px-8 py-2.5 sticky top-0 z-[100] transition-transform duration-300">
+    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo" class="h-12 w-auto drop-shadow-md"/></a>
+    <ul class="flex gap-10 justify-center">
+      <li><a href="/home" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Home</a></li>
+      <li><a href="/about" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">About Us</a></li>
+      <li><a href="/apply" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Apply</a></li>
+      <li><a href="#site-footer" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Contact</a></li>
+      <li><a href="/courses" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Courses</a></li>
+      <li><a href="/gallery" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Gallery</a></li>
+      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Dashboard</a></li>
     </ul>
-    <div class="nav-auth">
-      <a href="/login" id="nav-login-btn">Login</a>
-      <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
+    <div class="flex gap-4 items-center">
+        <a href="/login" id="nav-login-btn" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all">Login</a>
+        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all text-destructive border-destructive/50 hover:bg-destructive/20">Logout</button>
     </div>
   </nav>
 
-  <div class="hero">
-    <h1>Welcome to Tuners MIU</h1>
-    <p style="text-align: center;">Play. Learn. Perform.</p>
-    <p style="text-align: center;">Connect with musicians, book practice rooms, and take music theory courses</p>
-    <a href="/apply"><button>Become a Member</button></a>
-  </div>
-
-  <div class="overview">
-    <h2>About Our Club</h2>
-    <p>Tuners MIU is the official music club at MIU,
-      bringing together musicians and music lovers from all backgrounds and skill levels. </p>
-    <p>Our mission is to create a vibrant community where everyone can learn,
-      collaborate, perform, and grow as artists.
-      Whether you've been playing for years or just picked up an instrument yesterday,
-      Tuners MIU welcomes you.</p>
-    <a href="/about">Learn more...</a>
-  </div>
-
-  <div class="featured-event">
-    <h2>Featured Event</h2>
-    <h3>"event"</h3>
-    <p>date & location</p>
-    <p>Join us and see what everyone's excited about. Don't miss out!</p>
-    <a href="">View All Events</a>
-
-  </div>
-
-  <div class="highlights">
-    <h2>Best Moments</h2>
-
-  </div>
-
-  <footer class="footer" id="site-footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>Contact Us</h3>
+  <!-- CONTENT -->
+  <main class="flex-1">
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden">
+      <!-- Glow effects -->
+      <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 pointer-events-none"></div>
+      <div class="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+      <div class="absolute bottom-10 right-10 w-96 h-96 bg-accent/20 rounded-full blur-[100px] pointer-events-none"></div>
+      
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-28 lg:pt-32 lg:pb-40">
+        <div class="max-w-3xl">
+          <div data-aos="fade-up" data-aos-delay="0" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 text-white text-sm font-medium mb-6 backdrop-blur-sm border border-primary/30">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            MIU Egypt's Music Community
+          </div>
+          
+          <h1 data-aos="fade-up" data-aos-delay="100" class="text-5xl sm:text-6xl lg:text-7xl font-bold font-display leading-[1.1] tracking-wide">
+            Where Music<br />
+            <span class="text-primary">Comes Alive</span>
+          </h1>
+          
+          <p data-aos="fade-up" data-aos-delay="200" class="mt-6 text-lg text-white/80 leading-relaxed max-w-xl">
+            Tuners brings together musicians, singers, and music lovers at MIU Egypt. 
+            Join us to perform, learn, and grow as an artist.
+          </p>
+          
+          <div data-aos="fade-up" data-aos-delay="300" class="mt-10 flex flex-wrap gap-4">
+            <a href="/apply" id="hero-join-link">
+              <button class="rounded-full px-8 text-base h-12 flex items-center justify-center gap-2 bg-primary hover:bg-[#1a48a8] text-white transition-all shadow-lg hover:shadow-xl hover:-translate-y-[2px]">
+                Join Tuners <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </a>
+            <a href="/courses" id="hero-courses-link">
+              <button class="rounded-full px-8 text-base h-12 flex items-center justify-center gap-2 bg-transparent border-2 border-white/30 hover:border-white/60 hover:bg-white/5 text-white transition-all">
+                Browse Courses
+              </button>
+            </a>
+          </div>
+        </div>
       </div>
-      <div class="footer-section">
-        <h3>Follow Us</h3>
-        <ul>
-          <li><a
-              href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
-              target="_blank">Instagram</a></li>
-          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
-          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-24 bg-black/20 backdrop-blur-sm border-y border-white/5">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 data-aos="fade-up" class="text-3xl sm:text-4xl font-bold font-display tracking-wide">What We Offer</h2>
+          <p data-aos="fade-up" data-aos-delay="100" class="mt-4 text-white/70 max-w-lg mx-auto">
+            More than a club — we're a creative ecosystem for aspiring musicians.
+          </p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Card 1 -->
+          <div data-aos="fade-up" data-aos-delay="150" class="group bg-card backdrop-blur-md rounded-2xl border border-border/50 p-8 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2">
+            <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center mb-5 group-hover:bg-primary transition-colors">
+              <i data-lucide="mic-2" class="w-6 h-6 text-white"></i>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Live Performances</h3>
+            <p class="text-sm text-white/70 leading-relaxed">Regular concerts, open mic nights, and jam sessions on campus.</p>
+          </div>
+          
+          <!-- Card 2 -->
+          <div data-aos="fade-up" data-aos-delay="300" class="group bg-card backdrop-blur-md rounded-2xl border border-border/50 p-8 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2">
+            <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center mb-5 group-hover:bg-primary transition-colors">
+              <i data-lucide="graduation-cap" class="w-6 h-6 text-white"></i>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Music Courses</h3>
+            <p class="text-sm text-white/70 leading-relaxed">Learn guitar, piano, drums, vocals and production from peers.</p>
+          </div>
+          
+          <!-- Card 3 -->
+          <div data-aos="fade-up" data-aos-delay="450" class="group bg-card backdrop-blur-md rounded-2xl border border-border/50 p-8 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2">
+            <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center mb-5 group-hover:bg-primary transition-colors">
+              <i data-lucide="users" class="w-6 h-6 text-white"></i>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Community</h3>
+            <p class="text-sm text-white/70 leading-relaxed">Connect with fellow musicians across all faculties at MIU.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24" id="home-cta-section">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-aos="fade-up" class="relative rounded-[2rem] bg-gradient-to-r from-[#133785] to-[#1f6feb] overflow-hidden p-12 lg:p-20 text-center shadow-[0_0_50px_rgba(31,111,235,0.4)] border border-white/20">
+          <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZyIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48Y2lyY2xlIGN4PSIxMCIgY3k9IjEwIiByPSIxIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSJ1cmwoI2cpIi8+PC9zdmc+')] opacity-50"></div>
+          <div class="relative z-10">
+            <h2 class="text-3xl sm:text-5xl font-bold font-display text-white mb-6 tracking-wide">
+              Ready to Make Some Noise?
+            </h2>
+            <p class="text-white/90 max-w-xl mx-auto mb-10 text-lg">
+              Applications are open for the new semester. Don't miss your chance to join the most vibrant community on campus.
+            </p>
+            <a href="/apply">
+              <button class="rounded-full px-10 text-lg h-14 bg-white text-primary hover:bg-gray-100 font-semibold transition-all shadow-xl hover:-translate-y-[2px]">
+                Apply Now
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="w-full bg-[#0a1a3e]/65 backdrop-blur-md border-t border-white/15 py-10 mt-auto relative overflow-hidden" id="site-footer">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[100px] bg-primary/10 blur-[80px] pointer-events-none"></div>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-8 relative z-10">
+      <div class="flex flex-col">
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider flex items-center gap-2"><i data-lucide="music"></i> Tuners MIU</h3>
+        <p class="text-white/60 text-sm mb-4 leading-relaxed">The official music club of Misr International University. Bringing harmony to campus life.</p>
+        <div class="mt-auto">
+          <h4 class="text-sm font-semibold mb-2 text-white/80">Contact Us</h4>
+          <a href="mailto:tuners.miu.eg@gmail.com" class="inline-flex items-center gap-2 text-primary-400 hover:text-white transition-colors text-sm font-medium"><i data-lucide="mail" class="w-4 h-4"></i> tuners.miu.eg@gmail.com</a>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Follow Us</h3>
+        <ul class="space-y-3">
+          <li><a href="https://www.instagram.com/tunersclubmiu" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Instagram.png" class="w-4 h-4 object-contain" alt="Instagram"> Instagram</a></li>
+          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Facebook.png" class="w-4 h-4 object-contain" alt="Facebook"> Facebook</a></li>
+          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Tiktok.png" class="w-4 h-4 object-contain" alt="TikTok"> TikTok</a></li>
         </ul>
       </div>
-      <div class="footer-section">
-        <h3>Quick Links</h3>
-        <ul>
-          <li><a href="/home">Home</a></li>
-          <li><a href="/about">About Us</a></li>
-          <li><a href="">Events</a></li>
-          <li><a href="/courses">Courses</a></li>
-          <li><a href="/apply">Apply</a></li>
-        </ul>
+      <div>
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Quick Links</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <a href="/home" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Home</a>
+          <a href="/about" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">About Us</a>
+          <a href="/courses" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Courses</a>
+          <a href="/gallery" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Gallery</a>
+          <a href="/apply" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Apply</a>
+        </div>
       </div>
+    </div>
+    <div class="max-w-6xl mx-auto px-8 mt-10 pt-6 border-t border-white/10 text-center">
+      <p class="text-white/40 text-xs">© 2026 Tuners Club MIU. All rights reserved.</p>
     </div>
   </footer>
 
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="/js/home_page.js"></script>
+  <script src="/js/script.js"></script>
+  <script>
+    lucide.createIcons();
+    AOS.init({ duration: 600, once: true });
+  </script>
+</body>
+</html>

@@ -18,6 +18,7 @@ const applications = require('./routes/applications');
 const auth = require('./routes/auth');
 const users = require('./routes/users');
 const room = require('./routes/room'); // ✅ Import room routes
+const badges = require('./routes/badges');
 
 const app = express();
 
@@ -41,8 +42,10 @@ app.use('/api/v1/users', users);
 app.use('/api/v1/applications', applications);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/room', room);
+app.use('/api/v1/badges', badges);
 app.use('/api/v1/board', require('./routes/board'));
 app.use('/api/v1/courses', require('./routes/courses'));
+app.use('/api/v1/gallery', require('./routes/gallery'));
 app.use('/auth/google',         require('./routes/googleAuth'));  // ← ADD here
 
 
@@ -52,6 +55,7 @@ app.get('/home', (req, res) => res.render('home_page'));
 app.get('/about', (req, res) => res.render('About_us'));
 app.get('/apply', (req, res) => res.render('Apply_Form'));
 app.get('/courses', (req, res) => res.render('Courses'));
+app.get('/gallery', (req, res) => res.render('Gallery'));
 app.get('/admin', (req, res) => res.render('Admin_Dashboard'));
 app.get('/member', (req, res) => res.render('member_dashboard'));
 app.get('/login', (req, res) => {          // ← REPLACE your current /login route
@@ -64,8 +68,6 @@ app.get('/login', (req, res) => {          // ← REPLACE your current /login ro
   const error = req.query.error ? (errorMessages[req.query.error] || req.query.error) : null;
   res.render('Login', { error, user: null });
 });
-
-
 // ─── CATCH-ALL (MUST BE LAST) ────────────────────────────────────────────────
 app.use((req, res) => {
   res.status(404).render('Apply_Form');

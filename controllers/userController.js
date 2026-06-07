@@ -43,8 +43,8 @@ exports.createUser = async (req, res, next) => {
 // PUT update a user
 exports.updateUser = async (req, res, next) => {
   try {
-    // ✅ FIX: Added 'badges', 'status', and 'password' to the allowed list!
-    const allowedUpdates = ['name', 'email', 'universityId', 'role', 'status', 'badges', 'password'];
+    // ✅ FIX: Added 'badges', 'status', 'password', and 'openedCourses' to the allowed list!
+    const allowedUpdates = ['name', 'email', 'universityId', 'role', 'status', 'badges', 'password', 'openedCourses'];
     const updates = Object.keys(req.body);
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
@@ -56,6 +56,10 @@ exports.updateUser = async (req, res, next) => {
     if (!user) return res.status(404).json({ success: false, error: 'User not found' });
 
     // Permission checks
+    if (req.user.role !== 'admin' && req.user._id.toString() !== user._id.toString()) {
+      return res.status(403).json({ success: false, error: 'Not authorized to update this user' });
+    }
+    
     if (user.email === 'admin@miuegypt.edu.eg' && req.user.email !== 'admin@miuegypt.edu.eg') {
       return res.status(403).json({ success: false, error: 'Cannot modify the system admin.' });
     }

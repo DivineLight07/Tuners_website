@@ -34,7 +34,8 @@ router.get('/callback', (req, res, next) => {
           email:  user.email,
           role:   user.role,
           status: user.status,
-          avatar: user.avatar
+          avatar: user.avatar,
+          openedCourses: user.openedCourses
         })}));
         window.location.href = '${redirectTo}';
       </script>

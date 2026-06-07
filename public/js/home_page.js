@@ -9,43 +9,31 @@
 
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         if (scrollTop > lastScrollTop) {
-            navbar.classList.add('hidden');
+            navbar.classList.add('-translate-y-full');
         } else {
-            navbar.classList.remove('hidden');
+            navbar.classList.remove('-translate-y-full');
         }
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     }, false);
 })();
 
-function updateNavAuth() {
+function updateHomePageUI() {
     const userJson = localStorage.getItem('user');
-    const loginBtn = document.getElementById('nav-login-btn');
-    const logoutBtn = document.getElementById('nav-logout-btn');
-    const dashboardLi = document.getElementById('nav-dashboard');
-    const dashboardLink = document.getElementById('nav-dashboard-link');
-    const applyLink = document.querySelector('nav ul li a[href*="/apply"]');
+    const heroJoinLink = document.getElementById('hero-join-link');
+    const heroCoursesLink = document.getElementById('hero-courses-link');
+    const homeCtaSection = document.getElementById('home-cta-section');
 
     if (userJson) {
-        const user = JSON.parse(userJson);
-        if (loginBtn) loginBtn.style.display = 'none';
-        if (logoutBtn) logoutBtn.style.display = 'inline-block';
-        if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'none';
-        if (dashboardLi && dashboardLink) {
-            dashboardLi.style.display = 'inline-block';
-            dashboardLink.href = user.role === 'admin' ? '/admin' : '/member';
-        }
+        // User is logged in (member or admin)
+        if (heroJoinLink) heroJoinLink.style.display = 'none';
+        if (homeCtaSection) homeCtaSection.style.display = 'none';
+        if (heroCoursesLink) heroCoursesLink.href = '/courses';
     } else {
-        if (loginBtn) loginBtn.style.display = 'inline-block';
-        if (logoutBtn) logoutBtn.style.display = 'none';
-        if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'inline-block';
-        if (dashboardLi) dashboardLi.style.display = 'none';
+        // Guest
+        if (heroJoinLink) heroJoinLink.style.display = 'inline-block';
+        if (homeCtaSection) homeCtaSection.style.display = 'block';
+        if (heroCoursesLink) heroCoursesLink.href = '/apply';
     }
 }
 
-function globalLogout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '/login';
-}
-
-document.addEventListener('DOMContentLoaded', updateNavAuth);
+document.addEventListener('DOMContentLoaded', updateHomePageUI);

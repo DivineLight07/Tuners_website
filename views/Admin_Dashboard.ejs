@@ -5,348 +5,429 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tuners — Admin Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/Admin_Dashboard.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#1f6feb', foreground: '#ffffff' },
+            accent: '#133785',
+            background: 'rgba(10, 26, 62, 0.65)',
+            card: { DEFAULT: 'rgba(10, 26, 62, 0.45)', foreground: '#ffffff' },
+            destructive: { DEFAULT: '#ff6b6b', foreground: '#ffffff' },
+            muted: { DEFAULT: 'rgba(255,255,255,0.1)', foreground: 'rgba(255,255,255,0.6)' },
+            border: 'rgba(255,255,255,0.18)',
+            input: 'rgba(255,255,255,0.1)',
+          },
+          fontFamily: {
+            display: ['"Bebas Neue"', 'sans-serif'],
+            sans: ['Poppins', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer base {
+      body {
+        @apply font-sans text-white bg-cover bg-center bg-fixed min-h-screen relative flex flex-col;
+        background-image: url('/images/IMG_4362.png');
+      }
+      body::after {
+        content: '';
+        @apply fixed inset-0 bg-background -z-10;
+      }
+    }
+    @layer components {
+      .admin-card {
+        @apply bg-card backdrop-blur-md rounded-2xl border border-border/50 p-6 shadow-xl mb-6;
+      }
+      .card-title {
+        @apply text-2xl font-bold font-display tracking-wide mb-6 pb-4 border-b border-white/10 flex items-center gap-2;
+      }
+      .btn-primary {
+        @apply px-4 py-2 bg-primary hover:bg-[#1a48a8] text-white rounded-lg text-sm font-medium transition-all;
+      }
+      .btn-delete {
+        @apply px-4 py-2 bg-destructive/80 hover:bg-destructive text-white rounded-lg text-sm font-medium transition-all;
+      }
+      .status-available {
+        @apply text-green-400 font-medium bg-green-400/10 px-3 py-1 rounded-full text-sm;
+      }
+      .status-occupied {
+        @apply text-red-400 font-medium bg-red-400/10 px-3 py-1 rounded-full text-sm;
+      }
+      .modal-overlay {
+        @apply fixed inset-0 bg-black/80 z-[10000] items-center justify-center p-4 backdrop-blur-sm hidden;
+      }
+      .modal-content {
+        @apply bg-[#0a1a3e] rounded-2xl p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-white/10 relative shadow-2xl;
+      }
+      .modal-close {
+        @apply absolute top-6 right-6 text-2xl text-white/50 hover:text-white cursor-pointer leading-none transition-colors;
+      }
+      .form-input {
+        @apply w-full h-11 px-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all;
+      }
+      .form-label {
+        @apply block mb-2 text-xs font-semibold tracking-widest uppercase text-white/80;
+      }
+    }
+    .lucide { width: 1em; height: 1em; }
+    #Msg {
+        @apply fixed bottom-8 right-8 bg-green-500/90 backdrop-blur-sm text-white px-6 py-3 rounded-xl shadow-2xl z-[10001] hidden font-medium;
+    }
+  </style>
 </head>
-<body style="background-image: url('/images/IMG_4362.png'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
+<body>
 
-<nav id="navbar">
-  <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/></a>
-    <ul>
-      <li><a href="/home">Home</a></li>
-      <li><a href="/about">About Us</a></li>
-      <li><a href="/apply">Apply</a></li>
-      <li><a href="#site-footer">Contact</a></li>
-      <li><a href="/courses">Courses</a></li>
-      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
+  <nav id="navbar" class="w-full bg-[#133785]/85 backdrop-blur-md border-b border-white/15 grid grid-cols-[auto_1fr_auto] items-center px-8 py-2.5 sticky top-0 z-[100] transition-transform duration-300">
+    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo" class="h-12 w-auto drop-shadow-md"/></a>
+    <ul class="flex gap-10 justify-center">
+      <li><a href="/home" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Home</a></li>
+      <li><a href="/about" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">About Us</a></li>
+      <li><a href="/apply" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Apply</a></li>
+      <li><a href="#site-footer" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Contact</a></li>
+      <li><a href="/courses" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Courses</a></li>
+      <li><a href="/gallery" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Gallery</a></li>
+      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors text-primary font-bold">Dashboard</a></li>
     </ul>
-    <div class="nav-auth">
-        <a href="/login" id="nav-login-btn">Login</a>
-        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
+    <div class="flex gap-4 items-center">
+        <a href="/login" id="nav-login-btn" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all">Login</a>
+        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all text-destructive border-destructive/50 hover:bg-destructive/20">Logout</button>
     </div>
   </nav>
 
-  <div class="dashboard-container">
-    <h1>Admin Dashboard</h1>
-
-    <div class="grid-layout">
-      <!-- Section: Room Control -->
-      <div class="admin-card room-control">
-        <h2>Room Control</h2>
-        <div class="status-display">
-          Current Status: <span id="adminRoomStatus" class="status-available">Open</span>
-        </div>
-        <div class="control-buttons">
-          <button onclick="setRoomStatus('Open')" class="btn-status available">Open</button>
-          <button onclick="setRoomStatus('Closed')" class="btn-status occupied">Closed</button>
-        </div>
+  <div class="flex-1 py-10 lg:py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="mb-10" data-aos="fade-up">
+        <h1 class="text-4xl sm:text-5xl font-bold font-display tracking-wide">Admin Dashboard</h1>
+        <p class="text-white/70 mt-2">Manage Tuners operations</p>
       </div>
 
-      <!-- Section: Board Members Management -->
-<div class="admin-card board-management" style="margin-top: 30px;">
-  <h2>Manage Board Members</h2>
-  
-  <button onclick="openAddBoardMemberModal()" class="btn-primary" style="margin-bottom: 20px;">
-    + Add Board Member
-  </button>
-  
-  <div class="board-members-list" id="boardMembersList">
-    <p style="text-align: center; color: rgba(255,255,255,0.6);">Loading...</p>
-  </div>
-</div>
+      <div class="grid lg:grid-cols-2 gap-6">
+        
+        <!-- Room Control -->
+        <div class="admin-card" data-aos="fade-up" data-aos-delay="100">
+          <h2 class="card-title"><i data-lucide="door-open"></i> Room Control</h2>
+          <div class="bg-black/20 p-6 rounded-xl border border-white/10 mb-6 flex items-center justify-between">
+            <span class="text-white/80 font-medium">Current Status</span>
+            <span id="adminRoomStatus" class="status-available">Open</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <button onclick="setRoomStatus('Open')" class="py-3 bg-green-500/20 hover:bg-green-500/30 text-green-400 border border-green-500/30 rounded-xl font-medium transition-colors">Set Open</button>
+            <button onclick="setRoomStatus('Closed')" class="py-3 bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 rounded-xl font-medium transition-colors">Set Closed</button>
+          </div>
+        </div>
 
-<!-- Add/Edit Board Member Modal -->
-<div id="boardMemberModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; align-items:center; justify-content:center; padding:20px;">
-  <div style="background:#1a1a2e; border-radius:12px; padding:30px; width:100%; max-width:600px; max-height:90vh; overflow-y:auto; border:1px solid rgba(255,255,255,0.1); position:relative;">
-    <span onclick="closeBoardMemberModal()" style="position:absolute; top:20px; right:25px; font-size:2rem; color:rgba(255,255,255,0.6); cursor:pointer; line-height:1;">&times;</span>
-    
-    <h2 id="boardModalTitle" style="margin:0 0 25px 0; color:#fff; font-family:'Bebas Neue',cursive; font-size:1.8rem;">Add Board Member</h2>
-    
-    <form id="boardMemberForm" onsubmit="saveBoardMember(event)">
-      <input type="hidden" id="board-member-id">
-      
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
-        <div>
-          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Name *</label>
-          <input type="text" id="board-member-name" required style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
+        <!-- Manage Accounts -->
+        <div class="admin-card" data-aos="fade-up" data-aos-delay="200">
+          <h2 class="card-title"><i data-lucide="users"></i> Manage Accounts</h2>
+          <div class="grid sm:grid-cols-2 gap-3 mb-4">
+            <input type="text" id="new-user-name" placeholder="Full Name" class="form-input h-10">
+            <input type="email" id="new-user-email" placeholder="Email Address" class="form-input h-10">
+            <input type="text" id="new-user-uid" placeholder="University ID" class="form-input h-10">
+            <input type="password" id="new-user-pass" placeholder="Password" class="form-input h-10">
+            <select id="new-user-role" class="form-input h-10 cursor-pointer bg-[#11244e]">
+              <option value="member">Member</option>
+              <option value="admin">Admin</option>
+            </select>
+            <button onclick="addUser()" class="btn-primary h-10">Add Account</button>
+          </div>
+          
+          <div class="overflow-x-auto border border-white/10 rounded-xl bg-black/20">
+            <table class="w-full text-left text-sm" id="user-table">
+              <thead class="bg-white/5 border-b border-white/10">
+                <tr>
+                  <th class="p-3 font-medium text-white/70">Email</th>
+                  <th class="p-3 font-medium text-white/70">Role</th>
+                  <th class="p-3 font-medium text-white/70 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody id="user-list" class="divide-y divide-white/5">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div>
-          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Position *</label>
-          <input type="text" id="board-member-position" required style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
-        </div>
-      </div>
-      
-      <div style="margin-bottom:20px;">
-        <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Image URL</label>
-        <input type="text" id="board-member-image" placeholder="/images/member.jpg" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
-      </div>
-      
-      <div style="margin-bottom:20px;">
-        <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Bio</label>
-        <textarea id="board-member-bio" rows="3" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; resize:vertical; box-sizing:border-box;"></textarea>
-      </div>
-      
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; margin-bottom:20px;">
-        <div>
-          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.85rem;">Instagram</label>
-          <input type="text" id="board-member-instagram" placeholder="https://..." style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.9rem; box-sizing:border-box;">
-        </div>
-        <div>
-          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.85rem;">Facebook</label>
-          <input type="text" id="board-member-facebook" placeholder="https://..." style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.9rem; box-sizing:border-box;">
-        </div>
-        <div>
-          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.85rem;">LinkedIn</label>
-          <input type="text" id="board-member-linkedin" placeholder="https://..." style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.9rem; box-sizing:border-box;">
-        </div>
-      </div>
-      
-      <div style="margin-bottom:25px;">
-        <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Display Order</label>
-        <input type="number" id="board-member-order" value="0" min="0" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
-        <small style="color:rgba(255,255,255,0.5); font-size:0.8rem;">Lower numbers appear first</small>
-      </div>
-      
-      <div style="display:flex; justify-content:flex-end; gap:15px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.1);">
-        <button type="button" onclick="closeBoardMemberModal()" class="btn-primary" style="background:rgba(255,255,255,0.15);">Cancel</button>
-        <button type="submit" class="btn-primary">Save</button>
-      </div>
-    </form>
-  </div>
-</div>
 
-<!-- Section: Courses Management -->
-<div class="admin-card courses-management" style="margin-top: 30px;">
-  <h2>Manage Courses</h2>
-  
-  <button onclick="openAddCourseModal()" class="btn-primary" style="margin-bottom: 20px;">
-    + Add Course
-  </button>
-  
-  <div class="courses-list" id="coursesList">
-    <p style="text-align: center; color: rgba(255,255,255,0.6);">Loading...</p>
-  </div>
-</div>
+        <!-- Manage Board Members -->
+        <div class="admin-card" data-aos="fade-up" data-aos-delay="300">
+          <h2 class="card-title"><i data-lucide="star"></i> Manage Board Members</h2>
+          <button onclick="openAddBoardMemberModal()" class="btn-primary mb-6 flex items-center gap-2">
+            <i data-lucide="plus"></i> Add Board Member
+          </button>
+          <div id="boardMembersList" class="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+            <p class="text-center text-white/60">Loading...</p>
+          </div>
+        </div>
 
-<!-- Add/Edit Course Modal -->
-<div id="courseModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10001; align-items:center; justify-content:center; padding:20px;">
-  <div style="background:#1a1a2e; border-radius:12px; padding:30px; width:100%; max-width:650px; max-height:90vh; overflow-y:auto; border:1px solid rgba(255,255,255,0.1); position:relative;">
-    <span onclick="closeCourseModal()" style="position:absolute; top:20px; right:25px; font-size:2rem; color:rgba(255,255,255,0.6); cursor:pointer; line-height:1;">&times;</span>
-    
-    <h2 id="courseModalTitle" style="margin:0 0 25px 0; color:#fff; font-family:'Bebas Neue',cursive; font-size:1.8rem;">Add Course</h2>
-    
-    <form id="courseForm" onsubmit="saveCourse(event)">
-      <input type="hidden" id="course-id">
-      
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
-        <div>
-          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Course Title *</label>
-          <input type="text" id="course-title" required style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
+        <!-- Manage Courses -->
+        <div class="admin-card" data-aos="fade-up" data-aos-delay="400">
+          <h2 class="card-title"><i data-lucide="book-open"></i> Manage Courses</h2>
+          <button onclick="openAddCourseModal()" class="btn-primary mb-6 flex items-center gap-2">
+            <i data-lucide="plus"></i> Add Course
+          </button>
+          <div id="coursesList" class="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+            <p class="text-center text-white/60">Loading...</p>
+          </div>
         </div>
-        <div>
-          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Instructor *</label>
-          <input type="text" id="course-instructor" required style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
-        </div>
-      </div>
-      
-      <div style="margin-bottom:20px;">
-        <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">YouTube Video URL or ID *</label>
-        <input type="text" id="course-youtube-url" required placeholder="https://www.youtube.com/watch?v=VIDEO_ID or just VIDEO_ID" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
-        <small style="color:rgba(255,255,255,0.5); font-size:0.8rem;">Upload video as "Unlisted" on YouTube for privacy</small>
-      </div>
-      
-      <div style="margin-bottom:20px;">
-        <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem;">Description</label>
-        <textarea id="course-description" rows="3" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; resize:vertical; box-sizing:border-box;"></textarea>
-      </div>
-      
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; margin-bottom:20px;">
-        <div>
-          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.85rem;">Category</label>
-          <select id="course-category" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
-            <option value="Music Theory">Music Theory</option>
-            <option value="Instrument">Instrument</option>
-            <option value="Vocal">Vocal</option>
-            <option value="Workshop">Workshop</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div>
-          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.85rem;">Duration</label>
-          <input type="text" id="course-duration" placeholder="e.g., 45:00 or 1 hour" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
-        </div>
-        <div>
-          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.85rem;">Order</label>
-          <input type="number" id="course-order" value="0" min="0" style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; box-sizing:border-box;">
-        </div>
-      </div>
-      
-      <div style="margin-bottom:25px;">
-        <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
-          <input type="checkbox" id="course-published" checked style="width:20px; height:20px;">
-          <span style="color:rgba(255,255,255,0.9); font-size:0.95rem;">Published (visible to students)</span>
-        </label>
-      </div>
-      
-      <div style="display:flex; justify-content:flex-end; gap:15px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.1);">
-        <button type="button" onclick="closeCourseModal()" class="btn-primary" style="background:rgba(255,255,255,0.15);">Cancel</button>
-        <button type="submit" class="btn-primary">Save Course</button>
-      </div>
-    </form>
-  </div>
-</div>
 
-      <!-- Section: User Management -->
-      <div class="admin-card user-management">
-        <h2>Manage Accounts</h2>
-        <div class="add-user-form">
-          <input type="text" id="new-user-name" placeholder="Full Name">
-          <input type="email" id="new-user-email" placeholder="Email Address">
-          <input type="text" id="new-user-uid" placeholder="University ID">
-          <input type="password" id="new-user-pass" placeholder="Password">
-          <select id="new-user-role">
-            <option value="member">Member</option>
-            <option value="admin">Admin</option>
-          </select>
-          <button onclick="addUser()" class="btn-primary">Add Account</button>
+        <!-- Manage Gallery -->
+        <div class="admin-card" data-aos="fade-up" data-aos-delay="450">
+          <h2 class="card-title"><i data-lucide="image"></i> Manage Gallery</h2>
+          <button onclick="openAddGalleryModal()" class="btn-primary mb-6 flex items-center gap-2">
+            <i data-lucide="plus"></i> Add Image
+          </button>
+          <div id="galleryAdminList" class="grid grid-cols-2 gap-3 max-h-[400px] overflow-y-auto pr-2">
+            <p class="text-center text-white/60 col-span-2">Loading...</p>
+          </div>
         </div>
-        <div class="user-list-container">
-          <table id="user-table">
-            <thead>
-              <tr>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="user-list">
-              <!-- Users will be injected here -->
-            </tbody>
-          </table>
-        </div>
-      </div>
 
-      <!-- Section: Guest Applications -->
-      <div class="admin-card guest-applications">
-        <h2>Guest Applications</h2>
-        <div class="applications-container" id="applications-list">
-          <!-- Applications will be injected here -->
-          <p class="empty-msg">No applications received yet.</p>
+        <!-- Manage Badges -->
+        <div class="admin-card" data-aos="fade-up" data-aos-delay="475">
+          <h2 class="card-title"><i data-lucide="award"></i> Manage Badges</h2>
+          <form id="addBadgeForm" onsubmit="createGlobalBadge(event)" class="flex gap-3 mb-6">
+            <input type="text" id="new-badge-name" placeholder="e.g. 🎵 Perfect Pitch" required class="form-input flex-1 h-10">
+            <button type="submit" class="btn-primary h-10 whitespace-nowrap">Add Badge</button>
+          </form>
+          <div id="badgesAdminList" class="space-y-2 max-h-[300px] overflow-y-auto pr-2">
+            <p class="text-center text-white/60">Loading...</p>
+          </div>
         </div>
+
+        <!-- Guest Applications -->
+        <div class="admin-card lg:col-span-2" data-aos="fade-up" data-aos-delay="500">
+          <h2 class="card-title"><i data-lucide="file-text"></i> Guest Applications</h2>
+          <div id="applications-list" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <p class="text-white/60">Loading...</p>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
-
-<div id="editUserModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px;">
-  <div style="background:#1a1a2e; border-radius:12px; padding:30px; width:100%; max-width:550px; max-height:90vh; overflow-y:auto; border:1px solid rgba(255,255,255,0.1); position:relative;">
-    
-    <!-- Close Button -->
-    <span onclick="closeEditUserModal()" style="position:absolute; top:20px; right:25px; font-size:2rem; color:rgba(255,255,255,0.6); cursor:pointer; line-height:1; font-weight:300;">&times;</span>
-    
-    <h2 style="margin:0 0 25px 0; color:#fff; font-family:'Bebas Neue',cursive; font-size:1.8rem; letter-spacing:1px;">Edit User</h2>
-    
-    <form id="editUserForm" onsubmit="saveUserEdit(event)">
-      <input type="hidden" id="edit-original-email">
-      
-      <!-- Name & Email Row -->
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
-        <div style="margin-bottom:0;">
-          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:500;">Name</label>
-          <input type="text" id="edit-user-name" required style="width:100%; padding:12px 15px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.95rem; box-sizing:border-box;">
+  <!-- Board Member Modal -->
+  <div id="boardMemberModal" class="modal-overlay">
+    <div class="modal-content">
+      <span onclick="closeBoardMemberModal()" class="modal-close">&times;</span>
+      <h2 id="boardModalTitle" class="text-3xl font-display font-bold mb-6">Add Board Member</h2>
+      <form id="boardMemberForm" onsubmit="saveBoardMember(event)" class="space-y-4">
+        <input type="hidden" id="board-member-id">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="form-label">Name *</label><input type="text" id="board-member-name" required class="form-input"></div>
+          <div><label class="form-label">Position *</label><input type="text" id="board-member-position" required class="form-input"></div>
         </div>
-        <div style="margin-bottom:0;">
-          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:500;">Email</label>
-          <input type="email" id="edit-user-email" required style="width:100%; padding:12px 15px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.95rem; box-sizing:border-box;">
+        <div><label class="form-label">Image URL</label><input type="text" id="board-member-image" placeholder="/images/Default-pfp.png" class="form-input"></div>
+        <div>
+          <label class="form-label">Display Order</label>
+          <input type="number" id="board-member-order" value="0" min="0" class="form-input">
         </div>
-      </div>
-      
-      <!-- Password & Role Row -->
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
-        <div style="margin-bottom:0;">
-          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:500;">Password</label>
-          <input type="password" id="edit-user-pass" placeholder="Leave blank to keep" style="width:100%; padding:12px 15px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.95rem; box-sizing:border-box;">
+        <div class="flex justify-end gap-3 pt-4 border-t border-white/10 mt-4">
+          <button type="button" onclick="closeBoardMemberModal()" class="px-6 py-2 border border-white/20 rounded-lg font-medium hover:bg-white/5 transition-colors">Cancel</button>
+          <button type="submit" class="btn-primary px-8">Save</button>
         </div>
-        <div style="margin-bottom:0;">
-          <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:500;">Role</label>
-          <select id="edit-user-role" style="width:100%; padding:12px 15px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.95rem; box-sizing:border-box;">
-            <option value="member" style="color:#000;">Member</option>
-            <option value="admin" style="color:#000;">Admin</option>
-          </select>
-        </div>
-      </div>
-      
-      <!-- University ID - Full Width -->
-      <div style="margin-bottom:20px;">
-        <label style="display:block; margin-bottom:8px; color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:500;">University ID</label>
-        <input type="text" id="edit-user-uid" style="width:100%; padding:12px 15px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:0.95rem; box-sizing:border-box;">
-      </div>
-      
-      <!-- Badges Section -->
-      <div style="margin-bottom:25px;">
-        <label style="display:block; margin-bottom:12px; color:rgba(255,255,255,0.9); font-size:0.9rem; font-weight:500;">Badges</label>
-        <div id="edit-user-badges" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px;">
-          <label style="display:flex; align-items:center; gap:10px; padding:12px 15px; background:rgba(255,255,255,0.08); border-radius:8px; cursor:pointer; color:rgba(255,255,255,0.9); font-size:0.9rem; transition:background 0.2s;">
-            <input type="checkbox" value="🎵 Perfect Pitch" style="width:18px; height:18px; margin:0; cursor:pointer;"> 
-            <span>🎵 Perfect Pitch</span>
-          </label>
-          <label style="display:flex; align-items:center; gap:10px; padding:12px 15px; background:rgba(255,255,255,0.08); border-radius:8px; cursor:pointer; color:rgba(255,255,255,0.9); font-size:0.9rem; transition:background 0.2s;">
-            <input type="checkbox" value="🎸 Guitar Hero" style="width:18px; height:18px; margin:0; cursor:pointer;"> 
-            <span>🎸 Guitar Hero</span>
-          </label>
-          <label style="display:flex; align-items:center; gap:10px; padding:12px 15px; background:rgba(255,255,255,0.08); border-radius:8px; cursor:pointer; color:rgba(255,255,255,0.9); font-size:0.9rem; transition:background 0.2s;">
-            <input type="checkbox" value="🥁 Rhythm Master" style="width:18px; height:18px; margin:0; cursor:pointer;"> 
-            <span>🥁 Rhythm Master</span>
-          </label>
-          <label style="display:flex; align-items:center; gap:10px; padding:12px 15px; background:rgba(255,255,255,0.08); border-radius:8px; cursor:pointer; color:rgba(255,255,255,0.9); font-size:0.9rem; transition:background 0.2s;">
-            <input type="checkbox" value="🎤 Vocal Virtuoso" style="width:18px; height:18px; margin:0; cursor:pointer;"> 
-            <span>🎤 Vocal Virtuoso</span>
-          </label>
-          <label style="display:flex; align-items:center; gap:10px; padding:12px 15px; background:rgba(255,255,255,0.08); border-radius:8px; cursor:pointer; color:rgba(255,255,255,0.9); font-size:0.9rem; transition:background 0.2s;">
-            <input type="checkbox" value="🎹 Keys Maestro" style="width:18px; height:18px; margin:0; cursor:pointer;"> 
-            <span>🎹 Keys Maestro</span>
-          </label>
-        </div>
-      </div>
-      
-      <!-- Buttons -->
-      <div style="display:flex; justify-content:flex-end; gap:15px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.1); margin-top:10px;">
-        <button type="button" onclick="closeEditUserModal()" class="btn-primary" style="background:rgba(255,255,255,0.15); padding:12px 25px; font-size:0.95rem; font-weight:600; border:none; border-radius:8px; cursor:pointer; transition:all 0.2s;">Cancel</button>
-        <button type="submit" class="btn-primary" style="padding:12px 25px; font-size:0.95rem; font-weight:600; border:none; border-radius:8px; cursor:pointer; transition:all 0.2s;">Save Changes</button>
-      </div>
-    </form>
-    
+      </form>
+    </div>
   </div>
-</div>
+
+  <!-- Course Modal -->
+  <div id="courseModal" class="modal-overlay">
+    <div class="modal-content">
+      <span onclick="closeCourseModal()" class="modal-close">&times;</span>
+      <h2 id="courseModalTitle" class="text-3xl font-display font-bold mb-6">Add Course</h2>
+      <form id="courseForm" onsubmit="saveCourse(event)" class="space-y-4">
+        <input type="hidden" id="course-id">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="form-label">Course Title *</label><input type="text" id="course-title" required class="form-input"></div>
+          <div><label class="form-label">Instructor *</label><input type="text" id="course-instructor" required class="form-input"></div>
+        </div>
+        <div>
+          <label class="form-label">YouTube URL or ID *</label>
+          <input type="text" id="course-youtube-url" required placeholder="https://youtube.com/watch?v=..." class="form-input">
+        </div>
+        <div><label class="form-label">Description</label><textarea id="course-description" rows="3" class="form-input h-auto py-3 resize-none"></textarea></div>
+        <div class="grid sm:grid-cols-3 gap-4">
+          <div>
+            <label class="form-label">Category</label>
+            <select id="course-category" class="form-input cursor-pointer bg-[#11244e]">
+              <option value="Theory">Theory</option>
+              <option value="Instrument">Instrument</option>
+              <option value="Vocal">Vocal</option>
+              <option value="Production">Production</option>
+            </select>
+          </div>
+          <div><label class="form-label">Duration</label><input type="text" id="course-duration" placeholder="MM:SS or HH:MM:SS" pattern="^([0-9]{1,2}:)?[0-5][0-9]:[0-5][0-9]$" class="form-input"></div>
+          <div><label class="form-label">Order</label><input type="number" id="course-order" value="0" min="0" class="form-input"></div>
+        </div>
+        <div class="pt-2">
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" id="course-published" checked class="w-5 h-5 rounded border-white/20 bg-black/20 text-primary">
+            <span class="text-white/90">Published (visible to students)</span>
+          </label>
+        </div>
+        <div class="flex justify-end gap-3 pt-4 border-t border-white/10 mt-4">
+          <button type="button" onclick="closeCourseModal()" class="px-6 py-2 border border-white/20 rounded-lg font-medium hover:bg-white/5 transition-colors">Cancel</button>
+          <button type="submit" class="btn-primary px-8">Save Course</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Gallery Modal -->
+  <div id="galleryModal" class="modal-overlay">
+    <div class="modal-content !max-w-lg">
+      <span onclick="closeGalleryModal()" class="modal-close">&times;</span>
+      <h2 id="galleryModalTitle" class="text-3xl font-display font-bold mb-6">Add Gallery Image</h2>
+      <form id="galleryForm" onsubmit="saveGallery(event)" class="space-y-4">
+        <input type="hidden" id="gallery-id">
+        <div>
+          <label class="form-label">Image URL *</label>
+          <input type="text" id="gallery-image-url" required placeholder="/images/your-image.jpg" class="form-input">
+        </div>
+        <div>
+          <label class="form-label">Display Order</label>
+          <input type="number" id="gallery-order" value="0" min="0" class="form-input">
+        </div>
+        <div class="flex justify-end gap-3 pt-4 border-t border-white/10 mt-4">
+          <button type="button" onclick="closeGalleryModal()" class="px-6 py-2 border border-white/20 rounded-lg font-medium hover:bg-white/5 transition-colors">Cancel</button>
+          <button type="submit" class="btn-primary px-8">Save Image</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit User Modal -->
+  <div id="editUserModal" class="modal-overlay">
+    <div class="modal-content !max-w-lg">
+      <span onclick="closeEditUserModal()" class="modal-close">&times;</span>
+      <h2 class="text-3xl font-display font-bold mb-6">Edit User</h2>
+      <form id="editUserForm" onsubmit="saveUserEdit(event)" class="space-y-4">
+        <input type="hidden" id="edit-original-email">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="form-label">Name</label><input type="text" id="edit-user-name" required class="form-input"></div>
+          <div><label class="form-label">Email</label><input type="email" id="edit-user-email" required class="form-input"></div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="form-label">Password</label><input type="password" id="edit-user-pass" placeholder="Leave blank to keep" class="form-input"></div>
+          <div>
+            <label class="form-label">Role</label>
+            <select id="edit-user-role" class="form-input cursor-pointer bg-[#11244e]">
+              <option value="member">Member</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        </div>
+        <div><label class="form-label">University ID</label><input type="text" id="edit-user-uid" class="form-input"></div>
+        
+        <div class="pt-2">
+          <label class="form-label">Badges</label>
+          <div id="edit-user-badges" class="grid grid-cols-2 gap-3 mt-2">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+        
+        <div class="flex justify-end gap-3 pt-4 border-t border-white/10 mt-6">
+          <button type="button" onclick="closeEditUserModal()" class="px-6 py-2 border border-white/20 rounded-lg font-medium hover:bg-white/5 transition-colors">Cancel</button>
+          <button type="submit" class="btn-primary px-8">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Self Modal (No Role) -->
+  <div id="editSelfModal" class="modal-overlay">
+    <div class="modal-content !max-w-lg">
+      <span onclick="closeEditSelfModal()" class="modal-close">&times;</span>
+      <h2 class="text-3xl font-display font-bold mb-6">Edit My Profile</h2>
+      <form id="editSelfForm" onsubmit="saveSelfEdit(event)" class="space-y-4">
+        <input type="hidden" id="edit-self-original-email">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="form-label">Name</label><input type="text" id="edit-self-name" required class="form-input"></div>
+          <div><label class="form-label">Email</label><input type="email" id="edit-self-email" required class="form-input"></div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="form-label">Password</label><input type="password" id="edit-self-pass" placeholder="Leave blank to keep" class="form-input"></div>
+          <div><label class="form-label">University ID</label><input type="text" id="edit-self-uid" class="form-input"></div>
+        </div>
+        
+        <div class="pt-2">
+          <label class="form-label">Badges</label>
+          <div id="edit-self-badges" class="grid grid-cols-2 gap-3 mt-2">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+        
+        <div class="flex justify-end gap-3 pt-4 border-t border-white/10 mt-6">
+          <button type="button" onclick="closeEditSelfModal()" class="px-6 py-2 border border-white/20 rounded-lg font-medium hover:bg-white/5 transition-colors">Cancel</button>
+          <button type="submit" class="btn-primary px-8">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <div id="Msg"></div>
 
-  <footer class="footer" id="site-footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>Contact Us</h3>
+  <!-- FOOTER -->
+  <footer class="w-full bg-[#0a1a3e]/65 backdrop-blur-md border-t border-white/15 py-10 mt-auto relative overflow-hidden" id="site-footer">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[100px] bg-primary/10 blur-[80px] pointer-events-none"></div>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-8 relative z-10">
+      <div class="flex flex-col">
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider flex items-center gap-2"><i data-lucide="music"></i> Tuners MIU</h3>
+        <p class="text-white/60 text-sm mb-4 leading-relaxed">The official music club of Misr International University. Bringing harmony to campus life.</p>
+        <div class="mt-auto">
+          <h4 class="text-sm font-semibold mb-2 text-white/80">Contact Us</h4>
+          <a href="mailto:tuners.miu.eg@gmail.com" class="inline-flex items-center gap-2 text-primary-400 hover:text-white transition-colors text-sm font-medium"><i data-lucide="mail" class="w-4 h-4"></i> tuners.miu.eg@gmail.com</a>
+        </div>
       </div>
-      <div class="footer-section">
-        <h3>Follow Us</h3>
-        <ul>
-          <li><a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></li>
-          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
-          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
+      <div>
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Follow Us</h3>
+        <ul class="space-y-3">
+          <li><a href="https://www.instagram.com/tunersclubmiu" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Instagram.png" class="w-4 h-4 object-contain" alt="Instagram"> Instagram</a></li>
+          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Facebook.png" class="w-4 h-4 object-contain" alt="Facebook"> Facebook</a></li>
+          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Tiktok.png" class="w-4 h-4 object-contain" alt="TikTok"> TikTok</a></li>
         </ul>
       </div>
-      <div class="footer-section">
-        <h3>Quick Links</h3>
-        <ul>
-          <li><a href="/home">Home</a></li>
-          <li><a href="/about">About Us</a></li>
-          <li><a href="/events">Events</a></li>
-          <li><a href="/courses">Courses</a></li>
-          <li><a href="/apply">Apply</a></li>
-          </ul>
+      <div>
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Quick Links</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <a href="/home" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Home</a>
+          <a href="/about" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">About Us</a>
+          <a href="/courses" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Courses</a>
+          <a href="/gallery" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Gallery</a>
+          <a href="/apply" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Apply</a>
+        </div>
       </div>
+    </div>
+    <div class="max-w-6xl mx-auto px-8 mt-10 pt-6 border-t border-white/10 text-center">
+      <p class="text-white/40 text-xs">© 2026 Tuners Club MIU. All rights reserved.</p>
     </div>
   </footer>
 
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="/js/utils.js"></script>
+  
+  <script>
+    lucide.createIcons();
+    AOS.init({ duration: 600, once: true });
+    
+    // Override modal show/hide for tailwind compatibility
+    const originalOpenAddCourseModal = window.openAddCourseModal;
+    const originalCloseCourseModal = window.closeCourseModal;
+    const originalOpenAddBoardMemberModal = window.openAddBoardMemberModal;
+    const originalCloseBoardMemberModal = window.closeBoardMemberModal;
+    const originalCloseEditUserModal = window.closeEditUserModal;
+    
+    // We don't redefine the JS functions if they are loaded after this, 
+    // actually admin_dashboard.js is loaded AFTER this so we need to inject CSS overrides
+    // Wait, let's just make the tailwind "hidden" class NOT apply if display is block/flex
+  </script>
+  
   <script src="/js/admin_dashboard.js"></script>
 </body>
 </html>

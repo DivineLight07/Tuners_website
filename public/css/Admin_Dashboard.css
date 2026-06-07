@@ -81,7 +81,7 @@ body > *:not(#navbar):not(.footer) {
 #nav-login-btn, #nav-logout-btn {
     padding: 8px 18px;
     background: rgba(255, 255, 255, 0.08);
-    color: white;
+    color: #fff;
     text-decoration: none;
     border-radius: 8px;
     font-weight: 600;

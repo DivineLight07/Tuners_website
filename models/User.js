@@ -11,7 +11,8 @@ const userSchema = new mongoose.Schema({
   status:       { type: String, enum: ['pending', 'approved', 'rejected', 'banned'], default: 'pending' },
   universityId: { type: String, default: '' },
   avatar:       { type: String, default: null },
-  badges:       { type: [String], default: [] }
+  badges:       { type: [String], default: [] },
+  openedCourses:{ type: [String], default: [] }
 }, { timestamps: true });
 
 // Hash password before saving

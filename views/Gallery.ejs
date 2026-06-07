@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tuners Courses</title>
+  <title>Gallery - Tuners MIU</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -44,36 +44,6 @@
     }
     .lucide { width: 1em; height: 1em; }
     .hidden { display: none !important; }
-
-    /* Filter button active state */
-    .filter-btn.active {
-      @apply bg-primary text-white border-primary;
-    }
-
-    /* Admin Modal Styles */
-    @layer components {
-      .modal-overlay {
-        @apply fixed inset-0 bg-black/80 z-[10000] items-center justify-center p-4 backdrop-blur-sm hidden;
-      }
-      .modal-content {
-        @apply bg-[#0a1a3e] rounded-2xl p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-white/10 relative shadow-2xl;
-      }
-      .modal-close {
-        @apply absolute top-6 right-6 text-2xl text-white/50 hover:text-white cursor-pointer leading-none transition-colors;
-      }
-      .form-input {
-        @apply w-full h-11 px-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all;
-      }
-      .form-label {
-        @apply block mb-2 text-xs font-semibold tracking-widest uppercase text-white/80;
-      }
-      .btn-primary {
-        @apply px-4 py-2 bg-primary hover:bg-[#1a48a8] text-white rounded-lg text-sm font-medium transition-all;
-      }
-    }
-    #Msg {
-        @apply fixed bottom-8 right-8 bg-green-500/90 backdrop-blur-sm text-white px-6 py-3 rounded-xl shadow-2xl z-[10001] hidden font-medium;
-    }
   </style>
 </head>
 <body>
@@ -97,49 +67,32 @@
   </nav>
 
   <!-- CONTENT -->
-  <main class="flex-1 py-16 lg:py-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <!-- Header -->
-      <div class="text-center mb-12 relative" data-aos="fade-up">
+  <main class="flex-1 py-16 lg:py-24 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none"></div>
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center mb-16" data-aos="fade-up">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 text-white text-sm font-medium mb-4 backdrop-blur-sm border border-primary/30">
-          <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-          Learn & Grow
+          <i data-lucide="image" class="w-3.5 h-3.5"></i>
+          Our Memories
         </div>
-        <h1 class="text-4xl sm:text-5xl font-bold font-display tracking-wide">Our Courses</h1>
-        <p class="mt-3 text-white/70 max-w-lg mx-auto">
-          Explore our range of music courses taught by talented peers and guest instructors.
-        </p>
-        <div id="adminAddCourseBtn" style="display:none;" class="mt-6 flex justify-center">
-            <button onclick="openAddCourseModal()" class="btn-primary flex items-center gap-2">
-              <i data-lucide="plus" class="w-4 h-4"></i> Add Course
-            </button>
-        </div>
+        <h1 class="text-5xl sm:text-6xl font-bold font-display tracking-wide mb-4">Gallery</h1>
+        <p class="text-lg text-white/70 max-w-2xl mx-auto">Explore moments from our past events, jam sessions, and performances.</p>
       </div>
 
-      <!-- Filters -->
-      <div class="flex justify-center mb-10" data-aos="fade-up" data-aos-delay="100">
-        <div class="inline-flex bg-card/60 backdrop-blur-md p-1 rounded-xl border border-white/10 shadow-lg">
-          <button onclick="filterCourses('all')" class="filter-btn active px-4 py-2 rounded-lg text-sm font-medium text-white/70 hover:text-white transition-all">All</button>
-          <button onclick="filterCourses('Instrument')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium text-white/70 hover:text-white transition-all">Instrument</button>
-          <button onclick="filterCourses('Vocal')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium text-white/70 hover:text-white transition-all">Vocal</button>
-          <button onclick="filterCourses('Production')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium text-white/70 hover:text-white transition-all">Production</button>
-          <button onclick="filterCourses('Theory')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium text-white/70 hover:text-white transition-all">Theory</button>
-        </div>
+      <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Gallery items will be injected here -->
       </div>
-
-      <!-- Courses Grid -->
-      <div id="coursesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <p class="text-center text-white/60 col-span-full py-10">Loading courses...</p>
+      
+      <div id="loading-indicator" class="text-center py-10 text-white/60">
+        <i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-2"></i>
+        <p>Loading moments...</p>
       </div>
-
-      <!-- Empty State -->
-      <div id="emptyState" class="hidden text-center py-20">
-        <i data-lucide="music" class="w-12 h-12 text-white/30 mx-auto mb-4"></i>
-        <h3 class="text-lg font-semibold text-white/70">No courses yet</h3>
-        <p class="text-sm text-white/50 mt-1">Check back soon for new offerings!</p>
+      <div id="empty-state" class="hidden text-center py-20 text-white/60">
+        <i data-lucide="image" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
+        <p class="text-xl">No memories added yet.</p>
       </div>
-
     </div>
   </main>
 
@@ -178,75 +131,91 @@
       <p class="text-white/40 text-xs">© 2026 Tuners Club MIU. All rights reserved.</p>
     </div>
   </footer>
-
-  <!-- Course Modal for Admin Edit -->
-  <div id="courseModal" class="modal-overlay">
-    <div class="modal-content text-left">
-      <span onclick="closeCourseModal()" class="modal-close">&times;</span>
-      <h2 id="courseModalTitle" class="text-3xl font-display font-bold mb-6 text-white">Edit Course</h2>
-      <form id="courseForm" onsubmit="saveCourse(event)" class="space-y-4 text-left">
-        <input type="hidden" id="course-id">
-        <div class="grid sm:grid-cols-2 gap-4">
-          <div><label class="form-label">Course Title *</label><input type="text" id="course-title" required class="form-input"></div>
-          <div><label class="form-label">Instructor *</label><input type="text" id="course-instructor" required class="form-input"></div>
-        </div>
-        <div>
-          <label class="form-label">YouTube URL or ID *</label>
-          <input type="text" id="course-youtube-url" required placeholder="https://youtube.com/watch?v=..." class="form-input">
-        </div>
-        <div><label class="form-label">Description</label><textarea id="course-description" rows="3" class="form-input h-auto py-3 resize-none"></textarea></div>
-        <div class="grid sm:grid-cols-3 gap-4">
-          <div>
-            <label class="form-label">Category</label>
-            <select id="course-category" class="form-input cursor-pointer bg-[#11244e]">
-              <option value="Theory">Theory</option>
-              <option value="Instrument">Instrument</option>
-              <option value="Vocal">Vocal</option>
-              <option value="Production">Production</option>
-            </select>
-          </div>
-          <div><label class="form-label">Duration</label><input type="text" id="course-duration" placeholder="MM:SS or HH:MM:SS" pattern="^([0-9]{1,2}:)?[0-5][0-9]:[0-5][0-9]$" class="form-input"></div>
-          <div><label class="form-label">Order</label><input type="number" id="course-order" value="0" min="0" class="form-input"></div>
-        </div>
-        <div class="pt-2">
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" id="course-published" checked class="w-5 h-5 rounded border-white/20 bg-black/20 text-primary">
-            <span class="text-white/90">Published (visible to students)</span>
-          </label>
-        </div>
-        <div class="flex justify-end gap-3 pt-4 border-t border-white/10 mt-4">
-          <button type="button" onclick="closeCourseModal()" class="px-6 py-2 border border-white/20 text-white rounded-lg font-medium hover:bg-white/5 transition-colors">Cancel</button>
-          <button type="submit" class="btn-primary px-8">Save Course</button>
-        </div>
-      </form>
-    </div>
+  
+  <!-- Image Modal -->
+  <div id="image-modal" class="fixed inset-0 bg-black/95 z-[1000] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+    <button onclick="closeImageModal()" class="absolute top-6 right-6 text-white/60 hover:text-white transition-colors">
+        <i data-lucide="x" class="w-8 h-8"></i>
+    </button>
+    <img id="modal-image" src="" alt="Gallery Image" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl border border-white/10 scale-95 transition-transform duration-300">
   </div>
-
-  <!-- Video Player Modal -->
-  <div id="videoModal" class="modal-overlay" onclick="closeVideoModal(event)">
-    <div class="relative w-full max-w-4xl mx-auto p-4" onclick="event.stopPropagation()">
-      <span onclick="closeVideoModal(event)" class="absolute -top-10 right-4 text-4xl text-white/70 hover:text-white cursor-pointer">&times;</span>
-      <div class="aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-        <iframe id="videoPlayerIframe" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
-      </div>
-    </div>
-  </div>
-
-  <div id="Msg"></div>
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="/js/courses.js"></script>
-  
+  <script src="/js/script.js"></script>
   <script>
     lucide.createIcons();
     AOS.init({ duration: 600, once: true });
     
-    // Listen for DOM changes in coursesGrid to initialize lucide icons for new elements
-    const observer = new MutationObserver(() => {
-        lucide.createIcons();
+    async function loadGallery() {
+        const grid = document.getElementById('gallery-grid');
+        const loader = document.getElementById('loading-indicator');
+        const emptyState = document.getElementById('empty-state');
+        
+        try {
+            const res = await fetch('/api/v1/gallery');
+            const data = await res.json();
+            
+            loader.style.display = 'none';
+            
+            if (!data.data || data.data.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            grid.innerHTML = data.data.map((item, index) => {
+                const delay = (index % 8) * 50;
+                return `
+                <div data-aos="fade-up" data-aos-delay="${delay}" class="group relative rounded-2xl overflow-hidden cursor-pointer border border-white/10 bg-black/40 aspect-[4/3]" onclick="openImageModal('${item.imageUrl}')">
+                    <img src="${item.imageUrl}" alt="Gallery Image" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-300">
+                            <i data-lucide="zoom-in" class="w-6 h-6 text-white"></i>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+            
+            lucide.createIcons();
+            setTimeout(() => AOS.refresh(), 100);
+        } catch (err) {
+            console.error('Error loading gallery:', err);
+            loader.innerHTML = '<p class="text-destructive">Failed to load gallery.</p>';
+        }
+    }
+    
+    function openImageModal(src) {
+        const modal = document.getElementById('image-modal');
+        const img = document.getElementById('modal-image');
+        img.src = src;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        // trigger animation
+        setTimeout(() => {
+            modal.classList.remove('opacity-0');
+            img.classList.remove('scale-95');
+        }, 10);
+    }
+    
+    function closeImageModal() {
+        const modal = document.getElementById('image-modal');
+        const img = document.getElementById('modal-image');
+        modal.classList.add('opacity-0');
+        img.classList.add('scale-95');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            img.src = '';
+        }, 300);
+    }
+    
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeImageModal();
     });
-    observer.observe(document.getElementById('coursesGrid'), { childList: true });
+    
+    document.addEventListener('DOMContentLoaded', loadGallery);
   </script>
 </body>
 </html>
