@@ -1,6 +1,9 @@
 const express    = require('express');
 const mongoose   = require('mongoose');
 const dotenv     = require('dotenv');
+const dns        = require('dns');
+dns.setDefaultResultOrder('ipv4first');
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 dotenv.config({ path: '.env' });
 
@@ -77,7 +80,7 @@ app.use(errorHandler);
 
 // ─── START SERVER ────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/TunersWebsite';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://NourAzmy:G1WDo4Hqd9MnmfzH@tunersdatabase.gxfa2em.mongodb.net/TunersData?appName=TunersDatabase';
 
 mongoose
   .connect(MONGO_URI)
