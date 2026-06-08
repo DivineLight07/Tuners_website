@@ -131,17 +131,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 // Success!
-                alert('✅ Application submitted successfully!\nThe admin will review it soon.');
-                
-                // Reset form
-                form.reset();
-                if (musicianDiv) musicianDiv.style.display = 'none';
-                if (otherInstrumentContainer) otherInstrumentContainer.style.display = 'none';
+                const modal = document.getElementById('application-success-modal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                    setTimeout(() => {
+                        modal.classList.remove('opacity-0');
+                        document.getElementById('success-modal-content').classList.remove('scale-95');
+                    }, 10);
+                } else {
+                    // Fallback if modal not found
+                    alert('Application successful, and review is pending from admin');
+                    window.location.href = '/home';
+                }
                 
                 // Optional: notify admin dashboard if open in another tab
                 try {
                     localStorage.setItem('newApplicationSubmitted', Date.now().toString());
-                    setTimeout(() => localStorage.removeItem('newApplicationSubmitted'), 100);
                 } catch (e) {
                     // Ignore localStorage errors
                 }
@@ -182,9 +188,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         if (scrollTop > lastScrollTop) {
-            navbar.classList.add('hidden');
+            navbar.classList.add('-translate-y-full');
         } else {
-            navbar.classList.remove('hidden');
+            navbar.classList.remove('-translate-y-full');
         }
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     }, false);
@@ -226,6 +232,21 @@ function globalLogout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     window.location.href = '/login';
+}
+
+function closeSuccessModal() {
+    const modal = document.getElementById('application-success-modal');
+    if (modal) {
+        modal.classList.add('opacity-0');
+        document.getElementById('success-modal-content').classList.add('scale-95');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            window.location.href = '/home';
+        }, 300);
+    } else {
+        window.location.href = '/home';
+    }
 }
 
 // Call updateNavAuth on DOM load

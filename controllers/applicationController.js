@@ -1,5 +1,6 @@
 const Application = require('../models/Application');
 const ErrorResponse = require('../utils/errorResponse');
+const emailValidator = require('deep-email-validator');
 
 // @desc    Submit a new membership application
 // @route   POST /api/v1/applications
@@ -18,6 +19,15 @@ exports.submitApplication = async (req, res, next) => {
       reason,
       phone
     } = req.body;
+
+    // VALIDATE EMAIL IS MIU ACCOUNT
+    const miuEmailRegex = /^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)*miuegypt\.edu\.eg$/i;
+    if (!miuEmailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        error: 'You must use a valid MIU email address (e.g., your.name@miuegypt.edu.eg or @eng.miuegypt.edu.eg).'
+      });
+    }
 
     // CHECK FOR DUPLICATES ON MULTIPLE FIELDS
     // Check if ANY existing application matches email, studentId, phone, OR name

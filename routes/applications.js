@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 
-const { runValidation } = require('../middleware/validation');
-
 const {
   submitApplication,
   getAllApplications,
@@ -39,7 +37,7 @@ const validateApplication = [
     .notEmpty().withMessage('Committee selection is required'),
 
   body('year')
-    .isIn(['1st', '2nd', '3rd', '4th', '5th', 'graduate']).withMessage('Year must be 1st, 2nd, 3rd, 4th, 5th, or graduate'),
+    .isIn(['1st', '2nd', '3rd', '4th', '5th', 'Graduate']).withMessage('Year must be 1st, 2nd, 3rd, 4th, 5th, or Graduate'),
 
   body('major')
     .notEmpty().withMessage('Major is required')
@@ -47,7 +45,16 @@ const validateApplication = [
 
 
 
-// Using shared `runValidation` from middleware/validation.js
+const runValidation = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      errors: errors.array().map(e => ({ field: e.path, message: e.msg }))
+    });
+  }
+  next();
+};
 
 
 

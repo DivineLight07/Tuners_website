@@ -5,13 +5,14 @@ const jwt      = require('jsonwebtoken');
 const userSchema = new mongoose.Schema({
   name:         { type: String, required: true, trim: true },
   email:        { type: String, required: true, unique: true, lowercase: true, trim: true },
-  password:     { type: String, required: true, minlength: 6, select: false },
+  password:     { type: String, required: function() { return !this.googleId; }, minlength: 6, select: false },
   googleId:     { type: String, default: null },
   role:         { type: String, enum: ['member', 'admin'], default: 'member' },
   status:       { type: String, enum: ['pending', 'approved', 'rejected', 'banned'], default: 'pending' },
   universityId: { type: String, default: '' },
   avatar:       { type: String, default: null },
-  badges:       { type: [String], default: [] }
+  badges:       { type: [String], default: [] },
+  openedCourses:{ type: [String], default: [] }
 }, { timestamps: true });
 
 // Hash password before saving

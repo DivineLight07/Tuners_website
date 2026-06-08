@@ -1,16 +1,4 @@
-<<<<<<< HEAD
-const DEFAULT_USERS = [
-  { email: 'admin@miuegypt.edu.eg',  password: 'Admin123!',  role: 'admin', name: 'Admin User', universityId: 'MIU000', badges: ['🎵 Perfect Pitch', '🎸 Guitar Hero'] },
-  { email: 'member@miuegypt.edu.eg', password: 'Member123!', role: 'member', name: 'Farah', universityId: 'MIU123', badges: ['🎤 Vocal Virtuoso'] }
-];
-
-// Keep default users for local admin UI only (fallback)
-if (!localStorage.getItem('users')) {
-  localStorage.setItem('users', JSON.stringify(DEFAULT_USERS));
-}
-=======
 // Login now connects to MongoDB via API
->>>>>>> 23162bc5d788d462c9ae4f16fcac3b564001a533
 
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -20,7 +8,15 @@ function showPage(id) {
  
 function setErr(id, show) {
   const err = document.getElementById(id);
-  if (err) err.style.display = show ? 'block' : 'none';
+  if (err) {
+      if (show) {
+          err.classList.remove('hidden');
+          err.style.display = 'block';
+      } else {
+          err.classList.add('hidden');
+          err.style.display = 'none';
+      }
+  }
 }
  
 function clearErrors() {
@@ -35,8 +31,12 @@ function showMsg(message) {
   const Msg = document.getElementById('Msg');
   if (Msg) {
       Msg.textContent   = message;
+      Msg.classList.remove('hidden');
       Msg.style.display = 'block';
-      setTimeout(() => Msg.style.display = 'none', 3000);
+      setTimeout(() => {
+          Msg.style.display = 'none';
+          Msg.classList.add('hidden');
+      }, 3000);
   }
 }
  
@@ -54,38 +54,6 @@ async function handleLogin() {
   if (!isValidEmail(email)) { setErr('login-email-err', true); valid = false; }
   if (!pass)                 { setErr('login-pass-err',  true); valid = false; }
   if (!valid) return;
-<<<<<<< HEAD
- 
-  // Call backend auth API
-  fetch('/api/v1/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password: pass })
-  })
-  .then(async res => {
-    const body = await res.json();
-    if (!res.ok) {
-      const msg = body.error || (body.errors && body.errors.map(e=>e.message).join(', ')) || 'Login failed';
-      setErr('login-wrong-err', true);
-      return Promise.reject(msg);
-    }
-    return body;
-  })
-  .then(data => {
-    showMsg('Login successful! Redirecting…');
-    // Persist token and user in sessionStorage
-    if (data.token) sessionStorage.setItem('token', data.token);
-    if (data.user)  sessionStorage.setItem('loggedInUser', JSON.stringify(data.user));
-    setTimeout(() => {
-      const user = data.user || JSON.parse(sessionStorage.getItem('loggedInUser') || '{}');
-      if (user.role === 'admin') window.location.href = '/admin';
-      else window.location.href = '/member';
-    }, 800);
-  })
-  .catch(err => {
-    console.warn('Login error', err);
-  });
-=======
 
   try {
     const response = await fetch('/api/v1/auth/login', {
@@ -121,7 +89,6 @@ async function handleLogin() {
     console.error('Login error:', err);
     setErr('login-wrong-err', true);
   }
->>>>>>> 23162bc5d788d462c9ae4f16fcac3b564001a533
 }
  
 function logout() {
@@ -130,19 +97,9 @@ function logout() {
   if (emailInput) emailInput.value = '';
   if (passInput) passInput.value  = '';
   clearErrors();
-<<<<<<< HEAD
-  if (typeof globalLogout === 'function') {
-      globalLogout();
-  } else {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('loggedInUser');
-    window.location.href = '/login';
-  }
-=======
   localStorage.removeItem('token');
   localStorage.removeItem('user');
   window.location.href = '/login';
->>>>>>> 23162bc5d788d462c9ae4f16fcac3b564001a533
 }
 
 // Auto-hide navbar on scroll
@@ -154,26 +111,17 @@ function logout() {
         
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         if (scrollTop > lastScrollTop) {
-            navbar.classList.add('hidden');
+            navbar.classList.add('-translate-y-full');
         } else {
-            navbar.classList.remove('hidden');
+            navbar.classList.remove('-translate-y-full');
         }
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     }, false);
 })();
 
 // Global Authentication Logic
-function getAuthHeaders() {
-  const token = sessionStorage.getItem('token');
-  return token ? { Authorization: 'Bearer ' + token } : {};
-}
-
 function updateNavAuth() {
-<<<<<<< HEAD
-  const userJson = sessionStorage.getItem('loggedInUser');
-=======
     const userJson = localStorage.getItem('user');
->>>>>>> 23162bc5d788d462c9ae4f16fcac3b564001a533
     const loginBtn = document.getElementById('nav-login-btn');
     const logoutBtn = document.getElementById('nav-logout-btn');
     const dashboardLi = document.getElementById('nav-dashboard');
@@ -181,7 +129,24 @@ function updateNavAuth() {
     const applyLink = document.querySelector('nav ul li a[href*="/apply"]');
 
     if (userJson) {
-      const user = JSON.parse(userJson);
+        const user = JSON.parse(userJson);
+
+        // Fix navbar instability on the login page
+        if (window.location.pathname === '/login') {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('error')) {
+                // If they landed here with an error, clear their stale login state
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                updateNavAuth(); // re-run to update UI to logged-out state
+                return;
+            } else {
+                // No error, they just navigated to /login while logged in. Redirect to dashboard!
+                window.location.href = user.role === 'admin' ? '/admin' : '/member';
+                return;
+            }
+        }
+
         if (loginBtn) loginBtn.style.display = 'none';
         if (logoutBtn) logoutBtn.style.display = 'inline-block';
         if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'none';
@@ -194,12 +159,12 @@ function updateNavAuth() {
             }
         }
     } else {
-      if (loginBtn) loginBtn.style.display = 'inline-block';
-      if (logoutBtn) logoutBtn.style.display = 'none';
-      if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'inline-block';
-      if (dashboardLi) {
-        dashboardLi.style.display = 'none';
-      }
+        if (loginBtn) loginBtn.style.display = 'inline-block';
+        if (logoutBtn) logoutBtn.style.display = 'none';
+        if (applyLink && applyLink.parentElement) applyLink.parentElement.style.display = 'inline-block';
+        if (dashboardLi) {
+            dashboardLi.style.display = 'none';
+        }
     }
 }
 
@@ -210,3 +175,19 @@ function globalLogout() {
 }
 
 document.addEventListener('DOMContentLoaded', updateNavAuth);
+
+function togglePasswordVisibility(inputId, btn) {
+    const input = document.getElementById(inputId);
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerHTML = '<i data-lucide="eye-off" class="w-4 h-4"></i>';
+    } else {
+        input.type = 'password';
+        btn.innerHTML = '<i data-lucide="eye" class="w-4 h-4"></i>';
+    }
+    
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+}

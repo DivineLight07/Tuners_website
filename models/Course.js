@@ -23,7 +23,7 @@ const courseSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['Music Theory', 'Instrument', 'Vocal', 'Workshop', 'Other'],
+    enum: ['Theory', 'Instrument', 'Vocal', 'Production', 'Other'],
     default: 'Other'
   },
   duration: {

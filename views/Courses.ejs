@@ -1,88 +1,209 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tuners Courses</title>
-  <link rel="stylesheet" href="/css/Courses.css">
+  
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-</head>
-<body style="background-image: url('/images/IMG_4362.png'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <link href="/css/Courses.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#1f6feb', foreground: '#ffffff' },
+            accent: '#133785',
+            background: 'rgba(10, 26, 62, 0.65)',
+            card: { DEFAULT: 'rgba(10, 26, 62, 0.45)', foreground: '#ffffff' },
+            destructive: { DEFAULT: '#ff6b6b', foreground: '#ffffff' },
+            muted: { DEFAULT: 'rgba(255,255,255,0.1)', foreground: 'rgba(255,255,255,0.6)' },
+            border: 'rgba(255,255,255,0.18)',
+            input: 'rgba(255,255,255,0.1)',
+          },
+          fontFamily: {
+            display: ['"Bebas Neue"', 'sans-serif'],
+            sans: ['Poppins', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  </head>
+<body>
 
-  <nav id="navbar">
-    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/></a>
-    <ul>
-      <li><a href="/home">Home</a></li>
-      <li><a href="/about">About Us</a></li>
-      <li><a href="/apply">Apply</a></li>
-      <li><a href="#site-footer">Contact</a></li>
-      <li><a href="/courses">Courses</a></li>
-      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
+  <!-- NAVBAR -->
+  <nav id="navbar" class="w-full bg-[#133785]/85 backdrop-blur-md border-b border-white/15 grid grid-cols-[auto_1fr_auto] items-center px-8 py-2.5 sticky top-0 z-[100] transition-transform duration-300">
+    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo" class="h-12 w-auto drop-shadow-md"/></a>
+    <ul class="flex gap-10 justify-center">
+      <li><a href="/home" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Home</a></li>
+      <li><a href="/about" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">About Us</a></li>
+      <li><a href="/apply" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Apply</a></li>
+      <li><a href="#site-footer" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Contact</a></li>
+      <li><a href="/courses" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Courses</a></li>
+      <li><a href="/gallery" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Gallery</a></li>
+      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Dashboard</a></li>
     </ul>
-    <div class="nav-auth">
-      <a href="/login" id="nav-login-btn">Login</a>
-      <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
+    <div class="flex gap-4 items-center">
+        <a href="/login" id="nav-login-btn" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all">Login</a>
+        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all text-destructive border-destructive/50 hover:bg-destructive/20">Logout</button>
     </div>
   </nav>
 
-  <main class="page-content" style="padding: 40px 20px; max-width: 1400px; margin: 0 auto;">
-    
-    <!-- Header -->
-    <section class="intro" style="text-align: center; margin-bottom: 40px;">
-      <h1 style="color: #fff; font-family: 'Bebas Neue', cursive; font-size: 3rem; margin: 0 0 15px; letter-spacing: 2px;">🎵 Our Courses</h1>
-      <p class="cta" style="color: rgba(255,255,255,0.8); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
-        Learn from experienced instructors with our exclusive video courses. From music theory to advanced techniques, we've got you covered!
-      </p>
-    </section>
+  <!-- CONTENT -->
+  <main class="flex-1 py-16 lg:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Header -->
+      <div class="text-center mb-12 relative" data-aos="fade-up">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 text-white text-sm font-medium mb-4 backdrop-blur-sm border border-primary/30">
+          <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+          Learn & Grow
+        </div>
+        <h1 class="text-4xl sm:text-5xl font-bold font-display tracking-wide">Our Courses</h1>
+        <p class="mt-3 text-white/70 max-w-lg mx-auto">
+          Explore our range of music courses taught by talented peers and guest instructors.
+        </p>
+        <div id="adminAddCourseBtn" style="display:none;" class="mt-6 flex justify-center">
+            <button onclick="openAddCourseModal()" class="btn-primary flex items-center gap-2">
+              <i data-lucide="plus" class="w-4 h-4"></i> Add Course
+            </button>
+        </div>
+      </div>
 
-    <!-- Category Filter -->
-    <div class="filter-section">
-      <button onclick="filterCourses('all')" class="filter-btn active">All Courses</button>
-      <button onclick="filterCourses('Music Theory')" class="filter-btn">Music Theory</button>
-      <button onclick="filterCourses('Instrument')" class="filter-btn">Instrument</button>
-      <button onclick="filterCourses('Vocal')" class="filter-btn">Vocal</button>
-      <button onclick="filterCourses('Workshop')" class="filter-btn">Workshop</button>
+      <!-- Filters -->
+      <div class="flex justify-center mb-10" data-aos="fade-up" data-aos-delay="100">
+        <div class="inline-flex bg-card/60 backdrop-blur-md p-1 rounded-xl border border-white/10 shadow-lg">
+          <button onclick="filterCourses('all')" class="filter-btn active px-4 py-2 rounded-lg text-sm font-medium text-white/70 hover:text-white transition-all">All</button>
+          <button onclick="filterCourses('Instrument')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium text-white/70 hover:text-white transition-all">Instrument</button>
+          <button onclick="filterCourses('Vocal')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium text-white/70 hover:text-white transition-all">Vocal</button>
+          <button onclick="filterCourses('Production')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium text-white/70 hover:text-white transition-all">Production</button>
+          <button onclick="filterCourses('Theory')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium text-white/70 hover:text-white transition-all">Theory</button>
+        </div>
+      </div>
+
+      <!-- Courses Grid -->
+      <div id="coursesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <p class="text-center text-white/60 col-span-full py-10">Loading courses...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptyState" class="hidden text-center py-20">
+        <i data-lucide="music" class="w-12 h-12 text-white/30 mx-auto mb-4"></i>
+        <h3 class="text-lg font-semibold text-white/70">No courses yet</h3>
+        <p class="text-sm text-white/50 mt-1">Check back soon for new offerings!</p>
+      </div>
+
     </div>
-
-    <!-- Courses Grid -->
-    <div id="coursesGrid" class="courses-grid">
-      <p style="text-align: center; color: rgba(255,255,255,0.6); grid-column: 1/-1; padding: 40px;">Loading courses...</p>
-    </div>
-
-    <!-- Empty State (Hidden by Default) -->
-    <div id="emptyState" style="display: none; text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.6);">
-      <p style="font-size: 1.2rem;">🎸 No courses available yet.</p>
-      <p style="margin-top: 10px;">Check back soon for new lessons!</p>
-    </div>
-
   </main>
 
-  <footer class="footer" id="site-footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>Contact Us</h3>
+  <!-- FOOTER -->
+  <footer class="w-full bg-[#0a1a3e]/65 backdrop-blur-md border-t border-white/15 py-10 mt-auto relative overflow-hidden" id="site-footer">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[100px] bg-primary/10 blur-[80px] pointer-events-none"></div>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-8 relative z-10">
+      <div class="flex flex-col">
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider flex items-center gap-2"><i data-lucide="music"></i> Tuners MIU</h3>
+        <p class="text-white/60 text-sm mb-4 leading-relaxed">The official music club of Misr International University. Bringing harmony to campus life.</p>
+        <div class="mt-auto">
+          <h4 class="text-sm font-semibold mb-2 text-white/80">Contact Us</h4>
+          <a href="mailto:tuners.miu.eg@gmail.com" class="inline-flex items-center gap-2 text-primary-400 hover:text-white transition-colors text-sm font-medium"><i data-lucide="mail" class="w-4 h-4"></i> tuners.miu.eg@gmail.com</a>
+        </div>
       </div>
-      <div class="footer-section">
-        <h3>Follow Us</h3>
-        <ul>
-          <li><a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></li>
-          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
-          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
+      <div>
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Follow Us</h3>
+        <ul class="space-y-3">
+          <li><a href="https://www.instagram.com/tunersclubmiu" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Instagram.png" class="w-4 h-4 object-contain" alt="Instagram"> Instagram</a></li>
+          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Facebook.png" class="w-4 h-4 object-contain" alt="Facebook"> Facebook</a></li>
+          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Tiktok.png" class="w-4 h-4 object-contain" alt="TikTok"> TikTok</a></li>
         </ul>
       </div>
-      <div class="footer-section">
-        <h3>Quick Links</h3>
-        <ul>
-          <li><a href="/home">Home</a></li>
-          <li><a href="/about">About Us</a></li>
-          <li><a href="">Events</a></li>
-          <li><a href="/courses">Courses</a></li>
-          <li><a href="/apply">Apply</a></li>
-        </ul>
+      <div>
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Quick Links</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <a href="/home" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Home</a>
+          <a href="/about" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">About Us</a>
+          <a href="/courses" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Courses</a>
+          <a href="/gallery" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Gallery</a>
+          <a href="/apply" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Apply</a>
+        </div>
       </div>
+    </div>
+    <div class="max-w-6xl mx-auto px-8 mt-10 pt-6 border-t border-white/10 text-center">
+      <p class="text-white/40 text-xs">© 2026 Tuners Club MIU. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- External JavaScript File -->
+  <!-- Course Modal for Admin Edit -->
+  <div id="courseModal" class="modal-overlay">
+    <div class="modal-content text-left">
+      <span onclick="closeCourseModal()" class="modal-close">&times;</span>
+      <h2 id="courseModalTitle" class="text-3xl font-display font-bold mb-6 text-white">Edit Course</h2>
+      <form id="courseForm" onsubmit="saveCourse(event)" class="space-y-4 text-left">
+        <input type="hidden" id="course-id">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="form-label">Course Title *</label><input type="text" id="course-title" required class="form-input"></div>
+          <div><label class="form-label">Instructor *</label><input type="text" id="course-instructor" required class="form-input"></div>
+        </div>
+        <div>
+          <label class="form-label">YouTube URL or ID *</label>
+          <input type="text" id="course-youtube-url" required placeholder="https://youtube.com/watch?v=..." class="form-input">
+        </div>
+        <div><label class="form-label">Description</label><textarea id="course-description" rows="3" class="form-input h-auto py-3 resize-none"></textarea></div>
+        <div class="grid sm:grid-cols-3 gap-4">
+          <div>
+            <label class="form-label">Category</label>
+            <select id="course-category" class="form-input cursor-pointer bg-[#11244e]">
+              <option value="Theory">Theory</option>
+              <option value="Instrument">Instrument</option>
+              <option value="Vocal">Vocal</option>
+              <option value="Production">Production</option>
+            </select>
+          </div>
+          <div><label class="form-label">Duration</label><input type="text" id="course-duration" placeholder="MM:SS or HH:MM:SS" pattern="^([0-9]{1,2}:)?[0-5][0-9]:[0-5][0-9]$" class="form-input"></div>
+          <div><label class="form-label">Order</label><input type="number" id="course-order" value="0" min="0" class="form-input"></div>
+        </div>
+        <div class="pt-2">
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" id="course-published" checked class="w-5 h-5 rounded border-white/20 bg-black/20 text-primary">
+            <span class="text-white/90">Published (visible to students)</span>
+          </label>
+        </div>
+        <div class="flex justify-end gap-3 pt-4 border-t border-white/10 mt-4">
+          <button type="button" onclick="closeCourseModal()" class="px-6 py-2 border border-white/20 text-white rounded-lg font-medium hover:bg-white/5 transition-colors">Cancel</button>
+          <button type="submit" class="btn-primary px-8">Save Course</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Video Player Modal -->
+  <div id="videoModal" class="modal-overlay" onclick="closeVideoModal(event)">
+    <div class="relative w-full max-w-4xl mx-auto p-4" onclick="event.stopPropagation()">
+      <span onclick="closeVideoModal(event)" class="absolute -top-10 right-4 text-4xl text-white/70 hover:text-white cursor-pointer">&times;</span>
+      <div class="aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+        <iframe id="videoPlayerIframe" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div id="Msg"></div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="/js/courses.js"></script>
   
+  <script>
+    lucide.createIcons();
+    AOS.init({ duration: 600, once: true });
+    
+    // Listen for DOM changes in coursesGrid to initialize lucide icons for new elements
+    const observer = new MutationObserver(() => {
+        lucide.createIcons();
+    });
+    observer.observe(document.getElementById('coursesGrid'), { childList: true });
+  </script>
 </body>
 </html>

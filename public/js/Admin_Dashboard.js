@@ -2,6 +2,7 @@
 let usersCache = [];
 let boardMembersCache = [];
 let coursesCache = [];
+let globalBadgesCache = [];
 
 // ─── API HELPER ──────────────────────────────────────────────────────────────
 async function apiFetch(url, options = {}) {
@@ -45,18 +46,25 @@ async function loadApplications() {
         }
 
         appsList.innerHTML = apps.reverse().map(app => `
-            <div class="app-card">
-                <h3>${app.name}</h3>
-                <p><strong>Email:</strong> ${app.email}</p>
-                <p><strong>Phone:</strong> ${app.phone || 'N/A'}</p>
-                <p><strong>Student ID:</strong> ${app.studentId}</p>
-                <p><strong>Year:</strong> ${app.year}</p>
-                <p><strong>Committee:</strong> ${app.committee}</p>
-                ${app.instrument ? `<p><strong>Instrument:</strong> ${app.instrument}</p>` : ''}
-                <p><strong>Major:</strong> ${app.major}</p>
-                <p><strong>Date:</strong> ${new Date(app.createdAt).toLocaleDateString()}</p>
-                <div class="reason"><strong>Reason for joining:</strong><br>${app.reason}</div>
-                <button onclick="deleteApp('${app._id}')" class="btn-delete" style="margin-top:15px; width:100%">Delete Application</button>
+            <div class="bg-black/20 p-5 rounded-xl border border-white/10 hover:border-primary/50 transition-colors">
+                <div class="flex items-center justify-between mb-3 pb-3 border-b border-white/10">
+                    <h3 class="font-bold text-lg text-white">${app.name}</h3>
+                    <span class="text-xs font-medium px-2 py-1 bg-white/10 rounded-md text-white/80">${new Date(app.date || app.createdAt).toLocaleDateString()}</span>
+                </div>
+                <div class="space-y-1.5 text-sm mb-4 text-white/80">
+                    <p><strong class="text-white">Email:</strong> ${app.email}</p>
+                    <p><strong class="text-white">Phone:</strong> ${app.phone || 'N/A'}</p>
+                    <p><strong class="text-white">Student ID:</strong> ${app.studentId}</p>
+                    <p><strong class="text-white">Year:</strong> ${app.year}</p>
+                    <p><strong class="text-white">Committee:</strong> ${app.committee}</p>
+                    ${app.instrument ? `<p><strong class="text-white">Instrument:</strong> ${app.instrument}</p>` : ''}
+                    <p><strong class="text-white">Major:</strong> ${app.major}</p>
+                </div>
+                <div class="bg-white/5 p-3 rounded-lg text-sm mb-4 break-words">
+                    <strong class="text-white text-xs uppercase tracking-wider mb-1 block">Reason for joining:</strong>
+                    <span class="text-white/70 italic">"${app.reason}"</span>
+                </div>
+                <button onclick="deleteApp('${app._id}')" class="w-full py-2 bg-destructive/80 hover:bg-destructive text-white rounded-lg text-sm font-medium transition-all">Delete Application</button>
             </div>
         `).join('');
     } catch (err) {
@@ -91,17 +99,17 @@ async function loadCoursesAdmin() {
     }
 
     container.innerHTML = coursesCache.map(course => `
-      <div style="display: flex; align-items: center; justify-content: space-between; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1);">
-        <div style="flex: 1;">
-          <h4 style="margin: 0 0 5px; color: #fff; font-family: 'Bebas Neue', cursive; font-size: 1.2rem;">${course.title}</h4>
-          <p style="margin: 0; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
+      <div class="flex items-center justify-between p-4 bg-black/20 rounded-xl border border-white/10 mb-3 hover:bg-black/30 transition-colors">
+        <div class="flex-1">
+          <h4 class="font-bold text-lg text-white mb-1 leading-tight">${course.title}</h4>
+          <p class="text-sm text-white/60">
             ${course.instructor} • ${course.category} 
-            ${course.isPublished ? '<span style="color: #00d4aa;">✓ Published</span>' : '<span style="color: #ffa500;">○ Draft</span>'}
+            ${course.isPublished ? '<span class="text-green-400 ml-2">✓ Published</span>' : '<span class="text-amber-400 ml-2">○ Draft</span>'}
           </p>
         </div>
-        <div style="display: flex; gap: 10px;">
-          <button onclick="editCourse('${course._id}')" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem;">Edit</button>
-          <button onclick="deleteCourse('${course._id}')" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem; background: rgba(220, 53, 69, 0.8);">Delete</button>
+        <div class="flex gap-2">
+          <button onclick="editCourse('${course._id}')" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded text-sm font-medium transition-colors">Edit</button>
+          <button onclick="deleteCourse('${course._id}')" class="px-3 py-1.5 bg-destructive/80 hover:bg-destructive text-white rounded text-sm font-medium transition-colors">Delete</button>
         </div>
       </div>
     `).join('');
@@ -189,6 +197,186 @@ async function deleteCourse(id) {
   }
 }
 
+// ─── GALLERY MANAGEMENT ──────────────────────────────────────────────────────
+let galleryCache = [];
+
+async function loadGalleryAdmin() {
+    const container = document.getElementById('galleryAdminList');
+    if (!container) return;
+
+    try {
+        const response = await apiFetch('/api/v1/gallery');
+        galleryCache = response.data || [];
+
+        if (galleryCache.length === 0) {
+            container.innerHTML = '<p class="text-center text-white/60 col-span-2">No images yet.</p>';
+            return;
+        }
+
+        container.innerHTML = galleryCache.map(item => `
+            <div class="relative bg-black/20 rounded-xl border border-white/10 overflow-hidden group aspect-[4/3]">
+                <img src="${item.imageUrl}" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                    <button onclick="editGallery('${item._id}')" class="p-2 bg-white/20 hover:bg-white/40 text-white rounded-full transition-colors" title="Edit"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                    <button onclick="deleteGallery('${item._id}')" class="p-2 bg-destructive/80 hover:bg-destructive text-white rounded-full transition-colors" title="Delete"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+        `).join('');
+        
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    } catch (err) {
+        console.error('Error loading gallery:', err);
+        container.innerHTML = '<p class="text-center text-white/60 col-span-2">Failed to load gallery.</p>';
+    }
+}
+
+function openAddGalleryModal() {
+    document.getElementById('galleryModalTitle').textContent = 'Add Gallery Image';
+    document.getElementById('galleryForm').reset();
+    document.getElementById('gallery-id').value = '';
+    const modal = document.getElementById('galleryModal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeGalleryModal() {
+    const modal = document.getElementById('galleryModal');
+    if (modal) modal.style.display = 'none';
+}
+
+function editGallery(id) {
+    if (!id) return;
+    const item = galleryCache.find(g => g._id === id);
+    if (!item) return;
+
+    document.getElementById('galleryModalTitle').textContent = 'Edit Gallery Image';
+    document.getElementById('gallery-id').value = item._id;
+    document.getElementById('gallery-image-url').value = item.imageUrl || '';
+    document.getElementById('gallery-order').value = item.order || 0;
+    
+    const modal = document.getElementById('galleryModal');
+    if (modal) modal.style.display = 'flex';
+}
+
+async function saveGallery(event) {
+    event.preventDefault();
+    
+    const id = document.getElementById('gallery-id').value;
+    const formData = new FormData();
+    formData.append('imageUrl', document.getElementById('gallery-image-url').value.trim());
+    formData.append('order', parseInt(document.getElementById('gallery-order').value) || 0);
+
+    const fileInput = document.getElementById('gallery-image-file');
+    if (fileInput.files[0]) {
+        formData.append('imageFile', fileInput.files[0]);
+    }
+
+    try {
+        const url = id ? `/api/v1/gallery/${id}` : '/api/v1/gallery';
+        const method = id ? 'PUT' : 'POST';
+        
+        // Let browser set Content-Type for FormData
+        const token = localStorage.getItem('token');
+        const res = await fetch(url, {
+            method: method,
+            headers: {
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+            },
+            body: formData
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Request failed');
+
+        closeGalleryModal();
+        await loadGalleryAdmin();
+        showMsg(id ? 'Image updated!' : 'Image added!');
+    } catch (err) {
+        showMsg(err.message || 'Failed to save image');
+    }
+}
+
+async function deleteGallery(id) {
+    if (!confirm('Delete this image from the gallery?')) return;
+
+    try {
+        await apiFetch(`/api/v1/gallery/${id}`, { method: 'DELETE' });
+        await loadGalleryAdmin();
+        showMsg('Image deleted');
+    } catch (err) {
+        showMsg(err.message || 'Failed to delete image');
+    }
+}
+
+// ─── BADGES MANAGEMENT ───────────────────────────────────────────────────────
+async function loadBadgesAdmin() {
+    const container = document.getElementById('badgesAdminList');
+    if (!container) return;
+
+    try {
+        const response = await apiFetch('/api/v1/badges');
+        globalBadgesCache = response.data || [];
+
+        if (globalBadgesCache.length === 0) {
+            container.innerHTML = '<p class="text-center text-white/60">No badges yet.</p>';
+            return;
+        }
+
+        container.innerHTML = globalBadgesCache.map(badge => `
+            <div class="flex items-center justify-between p-3 bg-black/20 rounded-xl border border-white/10 hover:bg-black/30 transition-colors mb-2">
+                <span class="text-white font-medium text-sm">${badge.name}</span>
+                <button type="button" onclick="deleteGlobalBadge('${badge._id}')" class="p-1.5 bg-destructive/80 hover:bg-destructive text-white rounded transition-colors" title="Delete"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </div>
+        `).join('');
+        
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    } catch (err) {
+        console.error('Error loading badges:', err);
+        container.innerHTML = '<p class="text-center text-white/60">Failed to load badges.</p>';
+    }
+}
+
+async function createGlobalBadge(event) {
+    event.preventDefault();
+    const nameInput = document.getElementById('new-badge-name');
+    const name = nameInput.value.trim();
+    if (!name) return;
+
+    try {
+        await apiFetch('/api/v1/badges', {
+            method: 'POST',
+            body: JSON.stringify({ name })
+        });
+        nameInput.value = '';
+        await loadBadgesAdmin();
+        showMsg('Badge created!');
+    } catch (err) {
+        showMsg(err.message || 'Failed to create badge');
+    }
+}
+
+async function deleteGlobalBadge(id) {
+    if (!confirm('Delete this badge globally? It will also be removed from all users.')) return;
+    try {
+        await apiFetch(`/api/v1/badges/${id}`, { method: 'DELETE' });
+        await loadBadgesAdmin();
+        await loadUsers();
+        showMsg('Badge deleted.');
+    } catch (err) {
+        showMsg(err.message || 'Failed to delete badge');
+    }
+}
+
+function populateBadgesCheckboxes(containerId, userBadges) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    container.innerHTML = globalBadgesCache.map(badge => `
+        <label class="flex items-center gap-2 p-3 bg-white/5 rounded-lg border border-white/10 cursor-pointer hover:bg-white/10 transition-colors">
+          <input type="checkbox" value="${badge.name}" class="w-4 h-4" ${userBadges.includes(badge.name) ? 'checked' : ''}> <span class="text-sm">${badge.name}</span>
+        </label>
+    `).join('');
+}
+
 // ─── USER MANAGEMENT ─────────────────────────────────────────────────────────
 async function loadUsers() {
     const userList = document.getElementById('user-list');
@@ -204,16 +392,52 @@ async function loadUsers() {
             return;
         }
 
-        userList.innerHTML = usersCache.map(user => `
-            <tr>
-                <td>${user.email}</td>
-                <td>${user.role}</td>
-                <td>
+        const currentUserStr = localStorage.getItem('user');
+        const currentUser = currentUserStr ? JSON.parse(currentUserStr) : null;
+        const currentUserId = currentUser ? currentUser.id : null;
+        const currentUserEmail = currentUser ? currentUser.email : null;
+
+        userList.innerHTML = usersCache.map(user => {
+            let actionsHtml = '';
+
+            if (user.email === 'admin@miuegypt.edu.eg') {
+                if (currentUserEmail === 'admin@miuegypt.edu.eg') {
+                    actionsHtml = `
+                        <button onclick="editUser('${user._id}')" class="btn-primary" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
+                        <span style="font-size:0.8rem;color:#888;">System</span>
+                    `;
+                } else {
+                    actionsHtml = '<span style="font-size:0.8rem;color:#888;">System</span>';
+                }
+            } else if (user._id === currentUserId) {
+                actionsHtml = `
                     <button onclick="editUser('${user._id}')" class="btn-primary" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
-                    ${user.email !== 'admin@miuegypt.edu.eg' ? `<button onclick="deleteUser('${user._id}')" class="btn-delete">Delete</button>` : '<span style="font-size:0.8rem;color:#888;">System</span>'}
-                </td>
+                    <span style="font-size:0.8rem;color:#888;">You</span>
+                `;
+            } else if (user.role === 'admin') {
+                if (currentUserEmail === 'admin@miuegypt.edu.eg') {
+                    actionsHtml = `
+                        <button onclick="editUser('${user._id}')" class="btn-primary" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
+                        <button onclick="deleteUser('${user._id}')" class="btn-delete">Delete</button>
+                    `;
+                } else {
+                    actionsHtml = '<span style="font-size:0.8rem;color:#888;">Admin</span>';
+                }
+            } else {
+                actionsHtml = `
+                    <button onclick="editUser('${user._id}')" class="btn-primary" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</button>
+                    <button onclick="deleteUser('${user._id}')" class="btn-delete">Delete</button>
+                `;
+            }
+
+            return `
+            <tr class="hover:bg-white/5 transition-colors">
+                <td class="p-3 text-white/90 border-t border-white/5">${user.email}</td>
+                <td class="p-3 border-t border-white/5"><span class="px-2 py-0.5 rounded text-xs font-medium ${user.role === 'admin' ? 'bg-primary/20 text-primary-400 border border-primary/30' : 'bg-white/10 text-white/70'} capitalize">${user.role}</span></td>
+                <td class="p-3 text-right border-t border-white/5">${actionsHtml.replace(/btn-primary/g, 'px-3 py-1 bg-white/10 hover:bg-white/20 rounded text-xs transition-colors text-white mr-2').replace(/btn-delete/g, 'px-3 py-1 bg-destructive/80 hover:bg-destructive rounded text-xs transition-colors text-white')}</td>
             </tr>
-        `).join('');
+            `;
+        }).join('');
     } catch (err) {
         console.error('Error loading users:', err);
         userList.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#fff;">Unable to load users.</td></tr>';
@@ -227,26 +451,60 @@ function editUser(userId) {
         return;
     }
 
-    const user = usersCache.find(u => u._id === userId);
-    if (!user) {
+    const userToEdit = usersCache.find(u => u._id === userId);
+    if (!userToEdit) {
         console.warn('editUser blocked: User not found:', userId);
         return;
     }
 
-    // Fill form fields
-    document.getElementById('edit-original-email').value = user.email;
-    document.getElementById('edit-user-name').value = user.name || '';
-    document.getElementById('edit-user-email').value = user.email;
+    const currentUserJson = localStorage.getItem('user');
+    const currentUser = currentUserJson ? JSON.parse(currentUserJson) : null;
+    const isSelf = (currentUser && (currentUser._id === userId || currentUser.id === userId));
+    const isSystemAdmin = (currentUser && currentUser.email === 'admin@miuegypt.edu.eg');
+
+    if (!isSelf && userToEdit.role === 'admin' && !isSystemAdmin) {
+        alert("You cannot edit other admins' information.");
+        return;
+    }
+
+    if (isSelf) {
+        document.getElementById('edit-self-original-email').value = userToEdit.email;
+        document.getElementById('edit-self-name').value = userToEdit.name || '';
+        document.getElementById('edit-self-email').value = userToEdit.email;
+        document.getElementById('edit-self-pass').value = '';
+        document.getElementById('edit-self-uid').value = userToEdit.universityId || '';
+        
+        const badgeCheckboxes = document.querySelectorAll('#edit-self-badges input[type="checkbox"]');
+        const userBadges = userToEdit.badges || [];
+        populateBadgesCheckboxes('edit-self-badges', userBadges);
+        
+        const oldPassContainer = document.getElementById('edit-self-old-pass-container');
+        const oldPassInput = document.getElementById('edit-self-old-pass');
+        if (oldPassContainer && oldPassInput) {
+            oldPassInput.value = '';
+            // Always require old password to save changes for security
+            oldPassContainer.style.display = 'block';
+            oldPassInput.required = true;
+        }
+
+        const modal = document.getElementById('editSelfModal');
+        if (modal) modal.style.display = 'flex';
+        return;
+    }
+
+    // Fill form fields for other users
+    document.getElementById('edit-original-email').value = userToEdit.email;
+    document.getElementById('edit-user-name').value = userToEdit.name || '';
+    document.getElementById('edit-user-email').value = userToEdit.email;
     document.getElementById('edit-user-pass').value = '';
-    document.getElementById('edit-user-role').value = user.role;
-    document.getElementById('edit-user-uid').value = user.universityId || '';
+    document.getElementById('edit-user-uid').value = userToEdit.universityId || '';
+    
+    const roleSelect = document.getElementById('edit-user-role');
+    roleSelect.value = userToEdit.role || 'member';
     
     // Fill badges
-    const badgeCheckboxes = document.querySelectorAll('#edit-user-badges input[type="checkbox"]');
-    const userBadges = user.badges || [];
-    badgeCheckboxes.forEach(cb => {
-        cb.checked = userBadges.includes(cb.value);
-    });
+    const userBadges = userToEdit.badges || [];
+    populateBadgesCheckboxes('edit-user-badges', userBadges);
     
     // Show modal with flex for centering
     const modal = document.getElementById('editUserModal');
@@ -259,10 +517,26 @@ function editUser(userId) {
 
 function closeEditUserModal() {
     const modal = document.getElementById('editUserModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
+    if (modal) modal.style.display = 'none';
     document.getElementById('editUserForm')?.reset();
+}
+
+function closeEditSelfModal() {
+    const modal = document.getElementById('editSelfModal');
+    if (modal) modal.style.display = 'none';
+    document.getElementById('editSelfForm')?.reset();
+}
+
+function toggleAdminPasswordVisibility() {
+    const passInput = document.getElementById('edit-self-pass');
+    const toggleBtn = document.getElementById('toggle-admin-pass-btn');
+    if (passInput.type === 'password') {
+        passInput.type = 'text';
+        toggleBtn.textContent = 'Hide';
+    } else {
+        passInput.type = 'password';
+        toggleBtn.textContent = 'Show';
+    }
 }
 
 async function saveUserEdit(event) {
@@ -299,6 +573,65 @@ async function saveUserEdit(event) {
         showMsg('User details updated.');
     } catch (err) {
         showMsg(err.message || 'Unable to update user.');
+    }
+}
+
+async function saveSelfEdit(event) {
+    event.preventDefault();
+    
+    const originalEmail = document.getElementById('edit-self-original-email').value;
+    const newName = document.getElementById('edit-self-name').value.trim();
+    const newEmail = document.getElementById('edit-self-email').value.trim();
+    const newPass = document.getElementById('edit-self-pass').value;
+    const newUid = document.getElementById('edit-self-uid').value.trim();
+    const oldPassword = document.getElementById('edit-self-old-pass') ? document.getElementById('edit-self-old-pass').value : '';
+    
+    const badgeCheckboxes = document.querySelectorAll('#edit-self-badges input[type="checkbox"]:checked');
+    const newBadges = Array.from(badgeCheckboxes).map(cb => cb.value);
+    
+    const user = usersCache.find(u => u.email === originalEmail);
+    if (!user) return;
+
+    // Enforce old password requirement
+    if (!oldPassword) {
+        showMsg('Please enter your current password to save changes.');
+        const oldPassInput = document.getElementById('edit-self-old-pass');
+        if (oldPassInput) {
+            oldPassInput.focus();
+            oldPassInput.style.borderColor = '#ff6b6b';
+            setTimeout(() => oldPassInput.style.borderColor = '', 3000);
+        }
+        return;
+    }
+
+    try {
+        await apiFetch(`/api/v1/users/${user._id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                name: newName,
+                email: newEmail,
+                password: newPass || undefined,
+                oldPassword: oldPassword || undefined,
+                universityId: newUid,
+                badges: newBadges
+                // Role is strictly omitted
+            })
+        });
+
+        closeEditSelfModal();
+        await loadUsers();
+        
+        // Update local storage name if they updated their own name
+        const currentUserJson = localStorage.getItem('user');
+        if (currentUserJson) {
+            const currentUser = JSON.parse(currentUserJson);
+            currentUser.name = newName;
+            localStorage.setItem('user', JSON.stringify(currentUser));
+        }
+        
+        showMsg('Your profile updated successfully.');
+    } catch (err) {
+        showMsg(err.message || 'Unable to update profile.');
     }
 }
 
@@ -363,17 +696,17 @@ async function loadBoardMembers() {
         }
 
         container.innerHTML = boardMembersCache.map(member => `
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1);">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <img src="${member.image}" alt="${member.name}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
+            <div class="flex items-center justify-between p-4 bg-black/20 rounded-xl border border-white/10 mb-3 hover:bg-black/30 transition-colors">
+                <div class="flex items-center gap-4">
+                    <img src="${member.image}" alt="${member.name}" class="w-12 h-12 rounded-full object-cover border-2 border-white/10">
                     <div>
-                        <h4 style="margin: 0 0 3px; color: #fff; font-family: 'Bebas Neue', cursive; font-size: 1.2rem;">${member.name}</h4>
-                        <p style="margin: 0; color: #00d4aa; font-size: 0.9rem;">${member.position}</p>
+                        <h4 class="font-bold text-lg text-white mb-0.5 leading-tight">${member.name}</h4>
+                        <p class="text-sm text-primary-400 text-primary font-medium m-0">${member.position}</p>
                     </div>
                 </div>
-                <div style="display: flex; gap: 10px;">
-                    <button onclick="editBoardMember('${member._id}')" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem;">Edit</button>
-                    <button onclick="deleteBoardMember('${member._id}')" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem; background: rgba(220, 53, 69, 0.8);">Delete</button>
+                <div class="flex gap-2">
+                    <button onclick="editBoardMember('${member._id}')" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded text-sm font-medium transition-colors">Edit</button>
+                    <button onclick="deleteBoardMember('${member._id}')" class="px-3 py-1.5 bg-destructive/80 hover:bg-destructive text-white rounded text-sm font-medium transition-colors">Delete</button>
                 </div>
             </div>
         `).join('');
@@ -407,11 +740,7 @@ function editBoardMember(id) {
     document.getElementById('board-member-name').value = member.name;
     document.getElementById('board-member-position').value = member.position;
     document.getElementById('board-member-image').value = member.image || '';
-    document.getElementById('board-member-bio').value = member.bio || '';
     document.getElementById('board-member-order').value = member.order || 0;
-    document.getElementById('board-member-instagram').value = member.socialMedia?.instagram || '';
-    document.getElementById('board-member-facebook').value = member.socialMedia?.facebook || '';
-    document.getElementById('board-member-linkedin').value = member.socialMedia?.linkedin || '';
     
     const modal = document.getElementById('boardMemberModal');
     if (modal) modal.style.display = 'flex';
@@ -421,27 +750,33 @@ async function saveBoardMember(event) {
     event.preventDefault();
     
     const id = document.getElementById('board-member-id').value;
-    const formData = {
-        name: document.getElementById('board-member-name').value.trim(),
-        position: document.getElementById('board-member-position').value.trim(),
-        image: document.getElementById('board-member-image').value.trim() || '/images/default-avatar.png',
-        bio: document.getElementById('board-member-bio').value.trim(),
-        order: parseInt(document.getElementById('board-member-order').value) || 0,
-        socialMedia: {
-            instagram: document.getElementById('board-member-instagram').value.trim(),
-            facebook: document.getElementById('board-member-facebook').value.trim(),
-            linkedin: document.getElementById('board-member-linkedin').value.trim()
-        }
-    };
+    
+    const formData = new FormData();
+    formData.append('name', document.getElementById('board-member-name').value.trim());
+    formData.append('position', document.getElementById('board-member-position').value.trim());
+    formData.append('image', document.getElementById('board-member-image').value.trim() || '/images/Default-pfp.png');
+    formData.append('order', parseInt(document.getElementById('board-member-order').value) || 0);
+
+    const fileInput = document.getElementById('board-member-file');
+    if (fileInput && fileInput.files[0]) {
+        formData.append('imageFile', fileInput.files[0]);
+    }
 
     try {
         const url = id ? `/api/v1/board/${id}` : '/api/v1/board';
         const method = id ? 'PUT' : 'POST';
         
-        await apiFetch(url, {
+        const token = localStorage.getItem('token');
+        const res = await fetch(url, {
             method: method,
-            body: JSON.stringify(formData)
+            headers: {
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+            },
+            body: formData
         });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Request failed');
 
         closeBoardMemberModal();
         await loadBoardMembers();
@@ -536,9 +871,9 @@ function globalLogout() {
         
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         if (scrollTop > lastScrollTop) {
-            navbar.classList.add('hidden');
+            navbar.classList.add('-translate-y-full');
         } else {
-            navbar.classList.remove('hidden');
+            navbar.classList.remove('-translate-y-full');
         }
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     }, false);
@@ -563,6 +898,8 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeEditUserModal();
         closeBoardMemberModal();
+        if (typeof closeCourseModal === 'function') closeCourseModal();
+        if (typeof closeGalleryModal === 'function') closeGalleryModal();
     }
 });
 
@@ -583,6 +920,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     await updateRoomStatusDisplay();
     await loadBoardMembers();
     await loadCoursesAdmin();
+    await loadGalleryAdmin();
+    await loadBadgesAdmin();
     
     console.log('✅ All dashboard data loaded');
 });
