@@ -43,8 +43,8 @@ exports.createUser = async (req, res, next) => {
 // PUT update a user
 exports.updateUser = async (req, res, next) => {
   try {
-    // ✅ FIX: Added 'badges', 'status', 'password', and 'openedCourses' to the allowed list!
-    const allowedUpdates = ['name', 'email', 'universityId', 'role', 'status', 'badges', 'password', 'openedCourses'];
+    // ✅ FIX: Added 'oldPassword' to allowed list to pass validation
+    const allowedUpdates = ['name', 'email', 'universityId', 'role', 'status', 'badges', 'password', 'openedCourses', 'oldPassword'];
     const updates = Object.keys(req.body);
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
@@ -52,12 +52,23 @@ exports.updateUser = async (req, res, next) => {
       return res.status(400).json({ success: false, error: 'Invalid updates!' });
     }
 
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).select('+password');
     if (!user) return res.status(404).json({ success: false, error: 'User not found' });
 
     // Permission checks
     if (req.user.role !== 'admin' && req.user._id.toString() !== user._id.toString()) {
       return res.status(403).json({ success: false, error: 'Not authorized to update this user' });
+    }
+    
+    // Security check: Admin editing their own profile (and not using Google auth)
+    if (req.user._id.toString() === user._id.toString() && !user.googleId) {
+      if (!req.body.oldPassword) {
+        return res.status(400).json({ success: false, error: 'Please provide your current password to save changes.' });
+      }
+      const isMatch = await user.matchPassword(req.body.oldPassword);
+      if (!isMatch) {
+        return res.status(401).json({ success: false, error: 'Incorrect current password.' });
+      }
     }
     
     if (user.email === 'admin@miuegypt.edu.eg' && req.user.email !== 'admin@miuegypt.edu.eg') {
@@ -67,9 +78,9 @@ exports.updateUser = async (req, res, next) => {
       return res.status(403).json({ success: false, error: 'Only system admin can modify other admins.' });
     }
 
-    // Apply updates (skip password here, we handle it below so it gets hashed)
+    // Apply updates (skip password/oldPassword here)
     allowedUpdates.forEach(field => {
-      if (req.body[field] !== undefined && field !== 'password') {
+      if (req.body[field] !== undefined && field !== 'password' && field !== 'oldPassword') {
         user[field] = req.body[field];
       }
     });

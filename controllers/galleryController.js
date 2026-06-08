@@ -12,7 +12,11 @@ exports.getAllGalleryItems = async (req, res, next) => {
 
 exports.createGalleryItem = async (req, res, next) => {
   try {
-    const item = await Gallery.create(req.body);
+    const data = { ...req.body };
+    if (req.file) {
+      data.imageUrl = `/uploads/${req.file.filename}`;
+    }
+    const item = await Gallery.create(data);
     res.status(201).json({ success: true, data: item });
   } catch (err) {
     next(err);
@@ -21,7 +25,12 @@ exports.createGalleryItem = async (req, res, next) => {
 
 exports.updateGalleryItem = async (req, res, next) => {
   try {
-    const item = await Gallery.findByIdAndUpdate(req.params.id, req.body, {
+    const updates = { ...req.body };
+    if (req.file) {
+      updates.imageUrl = `/uploads/${req.file.filename}`;
+    }
+
+    const item = await Gallery.findByIdAndUpdate(req.params.id, updates, {
       new: true,
       runValidators: true
     });

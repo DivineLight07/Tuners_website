@@ -8,9 +8,11 @@ const {
   deleteGalleryItem
 } = require('../controllers/galleryController');
 
+const upload = require('../middleware/upload');
+
 router.get('/', getAllGalleryItems);
-router.post('/', protect, authorize('admin'), createGalleryItem);
-router.put('/:id', protect, authorize('admin'), updateGalleryItem);
+router.post('/', protect, authorize('admin'), upload.single('imageFile'), createGalleryItem);
+router.put('/:id', protect, authorize('admin'), upload.single('imageFile'), updateGalleryItem);
 router.delete('/:id', protect, authorize('admin'), deleteGalleryItem);
 
 module.exports = router;

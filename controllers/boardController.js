@@ -17,7 +17,12 @@ exports.getAllBoardMembers = async (req, res, next) => {
 // POST create new board member (admin only)
 exports.createBoardMember = async (req, res, next) => {
   try {
-    const { name, position, image, bio, socialMedia, order } = req.body;
+    let { name, position, image, bio, socialMedia, order } = req.body;
+    
+    // If a file was uploaded, use that instead of the text input
+    if (req.file) {
+      image = `/uploads/${req.file.filename}`;
+    }
     
     const member = await BoardMember.create({
       name,
@@ -45,9 +50,14 @@ exports.createBoardMember = async (req, res, next) => {
 // PUT update board member (admin only)
 exports.updateBoardMember = async (req, res, next) => {
   try {
+    const updates = { ...req.body };
+    if (req.file) {
+      updates.image = `/uploads/${req.file.filename}`;
+    }
+
     const member = await BoardMember.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updates,
       { new: true, runValidators: true }
     );
 

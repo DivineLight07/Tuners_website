@@ -261,19 +261,31 @@ async function saveGallery(event) {
     event.preventDefault();
     
     const id = document.getElementById('gallery-id').value;
-    const formData = {
-        imageUrl: document.getElementById('gallery-image-url').value.trim(),
-        order: parseInt(document.getElementById('gallery-order').value) || 0
-    };
+    const formData = new FormData();
+    formData.append('imageUrl', document.getElementById('gallery-image-url').value.trim());
+    formData.append('order', parseInt(document.getElementById('gallery-order').value) || 0);
+
+    const fileInput = document.getElementById('gallery-image-file');
+    if (fileInput.files[0]) {
+        formData.append('imageFile', fileInput.files[0]);
+    }
 
     try {
         const url = id ? `/api/v1/gallery/${id}` : '/api/v1/gallery';
         const method = id ? 'PUT' : 'POST';
         
-        await apiFetch(url, {
+        // Let browser set Content-Type for FormData
+        const token = localStorage.getItem('token');
+        const res = await fetch(url, {
             method: method,
-            body: JSON.stringify(formData)
+            headers: {
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+            },
+            body: formData
         });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Request failed');
 
         closeGalleryModal();
         await loadGalleryAdmin();
@@ -462,9 +474,18 @@ function editUser(userId) {
         document.getElementById('edit-self-pass').value = '';
         document.getElementById('edit-self-uid').value = userToEdit.universityId || '';
         
+        const badgeCheckboxes = document.querySelectorAll('#edit-self-badges input[type="checkbox"]');
         const userBadges = userToEdit.badges || [];
         populateBadgesCheckboxes('edit-self-badges', userBadges);
         
+        const oldPassContainer = document.getElementById('edit-self-old-pass-container');
+        if (oldPassContainer) {
+            oldPassContainer.style.display = userToEdit.googleId ? 'none' : 'block';
+            document.getElementById('edit-self-old-pass').value = '';
+            // Make required if not google id
+            document.getElementById('edit-self-old-pass').required = !userToEdit.googleId;
+        }
+
         const modal = document.getElementById('editSelfModal');
         if (modal) modal.style.display = 'flex';
         return;
@@ -550,6 +571,7 @@ async function saveSelfEdit(event) {
     const newEmail = document.getElementById('edit-self-email').value.trim();
     const newPass = document.getElementById('edit-self-pass').value;
     const newUid = document.getElementById('edit-self-uid').value.trim();
+    const oldPassword = document.getElementById('edit-self-old-pass') ? document.getElementById('edit-self-old-pass').value : '';
     
     const badgeCheckboxes = document.querySelectorAll('#edit-self-badges input[type="checkbox"]:checked');
     const newBadges = Array.from(badgeCheckboxes).map(cb => cb.value);
@@ -564,6 +586,7 @@ async function saveSelfEdit(event) {
                 name: newName,
                 email: newEmail,
                 password: newPass || undefined,
+                oldPassword: oldPassword || undefined,
                 universityId: newUid,
                 badges: newBadges
                 // Role is strictly omitted
@@ -702,21 +725,33 @@ async function saveBoardMember(event) {
     event.preventDefault();
     
     const id = document.getElementById('board-member-id').value;
-    const formData = {
-        name: document.getElementById('board-member-name').value.trim(),
-        position: document.getElementById('board-member-position').value.trim(),
-        image: document.getElementById('board-member-image').value.trim() || '/images/Default-pfp.png',
-        order: parseInt(document.getElementById('board-member-order').value) || 0
-    };
+    
+    const formData = new FormData();
+    formData.append('name', document.getElementById('board-member-name').value.trim());
+    formData.append('position', document.getElementById('board-member-position').value.trim());
+    formData.append('image', document.getElementById('board-member-image').value.trim() || '/images/Default-pfp.png');
+    formData.append('order', parseInt(document.getElementById('board-member-order').value) || 0);
+
+    const fileInput = document.getElementById('board-member-file');
+    if (fileInput && fileInput.files[0]) {
+        formData.append('imageFile', fileInput.files[0]);
+    }
 
     try {
         const url = id ? `/api/v1/board/${id}` : '/api/v1/board';
         const method = id ? 'PUT' : 'POST';
         
-        await apiFetch(url, {
+        const token = localStorage.getItem('token');
+        const res = await fetch(url, {
             method: method,
-            body: JSON.stringify(formData)
+            headers: {
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+            },
+            body: formData
         });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Request failed');
 
         closeBoardMemberModal();
         await loadBoardMembers();

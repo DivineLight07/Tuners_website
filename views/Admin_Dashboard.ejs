@@ -222,7 +222,10 @@
           <div><label class="form-label">Name *</label><input type="text" id="board-member-name" required class="form-input"></div>
           <div><label class="form-label">Position *</label><input type="text" id="board-member-position" required class="form-input"></div>
         </div>
-        <div><label class="form-label">Image URL</label><input type="text" id="board-member-image" placeholder="/images/Default-pfp.png" class="form-input"></div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="form-label">Image URL</label><input type="text" id="board-member-image" placeholder="/images/Default-pfp.png" class="form-input"></div>
+          <div><label class="form-label">Or Upload File</label><input type="file" id="board-member-file" accept="image/*" class="form-input !pt-2 border-dashed"></div>
+        </div>
         <div>
           <label class="form-label">Display Order</label>
           <input type="number" id="board-member-order" value="0" min="0" class="form-input">
@@ -285,10 +288,17 @@
       <h2 id="galleryModalTitle" class="text-3xl font-display font-bold mb-6">Add Gallery Image</h2>
       <form id="galleryForm" onsubmit="saveGallery(event)" class="space-y-4">
         <input type="hidden" id="gallery-id">
-        <div>
-          <label class="form-label">Image URL *</label>
-          <input type="text" id="gallery-image-url" required placeholder="/images/your-image.jpg" class="form-input">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="form-label">Image URL</label>
+            <input type="text" id="gallery-image-url" placeholder="/images/your-image.jpg" class="form-input">
+          </div>
+          <div>
+            <label class="form-label">Or Upload File</label>
+            <input type="file" id="gallery-image-file" accept="image/*" class="form-input !pt-2 border-dashed">
+          </div>
         </div>
+        <p class="text-xs text-white/50 -mt-2">Provide either a URL or upload a file.</p>
         <div>
           <label class="form-label">Display Order</label>
           <input type="number" id="gallery-order" value="0" min="0" class="form-input">
@@ -351,8 +361,12 @@
           <div><label class="form-label">Email</label><input type="email" id="edit-self-email" required class="form-input"></div>
         </div>
         <div class="grid sm:grid-cols-2 gap-4">
-          <div><label class="form-label">Password</label><input type="password" id="edit-self-pass" placeholder="Leave blank to keep" class="form-input"></div>
+          <div><label class="form-label">New Password</label><input type="password" id="edit-self-pass" placeholder="Leave blank to keep" class="form-input"></div>
           <div><label class="form-label">University ID</label><input type="text" id="edit-self-uid" class="form-input"></div>
+        </div>
+        <div id="edit-self-old-pass-container">
+          <label class="form-label">Current Password *</label>
+          <input type="password" id="edit-self-old-pass" placeholder="Required to save changes" class="form-input border-amber-500/30 focus:border-amber-500">
         </div>
         
         <div class="pt-2">

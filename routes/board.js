@@ -8,12 +8,14 @@ const {
   deleteBoardMember
 } = require('../controllers/boardController');
 
+const upload = require('../middleware/upload');
+
 // Public route - anyone can view board members
 router.get('/', getAllBoardMembers);
 
 // Admin-only routes
-router.post('/', protect, authorize('admin'), createBoardMember);
-router.put('/:id', protect, authorize('admin'), updateBoardMember);
+router.post('/', protect, authorize('admin'), upload.single('imageFile'), createBoardMember);
+router.put('/:id', protect, authorize('admin'), upload.single('imageFile'), updateBoardMember);
 router.delete('/:id', protect, authorize('admin'), deleteBoardMember);
 
 module.exports = router;

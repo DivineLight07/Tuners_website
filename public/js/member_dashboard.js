@@ -232,11 +232,19 @@ async function saveProfile(event) {
     const newName = document.getElementById('edit-name').value;
     const newEmail = document.getElementById('edit-email').value;
     const newUid = document.getElementById('edit-uid').value;
+    const newPass = document.getElementById('edit-pass') ? document.getElementById('edit-pass').value : '';
+    const oldPass = document.getElementById('edit-old-pass') ? document.getElementById('edit-old-pass').value : '';
     
     try {
         await apiFetch(`/api/v1/users/${user._id || user.id}`, {
             method: 'PATCH',
-            body: JSON.stringify({ name: newName, email: newEmail, universityId: newUid })
+            body: JSON.stringify({ 
+                name: newName, 
+                email: newEmail, 
+                universityId: newUid,
+                password: newPass || undefined,
+                oldPassword: oldPass || undefined
+            })
         });
         
         user.name = newName;

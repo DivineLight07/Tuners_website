@@ -1,6 +1,10 @@
 const Application = require('../models/Application');
 const ErrorResponse = require('../utils/errorResponse');
 
+const dns = require('dns');
+const util = require('util');
+const resolveMx = util.promisify(dns.resolveMx);
+
 // @desc    Submit a new membership application
 // @route   POST /api/v1/applications
 // @access  Public
@@ -18,6 +22,19 @@ exports.submitApplication = async (req, res, next) => {
       reason,
       phone
     } = req.body;
+
+    // VERIFY EMAIL DOMAIN EXISTS
+    if (email) {
+      const domain = email.split('@')[1];
+      try {
+        const mxRecords = await resolveMx(domain);
+        if (!mxRecords || mxRecords.length === 0) {
+          return res.status(400).json({ success: false, error: 'The email address domain does not exist or cannot receive emails.' });
+        }
+      } catch (err) {
+        return res.status(400).json({ success: false, error: 'The email address domain is invalid or cannot receive emails.' });
+      }
+    }
 
     // CHECK FOR DUPLICATES ON MULTIPLE FIELDS
     // Check if ANY existing application matches email, studentId, phone, OR name
