@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   
+  <link href="/css/Gallery.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -31,21 +32,7 @@
       }
     }
   </script>
-  <style type="text/tailwindcss">
-    @layer base {
-      body {
-        @apply font-sans text-white bg-cover bg-center bg-fixed min-h-screen relative flex flex-col;
-        background-image: url('/images/IMG_4362.png');
-      }
-      body::after {
-        content: '';
-        @apply fixed inset-0 bg-background -z-10;
-      }
-    }
-    .lucide { width: 1em; height: 1em; }
-    .hidden { display: none !important; }
-  </style>
-</head>
+  </head>
 <body>
 
   <!-- NAVBAR -->

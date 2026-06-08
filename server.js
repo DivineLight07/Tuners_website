@@ -50,7 +50,7 @@ app.use('/auth/google',         require('./routes/googleAuth'));  // ← ADD her
 
 
 // ─── PAGE ROUTES ─────────────────────────────────────────────────────────────
-app.get('/', (req, res) => res.render('Apply_Form'));
+app.get('/', (req, res) => res.render('home_page'));
 app.get('/home', (req, res) => res.render('home_page'));
 app.get('/about', (req, res) => res.render('About_us'));
 app.get('/apply', (req, res) => res.render('Apply_Form'));
@@ -70,7 +70,7 @@ app.get('/login', (req, res) => {          // ← REPLACE your current /login ro
 });
 // ─── CATCH-ALL (MUST BE LAST) ────────────────────────────────────────────────
 app.use((req, res) => {
-  res.status(404).render('Apply_Form');
+  res.status(404).render('home_page');
 });
 
 app.use(errorHandler);

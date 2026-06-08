@@ -8,7 +8,15 @@ function showPage(id) {
  
 function setErr(id, show) {
   const err = document.getElementById(id);
-  if (err) err.style.display = show ? 'block' : 'none';
+  if (err) {
+      if (show) {
+          err.classList.remove('hidden');
+          err.style.display = 'block';
+      } else {
+          err.classList.add('hidden');
+          err.style.display = 'none';
+      }
+  }
 }
  
 function clearErrors() {
@@ -23,8 +31,12 @@ function showMsg(message) {
   const Msg = document.getElementById('Msg');
   if (Msg) {
       Msg.textContent   = message;
+      Msg.classList.remove('hidden');
       Msg.style.display = 'block';
-      setTimeout(() => Msg.style.display = 'none', 3000);
+      setTimeout(() => {
+          Msg.style.display = 'none';
+          Msg.classList.add('hidden');
+      }, 3000);
   }
 }
  
@@ -163,3 +175,19 @@ function globalLogout() {
 }
 
 document.addEventListener('DOMContentLoaded', updateNavAuth);
+
+function togglePasswordVisibility(inputId, btn) {
+    const input = document.getElementById(inputId);
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerHTML = '<i data-lucide="eye-off" class="w-4 h-4"></i>';
+    } else {
+        input.type = 'password';
+        btn.innerHTML = '<i data-lucide="eye" class="w-4 h-4"></i>';
+    }
+    
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+}

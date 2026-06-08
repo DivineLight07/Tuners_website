@@ -124,6 +124,7 @@ async function loadProfile() {
             };
             localStorage.setItem('user', JSON.stringify(updatedUser));
             
+
             // Re-render UI with latest data
             renderProfileData(container);
             
@@ -232,11 +233,13 @@ async function saveProfile(event) {
     const newName = document.getElementById('edit-name').value;
     const newEmail = document.getElementById('edit-email').value;
     const newUid = document.getElementById('edit-uid').value;
+    const oldPassword = document.getElementById('edit-old-pass').value;
+    const newPass = document.getElementById('edit-pass').value;
     
     try {
         await apiFetch(`/api/v1/users/${user._id || user.id}`, {
             method: 'PATCH',
-            body: JSON.stringify({ name: newName, email: newEmail, universityId: newUid })
+            body: JSON.stringify({ name: newName, email: newEmail, universityId: newUid, oldPassword: oldPassword || undefined, password: newPass || undefined })
         });
         
         user.name = newName;

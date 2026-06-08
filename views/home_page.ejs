@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   
+  <link href="/css/home_page.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -31,21 +32,7 @@
       }
     }
   </script>
-  <style type="text/tailwindcss">
-    @layer base {
-      body {
-        @apply font-sans text-white bg-cover bg-center bg-fixed min-h-screen relative flex flex-col;
-        background-image: url('/images/IMG_4362.png');
-      }
-      body::after {
-        content: '';
-        @apply fixed inset-0 bg-background -z-10;
-      }
-    }
-    .lucide { width: 1em; height: 1em; }
-    .hidden { display: none !important; }
-  </style>
-</head>
+  </head>
 <body>
 
   <!-- NAVBAR -->
@@ -145,6 +132,48 @@
             <h3 class="text-lg font-semibold mb-2">Community</h3>
             <p class="text-sm text-white/70 leading-relaxed">Connect with fellow musicians across all faculties at MIU.</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Showcase Section -->
+    <section class="py-24 relative overflow-hidden" id="gallery-showcase">
+      <!-- Background glow effects -->
+      <div class="absolute top-1/2 left-0 -translate-y-1/2 w-80 h-80 bg-primary/15 rounded-full blur-[120px] pointer-events-none"></div>
+      <div class="absolute top-1/2 right-0 -translate-y-1/2 w-80 h-80 bg-accent/15 rounded-full blur-[120px] pointer-events-none"></div>
+      
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-16">
+          <div data-aos="fade-up" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 text-white text-sm font-medium mb-4 backdrop-blur-sm border border-primary/30">
+            <i data-lucide="camera" class="w-3.5 h-3.5"></i>
+            Captured Moments
+          </div>
+          <h2 data-aos="fade-up" data-aos-delay="100" class="text-3xl sm:text-5xl font-bold font-display tracking-wide mb-4">Our Gallery</h2>
+          <p data-aos="fade-up" data-aos-delay="200" class="text-lg text-white/70 max-w-2xl mx-auto">
+            Relive the energy from our performances, events, and jam sessions.
+          </p>
+        </div>
+
+        <!-- Gallery Preview Grid -->
+        <div id="home-gallery-grid" data-aos="fade-up" data-aos-delay="300" class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
+          <!-- Skeleton placeholders (replaced dynamically) -->
+          <div class="aspect-[4/3] rounded-2xl bg-white/5 animate-pulse border border-white/10"></div>
+          <div class="aspect-[4/3] rounded-2xl bg-white/5 animate-pulse border border-white/10"></div>
+          <div class="aspect-[4/3] rounded-2xl bg-white/5 animate-pulse border border-white/10"></div>
+          <div class="aspect-[4/3] rounded-2xl bg-white/5 animate-pulse border border-white/10 hidden md:block"></div>
+          <div class="aspect-[4/3] rounded-2xl bg-white/5 animate-pulse border border-white/10 hidden md:block"></div>
+          <div class="aspect-[4/3] rounded-2xl bg-white/5 animate-pulse border border-white/10 hidden md:block"></div>
+        </div>
+
+        <!-- View Gallery CTA -->
+        <div data-aos="fade-up" data-aos-delay="400" class="text-center">
+          <a href="/gallery">
+            <button class="group rounded-full px-10 text-base h-14 bg-card backdrop-blur-md border-2 border-white/20 hover:border-primary/60 hover:bg-primary/10 text-white font-semibold transition-all duration-300 shadow-lg hover:shadow-primary/20 hover:-translate-y-[2px] flex items-center gap-3 mx-auto">
+              <i data-lucide="image" class="w-5 h-5 text-primary group-hover:scale-110 transition-transform"></i>
+              View Full Gallery
+              <i data-lucide="arrow-right" class="w-4 h-4 text-white/60 group-hover:text-white group-hover:translate-x-1 transition-all"></i>
+            </button>
+          </a>
         </div>
       </div>
     </section>

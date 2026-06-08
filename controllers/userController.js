@@ -60,8 +60,8 @@ exports.updateUser = async (req, res, next) => {
       return res.status(403).json({ success: false, error: 'Not authorized to update this user' });
     }
     
-    // Security check: Admin editing their own profile (and not using Google auth)
-    if (req.user._id.toString() === user._id.toString() && !user.googleId) {
+    // Security check: User editing their own profile
+    if (req.user._id.toString() === user._id.toString() && user.password) {
       if (!req.body.oldPassword) {
         return res.status(400).json({ success: false, error: 'Please provide your current password to save changes.' });
       }

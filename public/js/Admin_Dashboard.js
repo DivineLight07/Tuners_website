@@ -479,11 +479,12 @@ function editUser(userId) {
         populateBadgesCheckboxes('edit-self-badges', userBadges);
         
         const oldPassContainer = document.getElementById('edit-self-old-pass-container');
-        if (oldPassContainer) {
-            oldPassContainer.style.display = userToEdit.googleId ? 'none' : 'block';
-            document.getElementById('edit-self-old-pass').value = '';
-            // Make required if not google id
-            document.getElementById('edit-self-old-pass').required = !userToEdit.googleId;
+        const oldPassInput = document.getElementById('edit-self-old-pass');
+        if (oldPassContainer && oldPassInput) {
+            oldPassInput.value = '';
+            // Always require old password to save changes for security
+            oldPassContainer.style.display = 'block';
+            oldPassInput.required = true;
         }
 
         const modal = document.getElementById('editSelfModal');
@@ -524,6 +525,18 @@ function closeEditSelfModal() {
     const modal = document.getElementById('editSelfModal');
     if (modal) modal.style.display = 'none';
     document.getElementById('editSelfForm')?.reset();
+}
+
+function toggleAdminPasswordVisibility() {
+    const passInput = document.getElementById('edit-self-pass');
+    const toggleBtn = document.getElementById('toggle-admin-pass-btn');
+    if (passInput.type === 'password') {
+        passInput.type = 'text';
+        toggleBtn.textContent = 'Hide';
+    } else {
+        passInput.type = 'password';
+        toggleBtn.textContent = 'Show';
+    }
 }
 
 async function saveUserEdit(event) {
@@ -578,6 +591,18 @@ async function saveSelfEdit(event) {
     
     const user = usersCache.find(u => u.email === originalEmail);
     if (!user) return;
+
+    // Enforce old password requirement
+    if (!oldPassword) {
+        showMsg('Please enter your current password to save changes.');
+        const oldPassInput = document.getElementById('edit-self-old-pass');
+        if (oldPassInput) {
+            oldPassInput.focus();
+            oldPassInput.style.borderColor = '#ff6b6b';
+            setTimeout(() => oldPassInput.style.borderColor = '', 3000);
+        }
+        return;
+    }
 
     try {
         await apiFetch(`/api/v1/users/${user._id}`, {
