@@ -43,8 +43,8 @@ exports.createUser = async (req, res, next) => {
 // PUT update a user
 exports.updateUser = async (req, res, next) => {
   try {
-    // ✅ FIX: Added 'badges', 'status', and 'password' to the allowed list!
-    const allowedUpdates = ['name', 'email', 'universityId', 'role', 'status', 'badges', 'password'];
+    // ✅ FIX: Added 'oldPassword' to allowed list to pass validation
+    const allowedUpdates = ['name', 'email', 'universityId', 'role', 'status', 'badges', 'password', 'openedCourses', 'oldPassword'];
     const updates = Object.keys(req.body);
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
@@ -52,12 +52,35 @@ exports.updateUser = async (req, res, next) => {
       return res.status(400).json({ success: false, error: 'Invalid updates!' });
     }
 
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).select('+password');
     if (!user) return res.status(404).json({ success: false, error: 'User not found' });
 
-    // Apply updates (skip password here, we handle it below so it gets hashed)
+    // Permission checks
+    if (req.user.role !== 'admin' && req.user._id.toString() !== user._id.toString()) {
+      return res.status(403).json({ success: false, error: 'Not authorized to update this user' });
+    }
+    
+    // Security check: User editing their own profile
+    if (req.user._id.toString() === user._id.toString() && user.password) {
+      if (!req.body.oldPassword) {
+        return res.status(400).json({ success: false, error: 'Please provide your current password to save changes.' });
+      }
+      const isMatch = await user.matchPassword(req.body.oldPassword);
+      if (!isMatch) {
+        return res.status(401).json({ success: false, error: 'Incorrect current password.' });
+      }
+    }
+    
+    if (user.email === 'admin@miuegypt.edu.eg' && req.user.email !== 'admin@miuegypt.edu.eg') {
+      return res.status(403).json({ success: false, error: 'Cannot modify the system admin.' });
+    }
+    if (user.role === 'admin' && req.user.email !== 'admin@miuegypt.edu.eg' && req.user._id.toString() !== user._id.toString()) {
+      return res.status(403).json({ success: false, error: 'Only system admin can modify other admins.' });
+    }
+
+    // Apply updates (skip password/oldPassword here)
     allowedUpdates.forEach(field => {
-      if (req.body[field] !== undefined && field !== 'password') {
+      if (req.body[field] !== undefined && field !== 'password' && field !== 'oldPassword') {
         user[field] = req.body[field];
       }
     });
@@ -88,8 +111,17 @@ exports.updateUser = async (req, res, next) => {
 // DELETE a user
 exports.deleteUser = async (req, res, next) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) return res.status(404).json({ success: false, error: 'User not found' });
+    const targetUser = await User.findById(req.params.id);
+    if (!targetUser) return res.status(404).json({ success: false, error: 'User not found' });
+
+    if (targetUser.email === 'admin@miuegypt.edu.eg') {
+      return res.status(403).json({ success: false, error: 'Cannot delete the system admin.' });
+    }
+    if (targetUser.role === 'admin' && req.user.email !== 'admin@miuegypt.edu.eg') {
+      return res.status(403).json({ success: false, error: 'Only system admin can delete other admins.' });
+    }
+
+    await targetUser.deleteOne();
     res.status(200).json({ success: true, message: 'User deleted' });
   } catch (err) {
     next(err);

@@ -1,115 +1,233 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tuners MIU - Member Dashboard</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <link href="/css/member_dashboard.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#1f6feb', foreground: '#ffffff' },
+            accent: '#133785',
+            background: 'rgba(10, 26, 62, 0.65)',
+            card: { DEFAULT: 'rgba(10, 26, 62, 0.45)', foreground: '#ffffff' },
+            destructive: { DEFAULT: '#ff6b6b', foreground: '#ffffff' },
+            muted: { DEFAULT: 'rgba(255,255,255,0.1)', foreground: 'rgba(255,255,255,0.6)' },
+            border: 'rgba(255,255,255,0.18)',
+            input: 'rgba(255,255,255,0.1)',
+          },
+          fontFamily: {
+            display: ['"Bebas Neue"', 'sans-serif'],
+            sans: ['Poppins', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  </head>
+<body>
 
-    <head>
-        <title>Tuners MIU - Member Dashboard</title>
-        <link rel="stylesheet" href="/css/member_dashboard.css">
-    </head>
-
-    <body style="background-image: url('/images/IMG_4362.png'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
-
-        <nav id="navbar">
-            <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo"/></a>
-            <ul>
-                <li><a href="/home">Home</a></li>
-                <li><a href="/about">About Us</a></li>
-                <li><a href="/apply">Apply</a></li>
-                <li><a href="#site-footer">Contact</a></li>
-                <li><a href="/courses">Courses</a></li>
-                <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
+  <!-- NAVBAR -->
+  <nav id="navbar" class="w-full bg-[#133785]/85 backdrop-blur-md border-b border-white/15 grid grid-cols-[auto_1fr_auto] items-center px-8 py-2.5 sticky top-0 z-[100] transition-transform duration-300">
+    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo" class="h-12 w-auto drop-shadow-md"/></a>
+    <ul class="flex gap-10 justify-center">
+      <li><a href="/home" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Home</a></li>
+      <li><a href="/about" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">About Us</a></li>
+      <li><a href="/apply" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Apply</a></li>
+      <li><a href="#site-footer" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Contact</a></li>
+      <li><a href="/courses" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Courses</a></li>
+      <li><a href="/gallery" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Gallery</a></li>
+      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors text-primary font-bold">Dashboard</a></li>
     </ul>
-    <div class="nav-auth">
-        <a href="/login" id="nav-login-btn">Login</a>
-        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
+    <div class="flex gap-4 items-center">
+        <a href="/login" id="nav-login-btn" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all">Login</a>
+        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all text-destructive border-destructive/50 hover:bg-destructive/20">Logout</button>
     </div>
-        </nav>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="flex-1 py-10 lg:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4" data-aos="fade-up">
+        <div>
+          <h1 id="welcomeTitle" class="text-4xl sm:text-5xl font-bold font-display tracking-wide">Welcome back!</h1>
+          <p class="text-white/70 mt-2">Your member dashboard</p>
+        </div>
         
-        <div class="welcome_msg">
-            <h1 id="welcomeTitle">Welcome back!</h1>
+        <!-- Small Room Status Box -->
+        <div class="bg-card backdrop-blur-md rounded-xl border border-border/50 px-5 py-3 shadow-lg flex items-center gap-3">
+          <i data-lucide="door-open" class="w-4 h-4 text-white/70"></i>
+          <span class="text-sm font-semibold tracking-wide uppercase text-white/80">Room Status:</span>
+          <span id="currentRoomStatus" class="status-available">Open</span>
         </div>
-
-        <div id="courses" class="my_courses">
-            <h2>My Music Theory Courses</h2>
-            <div id="coursesList"></div>
-        </div>
-
-        <div id="roomBooking" class="my_room_bookings">
-            <h2>Room Booking</h2>
-            
-            <div class="room-status-indicator">
-                <strong>Current Room Status:</strong> <span id="currentRoomStatus" class="status-available">Open</span>
-            </div>
-            
-            <div id="bookingsList" class="bookings-list">
-            </div>
-            
-            <button type="button" id="requestRoomBtn">Request Room Now</button>
-        </div>
-
-        <div id="profile" class="profile_summary">
-            <h2>My Profile Summary</h2>
-            <div id="profileData"></div>
-            <button id="editProfileBtn" onclick="openEditProfile()" class="btn-primary" style="margin-top: 15px;">Edit Profile</button>
-            
-            <div id="inlineEditProfile" style="display:none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
-                <h3 style="margin-top: 0;">Edit Profile</h3>
-                <form id="editProfileForm" onsubmit="saveProfile(event)">
-                    <div class="form-group">
-                        <label for="edit-name">Name</label>
-                        <input type="text" id="edit-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-email">Email</label>
-                        <input type="email" id="edit-email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-old-pass">Old Password (Required)</label>
-                        <input type="password" id="edit-old-pass" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-pass">New Password</label>
-                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 10px;">
-                            <input type="password" id="edit-pass" required>
-                            <button type="button" id="toggle-pass-btn" onclick="togglePasswordVisibility()" class="btn-primary" style="margin-top:0; padding: 0 15px; font-size: 0.9rem;">Show</button>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-uid">University ID</label>
-                        <input type="text" id="edit-uid" required>
-                    </div>
-                    <div style="display:flex; gap:10px; margin-top: 10px;">
-                        <button type="submit" class="btn-primary">Save Changes</button>
-                        <button type="button" onclick="closeEditProfile()" class="btn-primary" style="background: rgba(255,255,255,0.2);">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-
-  <footer class="footer" id="site-footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>Contact Us</h3>
       </div>
-      <div class="footer-section">
-        <h3>Follow Us</h3>
-        <ul>
-          <li><a href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></li>
-          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
-          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
+
+      <div class="grid lg:grid-cols-2 gap-8">
+        
+        <!-- Profile Summary -->
+        <div class="card-container flex flex-col" data-aos="fade-up" data-aos-delay="100">
+          <div class="card-header">
+            <i data-lucide="user" class="w-5 h-5"></i>
+            <h2 class="card-title">My Profile</h2>
+          </div>
+          <div id="profileData" class="flex-1"></div>
+          
+          <button id="editProfileBtn" onclick="openEditProfile()" class="w-full mt-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm font-medium transition-all">
+            Edit Profile
+          </button>
+        </div>
+
+
+
+        <!-- My Courses -->
+        <div class="card-container flex flex-col" data-aos="fade-up" data-aos-delay="300">
+          <div class="card-header">
+            <i data-lucide="book-open" class="w-5 h-5"></i>
+            <h2 class="card-title">My Courses</h2>
+          </div>
+          <div id="coursesList" class="flex-1 overflow-y-auto max-h-[400px]"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="w-full bg-[#0a1a3e]/65 backdrop-blur-md border-t border-white/15 py-10 mt-auto relative overflow-hidden" id="site-footer">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[100px] bg-primary/10 blur-[80px] pointer-events-none"></div>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-8 relative z-10">
+      <div class="flex flex-col">
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider flex items-center gap-2"><i data-lucide="music"></i> Tuners MIU</h3>
+        <p class="text-white/60 text-sm mb-4 leading-relaxed">The official music club of Misr International University. Bringing harmony to campus life.</p>
+        <div class="mt-auto">
+          <h4 class="text-sm font-semibold mb-2 text-white/80">Contact Us</h4>
+          <a href="mailto:tuners.miu.eg@gmail.com" class="inline-flex items-center gap-2 text-primary-400 hover:text-white transition-colors text-sm font-medium"><i data-lucide="mail" class="w-4 h-4"></i> tuners.miu.eg@gmail.com</a>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Follow Us</h3>
+        <ul class="space-y-3">
+          <li><a href="https://www.instagram.com/tunersclubmiu" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Instagram.png" class="w-4 h-4 object-contain" alt="Instagram"> Instagram</a></li>
+          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Facebook.png" class="w-4 h-4 object-contain" alt="Facebook"> Facebook</a></li>
+          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Tiktok.png" class="w-4 h-4 object-contain" alt="TikTok"> TikTok</a></li>
         </ul>
       </div>
-      <div class="footer-section">
-        <h3>Quick Links</h3>
-        <ul>
-                    <li><a href="/home">Home</a></li>
-                    <li><a href="/about">About Us</a></li>
-                    <li><a href="">Events</a></li>
-                    <li><a href="/courses">Courses</a></li>
-                    <li><a href="/apply">Apply</a></li>
-        </ul>
+      <div>
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Quick Links</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <a href="/home" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Home</a>
+          <a href="/about" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">About Us</a>
+          <a href="/courses" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Courses</a>
+          <a href="/gallery" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Gallery</a>
+          <a href="/apply" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Apply</a>
+        </div>
       </div>
+    </div>
+    <div class="max-w-6xl mx-auto px-8 mt-10 pt-6 border-t border-white/10 text-center">
+      <p class="text-white/40 text-xs">© 2026 Tuners Club MIU. All rights reserved.</p>
     </div>
   </footer>
 
-        <script src="/js/member_dashboard.js"></script>
+  <!-- MODALS -->
+  <div id="editProfileModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] hidden items-center justify-center p-4">
+    <div class="bg-[#0a1a3e] border border-white/10 rounded-2xl w-full max-w-md p-6 relative shadow-2xl">
+      <span onclick="closeEditProfile()" class="absolute top-4 right-4 text-white/50 hover:text-white cursor-pointer text-2xl leading-none">&times;</span>
+      <h2 class="text-2xl font-bold font-display tracking-wider mb-6">Edit Profile</h2>
+      <form id="editProfileForm" onsubmit="saveProfile(event)" class="space-y-4">
+        <div class="space-y-1">
+          <label for="edit-name" class="text-xs text-white/70 uppercase tracking-widest">Name</label>
+          <input type="text" id="edit-name" required class="w-full h-10 px-3 bg-input border border-border rounded-lg text-sm focus:outline-none focus:border-primary transition-all">
+        </div>
+        <div class="space-y-1">
+          <label for="edit-email" class="text-xs text-white/70 uppercase tracking-widest">Email</label>
+          <input type="email" id="edit-email" required class="w-full h-10 px-3 bg-input border border-border rounded-lg text-sm focus:outline-none focus:border-primary transition-all">
+        </div>
+        <div class="space-y-1">
+          <label for="edit-uid" class="text-xs text-white/70 uppercase tracking-widest">University ID</label>
+          <input type="text" id="edit-uid" required class="w-full h-10 px-3 bg-input border border-border rounded-lg text-sm focus:outline-none focus:border-primary transition-all">
+        </div>
+        <div class="space-y-1">
+          <label for="edit-old-pass" class="text-xs text-white/70 uppercase tracking-widest">Old Password</label>
+          <div class="relative">
+            <input type="password" id="edit-old-pass" required class="w-full h-10 pl-3 pr-10 bg-input border border-border rounded-lg text-sm focus:outline-none focus:border-primary transition-all">
+            <button type="button" onclick="togglePasswordVisibility('edit-old-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors z-10">
+              <i data-lucide="eye" class="w-4 h-4 icon-eye block"></i>
+              <i data-lucide="eye-off" class="w-4 h-4 icon-eye-off hidden"></i>
+            </button>
+          </div>
+        </div>
+        <div class="space-y-1">
+          <label for="edit-pass" class="text-xs text-white/70 uppercase tracking-widest">New Password</label>
+          <div class="relative">
+            <input type="password" id="edit-pass" placeholder="Leave blank to keep" class="w-full h-10 pl-3 pr-10 bg-input border border-border rounded-lg text-sm focus:outline-none focus:border-primary transition-all">
+            <button type="button" onclick="togglePasswordVisibility('edit-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors z-10">
+              <i data-lucide="eye" class="w-4 h-4 icon-eye block"></i>
+              <i data-lucide="eye-off" class="w-4 h-4 icon-eye-off hidden"></i>
+            </button>
+          </div>
+        </div>
+        <div class="flex justify-end gap-3 pt-4 border-t border-white/10 mt-6">
+          <button type="button" onclick="closeEditProfile()" class="px-6 py-2 border border-white/20 rounded-lg font-medium hover:bg-white/5 transition-colors">Cancel</button>
+          <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-[#1a48a8] transition-colors">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  
+  <script>
+    lucide.createIcons();
+    AOS.init({ duration: 600, once: true });
+    
+    const originalOpenEditProfile = window.openEditProfile;
+    window.openEditProfile = function() {
+        if(originalOpenEditProfile) originalOpenEditProfile();
+        const el = document.getElementById('editProfileModal');
+        if(el) {
+            el.classList.remove('hidden');
+            el.style.display = 'flex';
+        }
+    };
+    
+    const originalCloseEditProfile = window.closeEditProfile;
+    window.closeEditProfile = function() {
+        if(originalCloseEditProfile) originalCloseEditProfile();
+        const el = document.getElementById('editProfileModal');
+        if(el) {
+            el.classList.add('hidden');
+            el.style.display = 'none';
+        }
+    };
+
+    window.togglePasswordVisibility = function(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const eye = btn.querySelector('.icon-eye');
+        const eyeOff = btn.querySelector('.icon-eye-off');
+        if (input.type === 'password') {
+            input.type = 'text';
+            if (eye) eye.classList.add('hidden');
+            if (eyeOff) eyeOff.classList.remove('hidden');
+        } else {
+            input.type = 'password';
+            if (eye) eye.classList.remove('hidden');
+            if (eyeOff) eyeOff.classList.add('hidden');
+        }
+    };
+  </script>
+  
+  <script src="/js/member_dashboard.js"></script>
+  
+</body>
+</html>

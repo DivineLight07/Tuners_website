@@ -1,3 +1,4 @@
+
 // API Fetch Helper
 async function apiFetch(url, options = {}) {
     const token = localStorage.getItem('token');
@@ -16,39 +17,126 @@ async function apiFetch(url, options = {}) {
 }
 
 const student = {
-    name: "Farah",
-    universityId: "MIU123"
+    name: "Member",
+    universityId: "MIU000"
 };
 
-const courses = [
-    { title: "Music Theory Basics", instructor: "Dr. Ahmed", progress: 75 },
-    { title: "Advanced Composition", instructor: "Ms. Sara", progress: 40 }
-];
 
-
-function loadCourses() {
+async function loadCourses() {
     const container = document.getElementById("coursesList");
     if (!container) return;
 
-    container.innerHTML = "";
+    try {
+        const response = await apiFetch('/api/v1/courses');
+        const courses = response.data || [];
+        
+        container.innerHTML = "";
 
-    if (courses.length === 0) {
-        container.textContent = "No courses enrolled.";
-        return;
+        if (courses.length === 0) {
+            container.innerHTML = '<p class="text-white/60 text-sm">No courses available.</p>';
+            return;
+        }
+
+        const userJson = localStorage.getItem('user');
+        const user = userJson ? JSON.parse(userJson) : null;
+        const openedCourses = user?.openedCourses || [];
+
+        // Only show courses that the user has already opened
+        const enrolledCourses = courses.filter(course => openedCourses.includes(course._id));
+
+        if (enrolledCourses.length === 0) {
+            container.innerHTML = '<p class="text-white/60 text-sm">You haven\'t started any courses yet. Browse the Courses page to get started!</p>';
+            return;
+        }
+
+        enrolledCourses.forEach(course => {
+            const div = document.createElement("div");
+            div.className = "flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors p-3 mb-2 rounded-lg bg-black/20 border border-white/10";
+            
+            div.innerHTML = `
+                <div>
+                    <h4 class="font-bold text-white mb-0.5">${course.title}</h4>
+                    <p class="text-xs text-white/60">${course.instructor}</p>
+                </div>
+                <div><span class="text-xs font-medium px-2 py-1 bg-green-500/20 text-green-400 rounded border border-green-500/30">✓ Opened</span></div>
+            `;
+            
+            div.onclick = () => openCourse(course._id, course.youtubeVideoId);
+            container.appendChild(div);
+        });
+    } catch (err) {
+        container.innerHTML = '<p class="text-white/60 text-sm">Failed to load courses.</p>';
     }
+}
 
-    courses.forEach(course => {
-        const div = document.createElement("div");
-        div.textContent = `${course.title} - ${course.instructor} (${course.progress}%)`;
-        container.appendChild(div);
-    });
+async function openCourse(courseId, youtubeId) {
+    const userJson = localStorage.getItem('user');
+    if (!userJson) return;
+    const user = JSON.parse(userJson);
+    const openedCourses = user.openedCourses || [];
+
+    // If not already opened, update backend and local storage
+    if (!openedCourses.includes(courseId)) {
+        openedCourses.push(courseId);
+        user.openedCourses = openedCourses;
+        localStorage.setItem('user', JSON.stringify(user));
+        
+        try {
+            await apiFetch(`/api/v1/users/${user._id || user.id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ openedCourses })
+            });
+            // Reload UI to show checkmark
+            loadCourses();
+        } catch (err) {
+            console.error('Failed to update opened courses', err);
+        }
+    }
+    
+    // Open the youtube link (or handle however courses are opened)
+    if (youtubeId) {
+        window.open(`https://www.youtube.com/watch?v=${youtubeId}`, '_blank');
+    }
 }
 
 
-function loadProfile() {
+async function loadProfile() {
     const container = document.getElementById("profileData");
     if (!container) return;
 
+    // Load from local storage initially for instant UI
+    renderProfileData(container);
+
+    // Fetch latest from backend to sync badges and other data
+    try {
+        const response = await apiFetch('/api/v1/auth/me');
+        if (response.success && response.user) {
+            const updatedUser = {
+                id: response.user._id,
+                name: response.user.name,
+                email: response.user.email,
+                role: response.user.role,
+                status: response.user.status,
+                universityId: response.user.universityId,
+                avatar: response.user.avatar,
+                badges: response.user.badges,
+                openedCourses: response.user.openedCourses
+            };
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            
+
+            // Re-render UI with latest data
+            renderProfileData(container);
+            
+            // Also refresh welcome title since name might have changed
+            loadWelcome();
+        }
+    } catch (err) {
+        console.error("Failed to sync profile:", err);
+    }
+}
+
+function renderProfileData(container) {
     container.innerHTML = "";
 
     const userJson = localStorage.getItem('user');
@@ -71,28 +159,25 @@ function loadProfile() {
     pUid.textContent = `University ID: ${uid}`;
     container.appendChild(pUid);
     
+    const pBadgesLabel = document.createElement("p");
+    pBadgesLabel.textContent = "My Badges";
+    pBadgesLabel.className = "text-sm font-semibold tracking-wide uppercase text-white/80 mt-4 mb-2";
+    container.appendChild(pBadgesLabel);
+    
     const badgesDiv = document.createElement("div");
     badgesDiv.className = "badges-container";
-    
-    const pBadgesLabel = document.createElement("p");
-    pBadgesLabel.textContent = "My Badges:";
-    pBadgesLabel.style.fontWeight = "bold";
-    pBadgesLabel.style.marginTop = "15px";
-    pBadgesLabel.style.marginBottom = "8px";
-    badgesDiv.appendChild(pBadgesLabel);
     
     if (uBadges.length > 0) {
         uBadges.forEach(badge => {
             const span = document.createElement("span");
             span.className = "badge-pill";
-            span.textContent = badge;
+            span.innerHTML = badge; // in case badge has icons
             badgesDiv.appendChild(span);
         });
     } else {
         const pNone = document.createElement("p");
         pNone.textContent = "No badges earned yet.";
-        pNone.style.fontSize = "0.9rem";
-        pNone.style.color = "rgba(255,255,255,0.7)";
+        pNone.className = "text-sm text-white/50 italic";
         badgesDiv.appendChild(pNone);
     }
     
@@ -111,15 +196,19 @@ function openEditProfile() {
     document.getElementById('edit-pass').value = '';
     document.getElementById('edit-uid').value = user.universityId || student.universityId;
     
-    document.getElementById('profileData').style.display = 'none';
-    document.getElementById('editProfileBtn').style.display = 'none';
-    document.getElementById('inlineEditProfile').style.display = 'block';
+    const el = document.getElementById('editProfileModal');
+    if(el) {
+        el.classList.remove('hidden');
+        el.style.display = 'flex';
+    }
 }
 
 function closeEditProfile() {
-    document.getElementById('profileData').style.display = 'block';
-    document.getElementById('editProfileBtn').style.display = 'inline-block';
-    document.getElementById('inlineEditProfile').style.display = 'none';
+    const el = document.getElementById('editProfileModal');
+    if(el) {
+        el.classList.add('hidden');
+        el.style.display = 'none';
+    }
 }
 
 function togglePasswordVisibility() {
@@ -134,7 +223,7 @@ function togglePasswordVisibility() {
     }
 }
 
-function saveProfile(event) {
+async function saveProfile(event) {
     event.preventDefault();
     
     const userJson = localStorage.getItem('user');
@@ -144,17 +233,28 @@ function saveProfile(event) {
     const newName = document.getElementById('edit-name').value;
     const newEmail = document.getElementById('edit-email').value;
     const newUid = document.getElementById('edit-uid').value;
+    const oldPassword = document.getElementById('edit-old-pass').value;
+    const newPass = document.getElementById('edit-pass').value;
     
-    user.name = newName;
-    user.email = newEmail;
-    user.universityId = newUid;
-    
-    localStorage.setItem('user', JSON.stringify(user));
-    
-    closeEditProfile();
-    loadProfile();
-    loadWelcome();
-    alert('Profile updated successfully!');
+    try {
+        await apiFetch(`/api/v1/users/${user._id || user.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ name: newName, email: newEmail, universityId: newUid, oldPassword: oldPassword || undefined, password: newPass || undefined })
+        });
+        
+        user.name = newName;
+        user.email = newEmail;
+        user.universityId = newUid;
+        
+        localStorage.setItem('user', JSON.stringify(user));
+        
+        closeEditProfile();
+        loadProfile();
+        loadWelcome();
+        alert('Profile updated successfully!');
+    } catch (err) {
+        alert('Failed to update profile: ' + err.message);
+    }
 }
 
 // ✅ NEW: Load room status from database
@@ -181,57 +281,7 @@ async function loadRoomStatusFromDB() {
     }
 }
 
-let pendingRequest = JSON.parse(localStorage.getItem('pendingRequest')) || null;
-
-function loadMemberRequestUI() {
-    const container = document.getElementById("bookingsList");
-    const requestBtn = document.getElementById("requestRoomBtn");
-    if (!container || !requestBtn) return;
-
-    if (!pendingRequest) {
-        container.innerHTML = "<p>No active room requests.</p>";
-        requestBtn.style.display = "block";
-    } else {
-        let statusClass = pendingRequest.status === "Approved" ? "status-available" : "status-occupied";
-        container.innerHTML = `
-            <div class="request-card">
-                <strong>My Request Status:</strong> <span class="request-status-text ${statusClass}">${pendingRequest.status}</span>
-                <p class="request-time">Requested at: ${pendingRequest.time}</p>
-            </div>
-        `;
-        requestBtn.style.display = "none";
-    }
-}
-
-function setupRoomBooking() {
-    const requestBtn = document.getElementById("requestRoomBtn");
-    if (requestBtn) {
-        requestBtn.addEventListener("click", async () => {
-            // ✅ Fetch current status from DB before allowing request
-            try {
-                const response = await apiFetch('/api/v1/room');
-                const currentStatus = response.data?.status || "Closed";
-                
-                if (currentStatus !== "Open") {
-                    alert("Room is currently " + currentStatus + ". You cannot request it right now.");
-                    return;
-                }
-                
-                pendingRequest = {
-                    member: student.name,
-                    time: new Date().toLocaleTimeString(),
-                    status: "Pending"
-                };
-                
-                localStorage.setItem('pendingRequest', JSON.stringify(pendingRequest));
-                alert("Room requested successfully!");
-                loadMemberRequestUI();
-            } catch (err) {
-                alert("Failed to check room status. Please try again.");
-            }
-        });
-    }
-}
+// Removed room booking request functions
 
 function loadWelcome() {
     const welcomeTitle = document.getElementById("welcomeTitle");
@@ -250,9 +300,7 @@ document.addEventListener("DOMContentLoaded", function () {
     loadWelcome();
     loadCourses();
     loadProfile();
-    loadRoomStatusFromDB(); // ✅ Load from database instead of localStorage
-    loadMemberRequestUI();
-    setupRoomBooking();
+    loadRoomStatusFromDB();
 });
 
 // Auto-hide navbar on scroll
@@ -264,9 +312,9 @@ document.addEventListener("DOMContentLoaded", function () {
         
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         if (scrollTop > lastScrollTop) {
-            navbar.classList.add('hidden');
+            navbar.classList.add('-translate-y-full');
         } else {
-            navbar.classList.remove('hidden');
+            navbar.classList.remove('-translate-y-full');
         }
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     }, false);

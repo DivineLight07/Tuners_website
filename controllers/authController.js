@@ -1,6 +1,7 @@
 const User          = require('../models/User');
 const ErrorResponse = require('../utils/errorResponse');
 const { validationResult } = require('express-validator');
+const crypto = require('crypto');
 
 const register = async (req, res, next) => {
   const errors = validationResult(req);
@@ -13,7 +14,8 @@ const register = async (req, res, next) => {
     const token = user.getSignedJwt();
     res.status(201).json({ success: true, token, user: {
       id: user._id, name: user.name, email: user.email,
-      role: user.role, status: user.status
+      role: user.role, status: user.status,
+      openedCourses: user.openedCourses
     }});
   } catch (err) {
     next(err);
@@ -43,7 +45,8 @@ const login = async (req, res, next) => {
       user: {
         id: user._id, name: user.name, email: user.email,
         role: user.role, status: user.status,
-        universityId: user.universityId, avatar: user.avatar, badges: user.badges
+        universityId: user.universityId, avatar: user.avatar, badges: user.badges,
+        openedCourses: user.openedCourses
       }
     });
   } catch (err) {

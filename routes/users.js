@@ -5,20 +5,20 @@ const { getAllUsers, createUser, updateUser, deleteUser, addBadge } = require('.
 
 // Protect all routes
 router.use(protect);
-router.use(authorize('admin'));
 
 // ✅ Matches: apiFetch('/api/v1/users')
-router.get('/', getAllUsers);
+router.get('/', authorize('admin'), getAllUsers);
 
 // ✅ Matches: apiFetch('/api/v1/users/add', { method: 'POST' })
-router.post('/add', createUser);
+router.post('/add', authorize('admin'), createUser);
 
 // ✅ Matches: apiFetch(`/api/v1/users/${user._id}`, { method: 'PATCH' })
+// Allowed for all protected users, controller handles ensuring they only update themselves
 router.patch('/:id', updateUser);
 
 // ✅ Matches: apiFetch(`/api/v1/users/${userId}`, { method: 'DELETE' })
-router.delete('/:id', deleteUser);
+router.delete('/:id', authorize('admin'), deleteUser);
 
-router.patch('/:id/badge', addBadge);
+router.patch('/:id/badge', authorize('admin'), addBadge);
 
 module.exports = router;

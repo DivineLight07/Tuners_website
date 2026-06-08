@@ -1,144 +1,387 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <title>About Us</title>
-  <link rel="stylesheet" href="/css/About_us.css" />
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Tuners MIU</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <link href="/css/About_us.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#1f6feb', foreground: '#ffffff' },
+            accent: '#133785',
+            background: 'rgba(10, 26, 62, 0.65)',
+            card: { DEFAULT: 'rgba(10, 26, 62, 0.45)', foreground: '#ffffff' },
+            destructive: { DEFAULT: '#ff6b6b', foreground: '#ffffff' },
+            muted: { DEFAULT: 'rgba(255,255,255,0.1)', foreground: 'rgba(255,255,255,0.6)' },
+            border: 'rgba(255,255,255,0.18)',
+            input: 'rgba(255,255,255,0.1)',
+          },
+          fontFamily: {
+            display: ['"Bebas Neue"', 'sans-serif'],
+            sans: ['Poppins', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  </head>
+<body>
 
-<body style="background-image: url('/images/IMG_4362.png'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
-  <nav id="navbar">
-    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo" /></a>
-    <ul>
-      <li><a href="/home">Home</a></li>
-      <li><a href="/about">About Us</a></li>
-      <li><a href="/apply">Apply</a></li>
-      <li><a href="#site-footer">Contact</a></li>
-      <li><a href="/courses">Courses</a></li>
-      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link">Dashboard</a></li>
+  <!-- NAVBAR -->
+  <nav id="navbar" class="w-full bg-[#133785]/85 backdrop-blur-md border-b border-white/15 grid grid-cols-[auto_1fr_auto] items-center px-8 py-2.5 sticky top-0 z-[100] transition-transform duration-300">
+    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo" class="h-12 w-auto drop-shadow-md"/></a>
+    <ul class="flex gap-10 justify-center">
+      <li><a href="/home" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Home</a></li>
+      <li><a href="/about" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">About Us</a></li>
+      <li><a href="/apply" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Apply</a></li>
+      <li><a href="#site-footer" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Contact</a></li>
+      <li><a href="/courses" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Courses</a></li>
+      <li><a href="/gallery" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Gallery</a></li>
+      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Dashboard</a></li>
     </ul>
-    <div class="nav-auth">
-      <a href="/login" id="nav-login-btn">Login</a>
-      <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()">Logout</button>
+    <div class="flex gap-4 items-center">
+        <a href="/login" id="nav-login-btn" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all">Login</a>
+        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all text-destructive border-destructive/50 hover:bg-destructive/20">Logout</button>
     </div>
   </nav>
-  <main class="page-content">
-    <section class="intro">
-      <h1>About Us</h1>
-      <p>At Tuners Club – Misr International University, we believe music is more than sound; it's a language that
-        unites people, sparks creativity, and builds community. Founded by passionate students, Tuners Club is MIU's
-        home for musicians, singers, and music lovers who want to share their talents, discover new rhythms, and create
-        unforgettable experiences on campus.</p>
+
+  <!-- CONTENT -->
+  <main class="flex-1">
+    <!-- Hero Section -->
+    <section class="relative py-20 lg:py-32 overflow-hidden">
+      <!-- Glow effects -->
+      <div class="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none"></div>
+      <div class="absolute top-10 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+      
+      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div data-aos="fade-up" data-aos-delay="0">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 text-white text-sm font-medium mb-6 backdrop-blur-sm border border-primary/30">
+            <i data-lucide="music-2" class="w-3.5 h-3.5"></i>
+            About Us
+          </div>
+          
+          <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold font-display mb-8 leading-tight tracking-wide">
+            Tuners Club<br />
+            <span class="text-primary">Misr International University</span>
+          </h1>
+          
+          <p class="text-lg text-white/80 max-w-3xl mx-auto leading-relaxed">
+            At Tuners Club – MIU, we believe music is more than sound; it's a language that unites people, sparks creativity, and builds community. Founded by passionate students, Tuners Club is MIU's home for musicians, singers, and music lovers who want to share their talents, discover new rhythms, and create unforgettable experiences on campus.
+          </p>
+        </div>
+      </div>
     </section>
 
-    <section class="feature-block">
-      <h2>🎶 Our Mission</h2>
-      <p>We aim to inspire and empower students through music. Whether you're a seasoned performer or just beginning
-        your journey, Tuners Club provides a supportive space to explore your passion, collaborate with peers, and bring
-        harmony to student life.</p>
+    <!-- Mission & Vision -->
+    <section class="py-20 bg-black/20 backdrop-blur-sm border-y border-white/5">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-10">
+          <!-- Mission -->
+          <div data-aos="fade-right" data-aos-delay="100" class="bg-card backdrop-blur-md rounded-[2rem] border border-border/50 p-10 shadow-xl hover:shadow-primary/10 transition-shadow">
+            <div class="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mb-6">
+              <i data-lucide="target" class="w-7 h-7 text-white"></i>
+            </div>
+            <h2 class="text-3xl font-bold font-display tracking-wide mb-4">Our Mission 🎶</h2>
+            <p class="text-white/70 leading-relaxed text-lg">
+              We aim to inspire and empower students through music. Whether you're a seasoned performer or just beginning your journey, Tuners Club provides a supportive space to explore your passion, collaborate with peers, and bring harmony to student life.
+            </p>
+          </div>
+
+          <!-- Vision -->
+          <div data-aos="fade-left" data-aos-delay="200" class="bg-card backdrop-blur-md rounded-[2rem] border border-border/50 p-10 shadow-xl hover:shadow-primary/10 transition-shadow">
+            <div class="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mb-6">
+              <i data-lucide="star" class="w-7 h-7 text-white"></i>
+            </div>
+            <h2 class="text-3xl font-bold font-display tracking-wide mb-4">Our Vision 🌟</h2>
+            <p class="text-white/70 leading-relaxed text-lg">
+              Tuners Club strives to be more than just a student organisation. We envision a vibrant community where music is celebrated as a universal language, enriching campus life and leaving a lasting impact on everyone who joins.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="feature-block">
-      <h2>🎤 What We Do</h2>
-      <p><strong>Music Room:</strong> A fully equipped space on campus where members can practice, experiment, and enjoy
-        playing together.</p>
-      <p><strong>Courses & Workshops:</strong> Structured sessions designed to teach instruments, vocals, and music
-        theory, guided by experienced members and instructors.</p>
-      <p><strong>Jamming Sessions:</strong> Relaxed gatherings where students come together to play, improvise, and
-        enjoy music collectively.</p>
-      <p><strong>Community Building:</strong> Creating a welcoming environment where students connect through their
-        shared love of music.</p>
+    <!-- What We Do -->
+    <section class="py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 data-aos="fade-up" class="text-4xl font-bold font-display tracking-wide">What We Do 🎤</h2>
+          <p data-aos="fade-up" data-aos-delay="100" class="mt-4 text-white/70 max-w-lg mx-auto text-lg">
+            From the music room to the main stage, here's how we bring music to campus life.
+          </p>
+        </div>
+        
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Card 1 -->
+          <div data-aos="fade-up" data-aos-delay="100" class="group bg-card backdrop-blur-md rounded-2xl border border-border/50 p-6 hover:shadow-xl hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center mb-5 group-hover:bg-primary transition-colors">
+              <i data-lucide="door-open" class="w-6 h-6 text-white"></i>
+            </div>
+            <h3 class="font-semibold text-xl mb-3">Music Room</h3>
+            <p class="text-sm text-white/70 leading-relaxed">A fully equipped space on campus where members can practice, experiment, and enjoy playing together.</p>
+          </div>
+
+          <!-- Card 2 -->
+          <div data-aos="fade-up" data-aos-delay="200" class="group bg-card backdrop-blur-md rounded-2xl border border-border/50 p-6 hover:shadow-xl hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center mb-5 group-hover:bg-primary transition-colors">
+              <i data-lucide="book-open" class="w-6 h-6 text-white"></i>
+            </div>
+            <h3 class="font-semibold text-xl mb-3">Courses & Workshops</h3>
+            <p class="text-sm text-white/70 leading-relaxed">Structured sessions teaching instruments, vocals, and music theory, guided by experienced members and instructors.</p>
+          </div>
+
+          <!-- Card 3 -->
+          <div data-aos="fade-up" data-aos-delay="300" class="group bg-card backdrop-blur-md rounded-2xl border border-border/50 p-6 hover:shadow-xl hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center mb-5 group-hover:bg-primary transition-colors">
+              <i data-lucide="mic-2" class="w-6 h-6 text-white"></i>
+            </div>
+            <h3 class="font-semibold text-xl mb-3">Jamming Sessions</h3>
+            <p class="text-sm text-white/70 leading-relaxed">Relaxed gatherings where students come together to play, improvise, and enjoy music collectively.</p>
+          </div>
+
+          <!-- Card 4 -->
+          <div data-aos="fade-up" data-aos-delay="400" class="group bg-card backdrop-blur-md rounded-2xl border border-border/50 p-6 hover:shadow-xl hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center mb-5 group-hover:bg-primary transition-colors">
+              <i data-lucide="users" class="w-6 h-6 text-white"></i>
+            </div>
+            <h3 class="font-semibold text-xl mb-3">Community Building</h3>
+            <p class="text-sm text-white/70 leading-relaxed">Creating a welcoming environment where students connect through their shared love of music.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="feature-block">
-      <h2>🌟 Our Vision</h2>
-      <p>Tuners Club strives to be more than just a student organization. We envision a vibrant community where music is
-        celebrated as a universal language, enriching campus life and leaving a lasting impact on everyone who joins.
-      </p>
-    </section>
-
-    <section class="feature-block board-section">
-      <h2>👥 Meet the Board</h2>
-      <div class="board-members" id="boardMembersContainer">
-        <!-- Board members will be loaded here from database -->
-        <p style="text-align: center; color: rgba(255,255,255,0.6);">Loading board members...</p>
+    <!-- Meet the Board -->
+    <section class="py-24 bg-black/20 backdrop-blur-sm border-t border-white/5">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 relative">
+          <h2 data-aos="fade-up" class="text-4xl font-bold font-display tracking-wide">Meet the Board 👥</h2>
+          <p data-aos="fade-up" data-aos-delay="100" class="mt-4 text-white/70 text-lg">The people who make Tuners happen.</p>
+          <div id="adminAddBoardBtn" style="display:none;" class="mt-6 flex justify-center">
+            <button onclick="openAddBoardMemberModal()" class="btn-primary flex items-center gap-2">
+              <i data-lucide="plus" class="w-4 h-4"></i> Add Board Member
+            </button>
+          </div>
+        </div>
+        
+        <div id="publicBoardMembersList" class="flex flex-wrap justify-center gap-6">
+          <p class="text-white/60">Loading board members...</p>
+        </div>
       </div>
     </section>
   </main>
-  <footer class="footer" id="site-footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>Contact Us</h3>
+
+  <!-- FOOTER -->
+  <footer class="w-full bg-[#0a1a3e]/65 backdrop-blur-md border-t border-white/15 py-10 mt-auto relative overflow-hidden" id="site-footer">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[100px] bg-primary/10 blur-[80px] pointer-events-none"></div>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-8 relative z-10">
+      <div class="flex flex-col">
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider flex items-center gap-2"><i data-lucide="music"></i> Tuners MIU</h3>
+        <p class="text-white/60 text-sm mb-4 leading-relaxed">The official music club of Misr International University. Bringing harmony to campus life.</p>
+        <div class="mt-auto">
+          <h4 class="text-sm font-semibold mb-2 text-white/80">Contact Us</h4>
+          <a href="mailto:tuners.miu.eg@gmail.com" class="inline-flex items-center gap-2 text-primary-400 hover:text-white transition-colors text-sm font-medium"><i data-lucide="mail" class="w-4 h-4"></i> tuners.miu.eg@gmail.com</a>
+        </div>
       </div>
-      <div class="footer-section">
-        <h3>Follow Us</h3>
-        <ul>
-          <li><a
-              href="https://www.instagram.com/tunersclubmiu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
-              target="_blank">Instagram</a></li>
-          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank">Facebook</a></li>
-          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank">TikTok</a></li>
+      <div>
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Follow Us</h3>
+        <ul class="space-y-3">
+          <li><a href="https://www.instagram.com/tunersclubmiu" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Instagram.png" class="w-4 h-4 object-contain" alt="Instagram"> Instagram</a></li>
+          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Facebook.png" class="w-4 h-4 object-contain" alt="Facebook"> Facebook</a></li>
+          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Tiktok.png" class="w-4 h-4 object-contain" alt="TikTok"> TikTok</a></li>
         </ul>
       </div>
-      <div class="footer-section">
-        <h3>Quick Links</h3>
-        <ul>
-          <li><a href="/home">Home</a></li>
-          <li><a href="/about">About Us</a></li>
-          <li><a href="">Events</a></li>
-          <li><a href="/courses">Courses</a></li>
-          <li><a href="/apply">Apply</a></li>
-        </ul>
+      <div>
+        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Quick Links</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <a href="/home" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Home</a>
+          <a href="/about" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">About Us</a>
+          <a href="/courses" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Courses</a>
+          <a href="/gallery" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Gallery</a>
+          <a href="/apply" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Apply</a>
+        </div>
       </div>
     </div>
+    <div class="max-w-6xl mx-auto px-8 mt-10 pt-6 border-t border-white/10 text-center">
+      <p class="text-white/40 text-xs">© 2026 Tuners Club MIU. All rights reserved.</p>
+    </div>
   </footer>
-  <script src="/js/about_us.js"></script>
+
+  <!-- Board Member Modal for Admin Edit -->
+  <div id="boardMemberModal" class="modal-overlay">
+    <div class="modal-content text-left">
+      <span onclick="closeBoardMemberModal()" class="modal-close">&times;</span>
+      <h2 id="boardModalTitle" class="text-3xl font-display font-bold mb-6 text-white">Edit Board Member</h2>
+      <form id="boardMemberForm" onsubmit="saveBoardMember(event)" class="space-y-4 text-left">
+        <input type="hidden" id="board-member-id">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="form-label">Name *</label><input type="text" id="board-member-name" required class="form-input"></div>
+          <div><label class="form-label">Position *</label><input type="text" id="board-member-position" required class="form-input"></div>
+        </div>
+        <div><label class="form-label">Image URL</label><input type="text" id="board-member-image" placeholder="/images/Default-pfp.png" class="form-input"></div>
+        <div>
+          <label class="form-label">Display Order</label>
+          <input type="number" id="board-member-order" value="0" min="0" class="form-input">
+        </div>
+        <div class="flex justify-end gap-3 pt-4 border-t border-white/10 mt-4">
+          <button type="button" onclick="closeBoardMemberModal()" class="px-6 py-2 border border-white/20 text-white rounded-lg font-medium hover:bg-white/5 transition-colors">Cancel</button>
+          <button type="submit" class="btn-primary px-8">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
   
+  <div id="Msg"></div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="/js/script.js"></script>
   <script>
-    // Load board members from database
-    async function loadBoardMembers() {
-      const container = document.getElementById('boardMembersContainer');
+    lucide.createIcons();
+    AOS.init({ duration: 600, once: true });
+    
+    async function loadPublicBoardMembers() {
+      const container = document.getElementById('publicBoardMembersList');
       if (!container) return;
 
       try {
-        const response = await fetch('/api/v1/board');
-        const data = await response.json();
-        
-        if (!response.ok || !data.success) {
-          throw new Error('Failed to load board members');
-        }
+          const response = await fetch('/api/v1/board');
+          const data = await response.json();
+          const members = data.data || [];
 
-        const members = data.data || [];
-        
-        if (members.length === 0) {
-          container.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.6); grid-column: 1/-1;">No board members yet.</p>';
-          return;
-        }
+          if (members.length === 0) {
+              container.innerHTML = '<p class="text-white/60">No board members yet.</p>';
+              return;
+          }
 
-        container.innerHTML = members.map(member => `
-          <div class="member-card">
-            <img src="${member.image}" alt="${member.name}" onerror="this.onerror=null;this.src='/images/Default-pfp.png';" class="member-photo">
-            <h3>${member.name}</h3>
-            <p class="position">${member.position}</p>
-            ${member.bio ? `<p class="bio">${member.bio}</p>` : ''}
-            ${member.socialMedia && (member.socialMedia.instagram || member.socialMedia.facebook || member.socialMedia.linkedin) ? `
-              <div class="social-links">
-                ${member.socialMedia.instagram ? `<a href="${member.socialMedia.instagram}" target="_blank" class="social-icon">📸</a>` : ''}
-                ${member.socialMedia.facebook ? `<a href="${member.socialMedia.facebook}" target="_blank" class="social-icon">📘</a>` : ''}
-                ${member.socialMedia.linkedin ? `<a href="${member.socialMedia.linkedin}" target="_blank" class="social-icon">💼</a>` : ''}
-              </div>
-            ` : ''}
-          </div>
-        `).join('');
-        
+          const userJson = localStorage.getItem('user');
+          const user = userJson ? JSON.parse(userJson) : null;
+          const isAdmin = user && user.role === 'admin';
+          
+          const addBtn = document.getElementById('adminAddBoardBtn');
+          if (addBtn) addBtn.style.display = isAdmin ? 'flex' : 'none';
+
+          container.innerHTML = members.map((member, index) => {
+              const delay = (index % 5) * 100 + 100;
+              let avatarHtml = '';
+              const imageSrc = (member.image && member.image !== '/images/default-avatar.png' && member.image !== '') ? member.image : '/images/Default-pfp.png';
+              avatarHtml = `<img src="${imageSrc}" alt="${member.name}" class="w-16 h-16 rounded-full object-cover border-2 border-primary/50 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg bg-black/20">`;
+
+              return `
+                <div data-aos="fade-up" data-aos-delay="${delay}" class="group bg-card backdrop-blur-md rounded-2xl border border-border/50 p-8 text-center hover:shadow-xl hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-300 w-48 relative">
+                  ${isAdmin ? `
+                  <button onclick='deleteBoardMember("${member._id}")' class="absolute top-3 left-3 w-8 h-8 rounded-full bg-destructive/20 hover:bg-destructive/40 flex items-center justify-center text-destructive/80 hover:text-destructive transition-all z-10" title="Delete Board Member"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                  <button onclick='openEditBoardMember(${JSON.stringify(member).replace(/'/g, "&#39;")})' class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-all z-10" title="Edit Board Member"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                  ` : ''}
+                  ${avatarHtml}
+                  <h3 class="font-semibold text-lg leading-tight mb-1">${member.name}</h3>
+                  <p class="text-sm text-primary-400 font-medium text-[#1f6feb]">${member.position}</p>
+                </div>
+              `;
+          }).join('');
+          
+          lucide.createIcons();
+          setTimeout(() => AOS.refresh(), 100);
       } catch (err) {
-        console.error('Error loading board members:', err);
-        container.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.6);">Failed to load board members.</p>';
+          console.error('Error loading board members:', err);
+          container.innerHTML = '<p class="text-white/60">Failed to load board members.</p>';
       }
     }
 
-    // Load on page load
-    document.addEventListener('DOMContentLoaded', loadBoardMembers);
+    document.addEventListener('DOMContentLoaded', loadPublicBoardMembers);
+
+    // --- Admin Edit Functions ---
+    function openAddBoardMemberModal() {
+        document.getElementById('boardModalTitle').textContent = 'Add Board Member';
+        document.getElementById('boardMemberForm').reset();
+        document.getElementById('board-member-id').value = '';
+        const modal = document.getElementById('boardMemberModal');
+        if (modal) modal.style.display = 'flex';
+    }
+
+    function openEditBoardMember(member) {
+        document.getElementById('boardModalTitle').textContent = 'Edit Board Member';
+        document.getElementById('board-member-id').value = member._id;
+        document.getElementById('board-member-name').value = member.name || '';
+        document.getElementById('board-member-position').value = member.position || '';
+        document.getElementById('board-member-image').value = member.image || '';
+        document.getElementById('board-member-order').value = member.order || 0;
+        
+        const modal = document.getElementById('boardMemberModal');
+        if (modal) modal.style.display = 'flex';
+    }
+
+    function closeBoardMemberModal() {
+        const modal = document.getElementById('boardMemberModal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    function showMsg(message) {
+        const Msg = document.getElementById('Msg');
+        if (Msg) {
+            Msg.textContent = message;
+            Msg.style.display = 'block';
+            setTimeout(() => Msg.style.display = 'none', 3000);
+        }
+    }
+
+    async function saveBoardMember(event) {
+        event.preventDefault();
+        const id = document.getElementById('board-member-id').value;
+        const formData = {
+            name: document.getElementById('board-member-name').value.trim(),
+            position: document.getElementById('board-member-position').value.trim(),
+            image: document.getElementById('board-member-image').value.trim() || '/images/Default-pfp.png',
+            order: parseInt(document.getElementById('board-member-order').value) || 0
+        };
+
+        try {
+            const token = localStorage.getItem('token');
+            const url = id ? `/api/v1/board/${id}` : '/api/v1/board';
+            const method = id ? 'PUT' : 'POST';
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Request failed');
+
+            closeBoardMemberModal();
+            loadPublicBoardMembers(); // Reload list
+            showMsg(id ? 'Board member updated!' : 'Board member added!');
+        } catch (err) {
+            showMsg(err.message || 'Failed to save board member');
+        }
+    }
+
+    async function deleteBoardMember(id) {
+        if (!confirm('Are you sure you want to delete this board member?')) return;
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`/api/v1/board/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!response.ok) throw new Error('Request failed');
+            loadPublicBoardMembers();
+            showMsg('Board member deleted!');
+        } catch (err) {
+            showMsg('Failed to delete board member');
+        }
+    }
   </script>
 </body>
 </html>
