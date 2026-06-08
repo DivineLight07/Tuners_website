@@ -66,6 +66,11 @@
         </div>
         <h1 class="text-5xl sm:text-6xl font-bold font-display tracking-wide mb-4">Gallery</h1>
         <p class="text-lg text-white/70 max-w-2xl mx-auto">Explore moments from our past events, jam sessions, and performances.</p>
+        <div id="admin-controls" class="hidden justify-center mt-6">
+          <button onclick="openAddGalleryModal()" class="px-6 py-2 bg-primary hover:bg-[#1a48a8] text-white rounded-lg font-medium transition-colors flex items-center gap-2 mx-auto">
+            <i data-lucide="plus" class="w-5 h-5"></i> Add Image
+          </button>
+        </div>
       </div>
 
       <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -130,6 +135,34 @@
     <img id="modal-image" src="" alt="Gallery Image" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl border border-white/10 scale-95 transition-transform duration-300">
   </div>
 
+  <!-- Add Gallery Modal -->
+  <div id="add-gallery-modal" class="fixed inset-0 bg-black/80 z-[1000] hidden items-center justify-center p-4 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+    <div class="bg-[#0a1a3e] border border-white/10 rounded-2xl p-6 w-full max-w-md scale-95 transition-transform duration-300 relative shadow-2xl">
+      <button onclick="closeAddGalleryModal()" class="absolute top-4 right-4 text-white/50 hover:text-white transition-colors">
+          <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+      <h2 class="text-2xl font-display font-bold mb-6 tracking-wider">Add Gallery Image</h2>
+      <form id="galleryForm" onsubmit="saveGallery(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs uppercase tracking-widest text-white/70 mb-1">Image URL</label>
+          <input type="text" id="gallery-image-url" placeholder="/images/your-image.jpg" class="w-full h-10 px-3 bg-white/5 border border-white/10 rounded-lg text-sm focus:outline-none focus:border-primary transition-colors text-white">
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-widest text-white/70 mb-1">Or Upload File</label>
+          <input type="file" id="gallery-image-file" accept="image/*" class="w-full text-sm text-white/70 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-[#1a48a8] cursor-pointer">
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-widest text-white/70 mb-1">Display Order</label>
+          <input type="number" id="gallery-order" value="0" min="0" class="w-full h-10 px-3 bg-white/5 border border-white/10 rounded-lg text-sm focus:outline-none focus:border-primary transition-colors text-white">
+        </div>
+        <div class="flex justify-end gap-3 pt-4 border-t border-white/10 mt-6">
+          <button type="button" onclick="closeAddGalleryModal()" class="px-5 py-2 border border-white/20 rounded-lg font-medium hover:bg-white/5 transition-colors text-white">Cancel</button>
+          <button type="submit" class="px-5 py-2 bg-primary text-white rounded-lg font-medium hover:bg-[#1a48a8] transition-colors">Save Image</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="/js/script.js"></script>
@@ -140,6 +173,25 @@
     let galleryData = [];
     let currentPage = 1;
     const ITEMS_PER_PAGE = 8;
+    let isAdmin = false;
+
+    try {
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+            const user = JSON.parse(userStr);
+            if (user.role === 'admin' || user.email === 'admin@miuegypt.edu.eg') {
+                isAdmin = true;
+            }
+        }
+    } catch (e) {}
+
+    if (isAdmin) {
+        const adminControls = document.getElementById('admin-controls');
+        if (adminControls) {
+            adminControls.classList.remove('hidden');
+            adminControls.classList.add('flex');
+        }
+    }
 
     async function loadGallery() {
         const grid = document.getElementById('gallery-grid');
@@ -175,8 +227,16 @@
         
         grid.innerHTML = currentItems.map((item, index) => {
             const delay = (index % 8) * 50;
+            const adminControlsHTML = isAdmin ? `
+                <div class="absolute top-3 right-3 z-20 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button onclick="event.stopPropagation(); deleteGallery('${item._id}')" class="p-2 bg-destructive hover:bg-red-600 text-white rounded-full shadow-lg transition-transform hover:scale-110" title="Delete Image">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            ` : '';
             return `
             <div data-aos="fade-up" data-aos-delay="${delay}" class="group relative rounded-2xl overflow-hidden cursor-pointer border border-white/10 bg-black/40 aspect-[4/3]" onclick="openImageModal('${item.imageUrl}')">
+                ${adminControlsHTML}
                 <img src="${item.imageUrl}" alt="Gallery Image" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-300">
@@ -252,8 +312,97 @@
     
     // Close modal on escape key
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeImageModal();
+        if (e.key === 'Escape') {
+            closeImageModal();
+            closeAddGalleryModal();
+        }
     });
+    
+    function openAddGalleryModal() {
+        document.getElementById('galleryForm').reset();
+        const modal = document.getElementById('add-gallery-modal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => {
+            modal.classList.remove('opacity-0');
+            modal.querySelector('div').classList.remove('scale-95');
+        }, 10);
+    }
+    
+    function closeAddGalleryModal() {
+        const modal = document.getElementById('add-gallery-modal');
+        modal.classList.add('opacity-0');
+        modal.querySelector('div').classList.add('scale-95');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }, 300);
+    }
+
+    async function saveGallery(event) {
+        event.preventDefault();
+        
+        const formData = new FormData();
+        formData.append('imageUrl', document.getElementById('gallery-image-url').value.trim());
+        formData.append('order', parseInt(document.getElementById('gallery-order').value) || 0);
+
+        const fileInput = document.getElementById('gallery-image-file');
+        if (fileInput.files[0]) {
+            formData.append('imageFile', fileInput.files[0]);
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch('/api/v1/gallery', {
+                method: 'POST',
+                headers: {
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                },
+                body: formData
+            });
+
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.error || 'Failed to add image');
+            }
+
+            closeAddGalleryModal();
+            const loader = document.getElementById('loading-indicator');
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '';
+            loader.style.display = 'block';
+            await loadGallery();
+        } catch (err) {
+            alert(err.message || 'Failed to save image');
+        }
+    }
+
+    async function deleteGallery(id) {
+        if (!confirm('Delete this image from the gallery?')) return;
+
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch(`/api/v1/gallery/${id}`, { 
+                method: 'DELETE',
+                headers: {
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                }
+            });
+            
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.error || 'Failed to delete image');
+            }
+
+            const loader = document.getElementById('loading-indicator');
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '';
+            loader.style.display = 'block';
+            await loadGallery();
+        } catch (err) {
+            alert(err.message || 'Failed to delete image');
+        }
+    }
     
     document.addEventListener('DOMContentLoaded', loadGallery);
   </script>

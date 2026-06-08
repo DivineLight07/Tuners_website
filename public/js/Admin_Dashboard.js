@@ -60,7 +60,7 @@ async function loadApplications() {
                     ${app.instrument ? `<p><strong class="text-white">Instrument:</strong> ${app.instrument}</p>` : ''}
                     <p><strong class="text-white">Major:</strong> ${app.major}</p>
                 </div>
-                <div class="bg-white/5 p-3 rounded-lg text-sm mb-4">
+                <div class="bg-white/5 p-3 rounded-lg text-sm mb-4 break-words">
                     <strong class="text-white text-xs uppercase tracking-wider mb-1 block">Reason for joining:</strong>
                     <span class="text-white/70 italic">"${app.reason}"</span>
                 </div>
