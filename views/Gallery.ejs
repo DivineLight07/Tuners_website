@@ -80,6 +80,9 @@
         <i data-lucide="image" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
         <p class="text-xl">No memories added yet.</p>
       </div>
+      
+      <!-- Pagination Container -->
+      <div id="pagination-container"></div>
     </div>
   </main>
 
@@ -134,6 +137,10 @@
     lucide.createIcons();
     AOS.init({ duration: 600, once: true });
     
+    let galleryData = [];
+    let currentPage = 1;
+    const ITEMS_PER_PAGE = 8;
+
     async function loadGallery() {
         const grid = document.getElementById('gallery-grid');
         const loader = document.getElementById('loading-indicator');
@@ -150,26 +157,72 @@
                 return;
             }
             
-            grid.innerHTML = data.data.map((item, index) => {
-                const delay = (index % 8) * 50;
-                return `
-                <div data-aos="fade-up" data-aos-delay="${delay}" class="group relative rounded-2xl overflow-hidden cursor-pointer border border-white/10 bg-black/40 aspect-[4/3]" onclick="openImageModal('${item.imageUrl}')">
-                    <img src="${item.imageUrl}" alt="Gallery Image" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-300">
-                            <i data-lucide="zoom-in" class="w-6 h-6 text-white"></i>
-                        </div>
-                    </div>
-                </div>
-                `;
-            }).join('');
-            
-            lucide.createIcons();
-            setTimeout(() => AOS.refresh(), 100);
+            galleryData = data.data;
+            renderGallery(1);
         } catch (err) {
             console.error('Error loading gallery:', err);
             loader.innerHTML = '<p class="text-destructive">Failed to load gallery.</p>';
         }
+    }
+    
+    function renderGallery(page) {
+        currentPage = page;
+        const grid = document.getElementById('gallery-grid');
+        
+        const start = (page - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+        const currentItems = galleryData.slice(start, end);
+        
+        grid.innerHTML = currentItems.map((item, index) => {
+            const delay = (index % 8) * 50;
+            return `
+            <div data-aos="fade-up" data-aos-delay="${delay}" class="group relative rounded-2xl overflow-hidden cursor-pointer border border-white/10 bg-black/40 aspect-[4/3]" onclick="openImageModal('${item.imageUrl}')">
+                <img src="${item.imageUrl}" alt="Gallery Image" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-300">
+                        <i data-lucide="zoom-in" class="w-6 h-6 text-white"></i>
+                    </div>
+                </div>
+            </div>
+            `;
+        }).join('');
+        
+        lucide.createIcons();
+        setTimeout(() => AOS.refresh(), 100);
+        
+        renderPagination();
+    }
+    
+    function renderPagination() {
+        const totalPages = Math.ceil(galleryData.length / ITEMS_PER_PAGE);
+        const paginationContainer = document.getElementById('pagination-container');
+        
+        if (totalPages <= 1) {
+            paginationContainer.innerHTML = '';
+            return;
+        }
+        
+        let html = '<div class="flex justify-center items-center gap-2 mt-12">';
+        
+        // Prev button
+        html += `<button onclick="renderGallery(${currentPage - 1})" ${currentPage === 1 ? 'disabled class="px-4 py-2 rounded-lg bg-white/5 text-white/30 cursor-not-allowed"' : 'class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors"'}><i data-lucide="chevron-left" class="w-5 h-5"></i></button>`;
+        
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === currentPage) {
+                html += `<button class="w-10 h-10 rounded-lg bg-primary text-white font-medium flex items-center justify-center">${i}</button>`;
+            } else {
+                html += `<button onclick="renderGallery(${i})" class="w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium flex items-center justify-center transition-colors">${i}</button>`;
+            }
+        }
+        
+        // Next button
+        html += `<button onclick="renderGallery(${currentPage + 1})" ${currentPage === totalPages ? 'disabled class="px-4 py-2 rounded-lg bg-white/5 text-white/30 cursor-not-allowed"' : 'class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors"'}><i data-lucide="chevron-right" class="w-5 h-5"></i></button>`;
+        
+        html += '</div>';
+        
+        paginationContainer.innerHTML = html;
+        lucide.createIcons();
     }
     
     function openImageModal(src) {
