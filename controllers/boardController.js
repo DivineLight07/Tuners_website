@@ -1,4 +1,6 @@
 const BoardMember = require('../models/BoardMember');
+const fs = require('fs');
+const path = require('path');
 
 // GET all board members (public)
 exports.getAllBoardMembers = async (req, res, next) => {
@@ -86,6 +88,13 @@ exports.deleteBoardMember = async (req, res, next) => {
 
     if (!member) {
       return res.status(404).json({ success: false, error: 'Board member not found' });
+    }
+
+    if (member.image && member.image.startsWith('/uploads/')) {
+      const filePath = path.join(__dirname, '..', 'public', member.image);
+      fs.unlink(filePath, (err) => {
+        if (err) console.error('Failed to delete image file:', err);
+      });
     }
 
     res.status(200).json({

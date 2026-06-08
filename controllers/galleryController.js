@@ -1,5 +1,7 @@
 const Gallery = require('../models/Gallery');
 const ErrorResponse = require('../utils/errorResponse');
+const fs = require('fs');
+const path = require('path');
 
 exports.getAllGalleryItems = async (req, res, next) => {
   try {
@@ -49,6 +51,14 @@ exports.deleteGalleryItem = async (req, res, next) => {
     if (!item) {
       return next(new ErrorResponse(`Gallery item not found with id of ${req.params.id}`, 404));
     }
+    
+    if (item.imageUrl && item.imageUrl.startsWith('/uploads/')) {
+      const filePath = path.join(__dirname, '..', 'public', item.imageUrl);
+      fs.unlink(filePath, (err) => {
+        if (err) console.error('Failed to delete image file:', err);
+      });
+    }
+
     await item.deleteOne();
     res.status(200).json({ success: true, data: {} });
   } catch (err) {
