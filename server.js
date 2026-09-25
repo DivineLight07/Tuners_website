@@ -5,7 +5,9 @@ const dns        = require('dns');
 dns.setDefaultResultOrder('ipv4first');
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 
-dotenv.config({ path: '.env' });
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 const path       = require('path');
 const cors       = require('cors');

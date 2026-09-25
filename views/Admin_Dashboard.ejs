@@ -1,54 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tuners — Admin Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <link href="/css/Admin_Dashboard.css" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: { DEFAULT: '#1f6feb', foreground: '#ffffff' },
-            accent: '#133785',
-            background: 'rgba(10, 26, 62, 0.65)',
-            card: { DEFAULT: 'rgba(10, 26, 62, 0.45)', foreground: '#ffffff' },
-            destructive: { DEFAULT: '#ff6b6b', foreground: '#ffffff' },
-            muted: { DEFAULT: 'rgba(255,255,255,0.1)', foreground: 'rgba(255,255,255,0.6)' },
-            border: 'rgba(255,255,255,0.18)',
-            input: 'rgba(255,255,255,0.1)',
-          },
-          fontFamily: {
-            display: ['"Bebas Neue"', 'sans-serif'],
-            sans: ['Poppins', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
-  </head>
+  <%- include("partials/head", { title: "Tuners — Admin Dashboard", css: "Admin_Dashboard.css" }) %>
+</head>
 <body>
 
-  <nav id="navbar" class="w-full bg-[#133785]/85 backdrop-blur-md border-b border-white/15 grid grid-cols-[auto_1fr_auto] items-center px-8 py-2.5 sticky top-0 z-[100] transition-transform duration-300">
-    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo" class="h-12 w-auto drop-shadow-md"/></a>
-    <ul class="flex gap-10 justify-center">
-      <li><a href="/home" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Home</a></li>
-      <li><a href="/about" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">About Us</a></li>
-      <li><a href="/apply" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Apply</a></li>
-      <li><a href="#site-footer" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Contact</a></li>
-      <li><a href="/courses" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Courses</a></li>
-      <li><a href="/gallery" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors">Gallery</a></li>
-      <li id="nav-dashboard" style="display:none;"><a href="#" id="nav-dashboard-link" class="font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors text-primary font-bold">Dashboard</a></li>
-    </ul>
-    <div class="flex gap-4 items-center">
-        <a href="/login" id="nav-login-btn" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all">Login</a>
-        <button id="nav-logout-btn" style="display:none;" onclick="globalLogout()" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all text-destructive border-destructive/50 hover:bg-destructive/20">Logout</button>
-    </div>
-  </nav>
+  <%- include("partials/navbar", { active: "dashboard" }) %>
 
   <div class="flex-1 py-10 lg:py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -65,7 +22,7 @@
           <h2 class="card-title"><i data-lucide="door-open"></i> Room Control</h2>
           <div class="bg-black/20 p-6 rounded-xl border border-white/10 mb-6 flex items-center justify-between">
             <span class="text-white/80 font-medium">Current Status</span>
-            <span id="adminRoomStatus" class="status-available">Open</span>
+            <span id="adminRoomStatus">…</span>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <button onclick="setRoomStatus('Open')" class="py-3 bg-green-500/20 hover:bg-green-500/30 text-green-400 border border-green-500/30 rounded-xl font-medium transition-colors">Set Open</button>
@@ -162,7 +119,7 @@
   </div>
 
   <!-- Board Member Modal -->
-  <div id="boardMemberModal" class="modal-overlay">
+  <div id="boardMemberModal" class="modal-overlay" style="display:none">
     <div class="modal-content">
       <span onclick="closeBoardMemberModal()" class="modal-close">&times;</span>
       <h2 id="boardModalTitle" class="text-3xl font-display font-bold mb-6">Add Board Member</h2>
@@ -189,7 +146,7 @@
   </div>
 
   <!-- Course Modal -->
-  <div id="courseModal" class="modal-overlay">
+  <div id="courseModal" class="modal-overlay" style="display:none">
     <div class="modal-content">
       <span onclick="closeCourseModal()" class="modal-close">&times;</span>
       <h2 id="courseModalTitle" class="text-3xl font-display font-bold mb-6">Add Course</h2>
@@ -232,7 +189,7 @@
   </div>
 
   <!-- Gallery Modal -->
-  <div id="galleryModal" class="modal-overlay">
+  <div id="galleryModal" class="modal-overlay" style="display:none">
     <div class="modal-content !max-w-lg">
       <span onclick="closeGalleryModal()" class="modal-close">&times;</span>
       <h2 id="galleryModalTitle" class="text-3xl font-display font-bold mb-6">Add Gallery Image</h2>
@@ -262,7 +219,7 @@
   </div>
 
   <!-- Edit User Modal -->
-  <div id="editUserModal" class="modal-overlay">
+  <div id="editUserModal" class="modal-overlay" style="display:none">
     <div class="modal-content !max-w-lg">
       <span onclick="closeEditUserModal()" class="modal-close">&times;</span>
       <h2 class="text-3xl font-display font-bold mb-6">Edit User</h2>
@@ -300,9 +257,9 @@
   </div>
 
   <!-- Edit Self Modal (No Role) -->
-  <div id="editSelfModal" class="modal-overlay">
+  <div id="editSelfModal" class="modal-overlay" style="display:none">
     <div class="modal-content !max-w-md">
-      <span onclick="closeEditSelfModal()" class="absolute top-4 right-4 text-white/50 hover:text-white cursor-pointer text-2xl leading-none">&times;</span>
+      <span onclick="closeEditSelfModal()" class="modal-close">&times;</span>
       <h2 class="text-2xl font-bold font-display tracking-wider mb-6">Edit My Profile</h2>
       <form id="editSelfForm" onsubmit="saveSelfEdit(event)" class="space-y-4">
         <input type="hidden" id="edit-self-original-email">
@@ -356,77 +313,9 @@
 
   <div id="Msg"></div>
 
-  <!-- FOOTER -->
-  <footer class="w-full bg-[#0a1a3e]/65 backdrop-blur-md border-t border-white/15 py-10 mt-auto relative overflow-hidden" id="site-footer">
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[100px] bg-primary/10 blur-[80px] pointer-events-none"></div>
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-8 relative z-10">
-      <div class="flex flex-col">
-        <h3 class="text-xl font-display font-bold mb-4 tracking-wider flex items-center gap-2"><i data-lucide="music"></i> Tuners MIU</h3>
-        <p class="text-white/60 text-sm mb-4 leading-relaxed">The official music club of Misr International University. Bringing harmony to campus life.</p>
-        <div class="mt-auto">
-          <h4 class="text-sm font-semibold mb-2 text-white/80">Contact Us</h4>
-          <a href="mailto:tuners.miu.eg@gmail.com" class="inline-flex items-center gap-2 text-primary-400 hover:text-white transition-colors text-sm font-medium"><i data-lucide="mail" class="w-4 h-4"></i> tuners.miu.eg@gmail.com</a>
-        </div>
-      </div>
-      <div>
-        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Follow Us</h3>
-        <ul class="space-y-3">
-          <li><a href="https://www.instagram.com/tunersclubmiu" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Instagram.png" class="w-4 h-4 object-contain" alt="Instagram"> Instagram</a></li>
-          <li><a href="https://www.facebook.com/TunersClubMIU" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Facebook.png" class="w-4 h-4 object-contain" alt="Facebook"> Facebook</a></li>
-          <li><a href="https://www.tiktok.com/@tunersmusic" target="_blank" class="inline-flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/15 hover:text-white transition-colors text-white/80 w-full sm:w-auto"><img src="/images/Tiktok.png" class="w-4 h-4 object-contain" alt="TikTok"> TikTok</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-xl font-display font-bold mb-4 tracking-wider">Quick Links</h3>
-        <div class="grid grid-cols-2 gap-2">
-          <a href="/home" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Home</a>
-          <a href="/about" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">About Us</a>
-          <a href="/courses" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Courses</a>
-          <a href="/gallery" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Gallery</a>
-          <a href="/apply" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/15 transition-colors text-white/80 hover:text-white text-sm text-center">Apply</a>
-        </div>
-      </div>
-    </div>
-    <div class="max-w-6xl mx-auto px-8 mt-10 pt-6 border-t border-white/10 text-center">
-      <p class="text-white/40 text-xs">© 2026 Tuners Club MIU. All rights reserved.</p>
-    </div>
-  </footer>
+  <%- include("partials/footer") %>
 
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="/js/utils.js"></script>
-  
-  <script>
-    lucide.createIcons();
-    AOS.init({ duration: 600, once: true });
-    
-    // Override modal show/hide for tailwind compatibility
-    const originalOpenAddCourseModal = window.openAddCourseModal;
-    const originalCloseCourseModal = window.closeCourseModal;
-    const originalOpenAddBoardMemberModal = window.openAddBoardMemberModal;
-    const originalCloseBoardMemberModal = window.closeBoardMemberModal;
-    const originalCloseEditUserModal = window.closeEditUserModal;
-    
-    // We don't redefine the JS functions if they are loaded after this, 
-    // actually admin_dashboard.js is loaded AFTER this so we need to inject CSS overrides
-    // Wait, let's just make the tailwind "hidden" class NOT apply if display is block/flex
-
-    window.togglePasswordVisibility = function(inputId, btn) {
-        const input = document.getElementById(inputId);
-        const eye = btn.querySelector('.icon-eye');
-        const eyeOff = btn.querySelector('.icon-eye-off');
-        if (input.type === 'password') {
-            input.type = 'text';
-            if (eye) eye.classList.add('hidden');
-            if (eyeOff) eyeOff.classList.remove('hidden');
-        } else {
-            input.type = 'password';
-            if (eye) eye.classList.remove('hidden');
-            if (eyeOff) eyeOff.classList.add('hidden');
-        }
-    };
-  </script>
-  
+  <%- include("partials/scripts") %>
   <script src="/js/admin_dashboard.js"></script>
 </body>
 </html>
