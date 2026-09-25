@@ -10,11 +10,11 @@ async function loadApplications() {
     if (!appsList) return;
 
     try {
-        const data = await apiFetch('/api/v1/applications');
+        const data = await apiFetch('/api/v1/applications?status=pending');
         const apps = data.data || [];
 
         if (apps.length === 0) {
-            appsList.innerHTML = '<p class="text-white/60">No applications received yet.</p>';
+            appsList.innerHTML = '<p class="text-white/60">No pending applications.</p>';
             return;
         }
 
@@ -39,7 +39,10 @@ async function loadApplications() {
                     <strong class="text-white text-xs uppercase tracking-wider mb-1 block">Reason for joining:</strong>
                     <span class="text-white/70 italic">"${app.reason}"</span>
                 </div>
-                <button onclick="deleteApp('${app._id}')" class="w-full py-2 bg-destructive/80 hover:bg-destructive text-white rounded-lg text-sm font-medium transition-all">Delete Application</button>
+                <div class="flex gap-2">
+                    <button onclick="decideApplication('${app._id}', 'approved')" class="flex-1 py-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 border border-green-500/30 rounded-lg text-sm font-medium transition-all">Accept</button>
+                    <button onclick="decideApplication('${app._id}', 'rejected')" class="flex-1 py-2 bg-destructive/80 hover:bg-destructive text-white rounded-lg text-sm font-medium transition-all">Reject</button>
+                </div>
             </div>
         `;
         }).join('');
@@ -49,14 +52,15 @@ async function loadApplications() {
     }
 }
 
-async function deleteApp(id) {
-    if (!confirm('Are you sure you want to delete this application?')) return;
+async function decideApplication(id, status) {
+    const verb = status === 'approved' ? 'accept' : 'reject';
+    if (!confirm(`Are you sure you want to ${verb} this application?`)) return;
     try {
-        await apiFetch(`/api/v1/applications/${id}`, { method: 'DELETE' });
-        await loadApplications();
-        showMsg('Application deleted.');
+        await apiFetch(`/api/v1/applications/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+        await Promise.all([loadApplications(), loadUsers()]);
+        showMsg(`Application ${status}.`);
     } catch (err) {
-        showMsg('Failed to delete application.');
+        showMsg(err.message || `Failed to ${verb} application.`, 'error');
     }
 }
 
@@ -350,7 +354,7 @@ async function loadUsers() {
         usersCache = users;
 
         if (usersCache.length === 0) {
-            userList.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#fff;">No users found.</td></tr>';
+            userList.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#fff;">No users found.</td></tr>';
             return;
         }
 
@@ -391,17 +395,25 @@ async function loadUsers() {
                 `;
             }
 
+            const statusColors = {
+                approved: 'bg-green-500/20 text-green-400 border-green-500/30',
+                pending: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+                rejected: 'bg-destructive/20 text-destructive border-destructive/30',
+                banned: 'bg-white/10 text-white/50 border-white/20'
+            };
+
             return `
             <tr class="hover:bg-white/5 transition-colors">
                 <td class="p-3 text-white/90 border-t border-white/5">${escapeHtml(user.email)}</td>
                 <td class="p-3 border-t border-white/5"><span class="px-2 py-0.5 rounded text-xs font-medium ${user.role === 'admin' ? 'bg-primary/20 text-primary-400 border border-primary/30' : 'bg-white/10 text-white/70'} capitalize">${user.role}</span></td>
+                <td class="p-3 border-t border-white/5"><span class="px-2 py-0.5 rounded text-xs font-medium border capitalize ${statusColors[user.status] || statusColors.pending}">${escapeHtml(user.status)}</span></td>
                 <td class="p-3 text-right border-t border-white/5">${actionsHtml.replace(/btn-primary/g, 'px-3 py-1 bg-white/10 hover:bg-white/20 rounded text-xs transition-colors text-white mr-2').replace(/btn-delete/g, 'px-3 py-1 bg-destructive/80 hover:bg-destructive rounded text-xs transition-colors text-white')}</td>
             </tr>
             `;
         }).join('');
     } catch (err) {
         console.error('Error loading users:', err);
-        userList.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#fff;">Unable to load users.</td></tr>';
+        userList.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#fff;">Unable to load users.</td></tr>';
     }
 }
 

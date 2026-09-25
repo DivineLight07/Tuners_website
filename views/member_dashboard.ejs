@@ -42,13 +42,22 @@
 
 
 
-        <!-- My Courses -->
-        <div class="dashboard-card flex flex-col" data-aos="fade-up" data-aos-delay="300">
+        <!-- My Courses (approved members) -->
+        <div id="coursesCard" class="dashboard-card flex flex-col" data-aos="fade-up" data-aos-delay="300" style="display:none">
           <div class="card-header">
             <i data-lucide="book-open" class="w-5 h-5"></i>
             <h2 class="card-title">My Courses</h2>
           </div>
           <div id="coursesList" class="flex-1 overflow-y-auto max-h-[400px]"></div>
+        </div>
+
+        <!-- Application Status (pending / just-decided members) -->
+        <div id="applicationStatusCard" class="dashboard-card flex flex-col" data-aos="fade-up" data-aos-delay="300" style="display:none">
+          <div class="card-header">
+            <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+            <h2 class="card-title">Application Status</h2>
+          </div>
+          <div id="applicationStatusData" class="flex-1"></div>
         </div>
 
       </div>
@@ -101,6 +110,16 @@
           <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-[#1a48a8] transition-colors">Save</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Application decision popup (accepted / rejected) -->
+  <div id="decisionModal" class="modal-overlay" style="display:none">
+    <div class="modal-content !max-w-md text-center">
+      <div id="decision-icon" class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"></div>
+      <h2 id="decision-title" class="text-2xl font-bold font-display tracking-wider mb-4"></h2>
+      <p id="decision-message" class="text-white/70 mb-8 leading-relaxed text-sm"></p>
+      <button id="decision-ok-btn" class="w-full h-12 bg-primary hover:bg-[#1a48a8] text-white font-display tracking-widest text-lg rounded-xl transition-all shadow-lg hover:-translate-y-[1px]">OK</button>
     </div>
   </div>
 

@@ -48,6 +48,20 @@ function requireLogin(role) {
     return true;
 }
 
+// Like requireLogin(), but also blocks members whose application isn't
+// approved yet (pending/rejected) — used by member-only pages like Courses.
+// Admins always pass.
+function requireApprovedMember() {
+    if (!requireLogin()) return false;
+    const user = getStoredUser();
+    if (user.role !== 'admin' && user.status !== 'approved') {
+        alert('Your membership application is still pending admin approval.');
+        window.location.replace('/member');
+        return false;
+    }
+    return true;
+}
+
 // Runs immediately (before <body> exists): common.css uses these classes to
 // show the right navbar buttons on first paint, so there is no flash of the
 // logged-out navbar while the rest of the page's scripts load.

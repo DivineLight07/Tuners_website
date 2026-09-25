@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Application = require('../models/Application');
 
 // GET all users
 exports.getAllUsers = async (req, res, next) => {
@@ -121,6 +122,7 @@ exports.deleteUser = async (req, res, next) => {
       return res.status(403).json({ success: false, error: 'Only system admin can delete other admins.' });
     }
 
+    await Application.deleteOne({ user: targetUser._id });
     await targetUser.deleteOne();
     res.status(200).json({ success: true, message: 'User deleted' });
   } catch (err) {

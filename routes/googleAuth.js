@@ -19,8 +19,9 @@ router.get('/callback', (req, res, next) => {
 }, (req, res) => {
     const user = req.user;
 
-    if (user.status === 'pending') return res.redirect('/login?error=pending');
-    if (user.status === 'banned')  return res.redirect('/login?error=banned');
+    // 'pending' and 'rejected' can still sign in — they need to reach their
+    // dashboard to see their application status (or the rejection notice).
+    if (user.status === 'banned') return res.redirect('/login?error=banned');
 
     const token = user.getSignedJwt();
     const redirectTo = user.role === 'admin' ? '/admin' : '/member';

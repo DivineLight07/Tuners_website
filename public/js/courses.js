@@ -244,7 +244,7 @@ async function deleteCourse(id) {
 }
 
 // ─── INITIALIZATION ─────────────────────────────────────────────────────────
-if (requireLogin()) {
+if (requireApprovedMember()) {
     document.addEventListener('DOMContentLoaded', () => {
         // Stop the video when the player is closed by Escape or a backdrop click too
         document.getElementById('videoModal')?.addEventListener('modalclose', () => {

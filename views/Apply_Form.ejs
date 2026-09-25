@@ -11,35 +11,63 @@
   <main class="flex-1 py-16 lg:py-24">
     <div class="max-w-2xl mx-auto px-4 sm:px-6">
       <div data-aos="fade-up">
-        
+
         <div class="text-center mb-10">
           <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 text-white text-sm font-medium mb-4 backdrop-blur-sm border border-primary/30">
             <i data-lucide="music" class="w-3.5 h-3.5"></i>
             Join the Band
           </div>
           <h1 class="text-4xl sm:text-5xl font-bold font-display tracking-wide">Apply to Tuners</h1>
-          <p class="mt-3 text-white/70">Fill out the form below to join MIU's music community.</p>
+          <p id="apply-step-subtitle" class="mt-3 text-white/70">Step 1 of 2 &mdash; create your account.</p>
           <p class="mt-2 text-sm text-white/70">
             Already a member? <a href="/login" class="text-primary font-medium hover:text-white transition-colors">Sign in</a>
           </p>
         </div>
 
-        <div class="bg-card backdrop-blur-md border border-border/50 rounded-2xl shadow-xl shadow-primary/10 overflow-hidden">
+        <!-- ─── STEP 1: SIGN UP ─────────────────────────────────────────── -->
+        <div id="signup-step" class="bg-card backdrop-blur-md border border-border/50 rounded-2xl shadow-xl shadow-primary/10 overflow-hidden">
           <div class="p-8">
-            <form id="applicationForm" class="space-y-6">
-              
+            <div id="signup-err" class="hidden mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm text-center"></div>
+            <form id="signupForm" class="space-y-5">
+              <div class="space-y-2">
+                <label for="signup-name" class="text-xs font-semibold tracking-widest uppercase text-white/80">Full Name *</label>
+                <input type="text" id="signup-name" required placeholder="Your full name" class="w-full h-12 px-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"/>
+              </div>
+              <div class="space-y-2">
+                <label for="signup-email" class="text-xs font-semibold tracking-widest uppercase text-white/80">Email *</label>
+                <input type="email" id="signup-email" required placeholder="student@miuegypt.edu.eg" class="w-full h-12 px-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"/>
+                <small id="signup-email-err" class="text-[0.72rem] text-destructive hidden block mt-1">Email must end with @miuegypt.edu.eg</small>
+              </div>
               <div class="grid sm:grid-cols-2 gap-5">
                 <div class="space-y-2">
-                  <label for="fullname" class="text-xs font-semibold tracking-widest uppercase text-white/80">Full Name *</label>
-                  <input type="text" id="fullname" oninput="validateName(this)" required placeholder="Your full name" class="w-full h-12 px-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"/>
-                  <small id="nameError" class="text-[0.72rem] text-destructive hidden block mt-1">Name can only contain letters and spaces.</small>
+                  <label for="signup-pass" class="text-xs font-semibold tracking-widest uppercase text-white/80">Password *</label>
+                  <div class="relative">
+                    <input type="password" id="signup-pass" required minlength="6" placeholder="At least 6 characters" class="w-full h-12 pl-4 pr-10 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"/>
+                    <button type="button" onclick="togglePasswordVisibility('signup-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors z-10">
+                      <i data-lucide="eye" class="w-4 h-4 icon-eye block"></i>
+                      <i data-lucide="eye-off" class="w-4 h-4 icon-eye-off hidden"></i>
+                    </button>
+                  </div>
                 </div>
                 <div class="space-y-2">
-                  <label for="email" class="text-xs font-semibold tracking-widest uppercase text-white/80">Email *</label>
-                  <input type="email" id="email" oninput="validateEmail(this)" required placeholder="student@miuegypt.edu.eg" class="w-full h-12 px-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"/>
-                  <small id="emailError" class="text-[0.72rem] text-destructive hidden block mt-1">Email must end with @miuegypt.edu.eg</small>
+                  <label for="signup-pass-confirm" class="text-xs font-semibold tracking-widest uppercase text-white/80">Confirm Password *</label>
+                  <input type="password" id="signup-pass-confirm" required placeholder="Repeat password" class="w-full h-12 px-4 bg-input border border-border rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"/>
+                  <small id="signup-pass-err" class="text-[0.72rem] text-destructive hidden block mt-1">Passwords don't match.</small>
                 </div>
               </div>
+
+              <button type="submit" class="w-full h-12 flex items-center justify-center gap-2 bg-primary hover:bg-[#1a48a8] text-white font-display text-lg tracking-widest rounded-xl transition-all shadow-lg hover:-translate-y-[1px]">
+                Continue <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- ─── STEP 2: APPLICATION FORM ────────────────────────────────── -->
+        <div id="application-step" class="hidden bg-card backdrop-blur-md border border-border/50 rounded-2xl shadow-xl shadow-primary/10 overflow-hidden">
+          <div class="p-8">
+            <p class="text-sm text-white/60 mb-6">Signed in as <span id="application-step-email" class="text-white font-medium"></span></p>
+            <form id="applicationForm" class="space-y-6">
 
               <div class="grid sm:grid-cols-2 gap-5">
                 <div class="space-y-2">
@@ -147,17 +175,17 @@
   </main>
 
   <!-- Application Success Modal -->
-  <div id="application-success-modal" class="fixed inset-0 bg-black/80 z-[10000] hidden items-center justify-center p-4 backdrop-blur-sm opacity-0 transition-opacity duration-300">
-    <div id="success-modal-content" class="bg-[#0a1a3e] rounded-[2rem] p-8 max-w-md w-full border border-white/10 text-center shadow-2xl scale-95 transition-transform duration-300 transform">
+  <div id="application-success-modal" class="modal-overlay" style="display:none">
+    <div class="modal-content !max-w-md text-center">
       <div class="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-6">
         <i data-lucide="check-circle" class="w-8 h-8 text-green-500"></i>
       </div>
-      <h2 class="text-3xl font-bold font-display tracking-wide mb-4 text-white">Application Successful</h2>
+      <h2 class="text-3xl font-bold font-display tracking-wide mb-4 text-white">Application Submitted</h2>
       <p class="text-white/70 mb-8 leading-relaxed text-sm">
-        Thank you for applying. Your application has been successfully submitted and is currently pending review from our administration team.
+        Thanks for applying! Your application is now pending review — you can check its status any time from your dashboard.
       </p>
-      <button onclick="closeSuccessModal()" class="w-full h-12 bg-primary hover:bg-[#1a48a8] text-white font-display tracking-widest text-lg rounded-xl transition-all shadow-lg hover:-translate-y-[1px]">
-        OK
+      <button onclick="window.location.href='/member'" class="w-full h-12 bg-primary hover:bg-[#1a48a8] text-white font-display tracking-widest text-lg rounded-xl transition-all shadow-lg hover:-translate-y-[1px]">
+        Go to My Dashboard
       </button>
     </div>
   </div>
@@ -165,29 +193,16 @@
   <%- include("partials/footer") %>
 
   <%- include("partials/scripts") %>
-  
-  <script>
-    
-    // Live field validation (called from oninput attributes)
-    function validateName(input) {
-        const nameError = document.getElementById('nameError');
-        const regex = /^[A-Za-z\s]*$/;
-        if (!regex.test(input.value)) {
-            nameError.classList.remove('hidden');
-            input.classList.add('border-destructive');
-        } else {
-            nameError.classList.add('hidden');
-            input.classList.remove('border-destructive');
-        }
-    }
 
+  <script>
+    // Live field validation (called from oninput attributes)
     function formatStudentId(input) {
         let val = input.value.replace(/[^0-9]/g, '');
         if (val.length > 2) {
             val = val.slice(0, 2) + '/' + val.slice(2, 7);
         }
         input.value = val.slice(0, 10);
-        
+
         const studentIdError = document.getElementById('studentIdError');
         const regex = /^\d{2}\/\d{4,5}$/;
         if (input.value && !regex.test(input.value)) {
@@ -203,7 +218,7 @@
         let val = input.value.replace(/[^0-9]/g, '');
         if (val.length > 11) val = val.slice(0, 11);
         input.value = val;
-        
+
         const phoneError = document.getElementById('phoneError');
         const regex = /^01[0-9]{9}$/;
         if (input.value && !regex.test(input.value)) {
@@ -214,21 +229,8 @@
             input.classList.remove('border-destructive');
         }
     }
-
-    function validateEmail(input) {
-        const emailError = document.getElementById('emailError');
-        const value = input.value.trim();
-        if (value && !value.toLowerCase().endsWith('@miuegypt.edu.eg')) {
-            emailError.classList.remove('hidden');
-            input.classList.add('border-destructive');
-        } else {
-            emailError.classList.add('hidden');
-            input.classList.remove('border-destructive');
-        }
-    }
-
   </script>
-  
+
   <script src="/js/apply_form.js"></script>
 </body>
 </html>

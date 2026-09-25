@@ -1,4 +1,5 @@
-// member_dashboard.js — Member dashboard: profile, badges, opened courses, room status
+// member_dashboard.js — Member dashboard: profile, badges, application status,
+// opened courses, room status
 
 function renderWelcome() {
     const welcomeTitle = document.getElementById('welcomeTitle');
@@ -26,8 +27,8 @@ function renderProfile() {
     `;
 }
 
-// Refresh the stored user from the server so badges/courses granted by an
-// admin show up without logging out and back in.
+// Refresh the stored user from the server so badges/courses/status granted
+// by an admin show up without logging out and back in.
 async function syncProfile() {
     try {
         const { user } = await apiFetch('/api/v1/auth/me');
@@ -48,6 +49,119 @@ async function syncProfile() {
     } catch (err) {
         console.error('Failed to sync profile:', err);
     }
+}
+
+// ─── APPLICATION STATUS ───────────────────────────────────────────────────────
+// Swaps the "My Courses" card for an "Application Status" card while the
+// member isn't approved yet, and pops up the accept/reject decision once.
+async function loadApplicationStatus() {
+    const user = getStoredUser();
+    if (!user || user.role === 'admin') {
+        showCoursesCard();
+        return;
+    }
+
+    let application = null;
+    try {
+        ({ data: application } = await apiFetch('/api/v1/applications/me'));
+    } catch (err) {
+        console.error('Failed to load application status:', err);
+    }
+
+    // No application on file (e.g. an account an admin created directly), or
+    // already approved and acknowledged: nothing to show here.
+    if (!application || (application.status === 'approved' && application.acknowledged)) {
+        showCoursesCard();
+        return;
+    }
+
+    showStatusCard(application);
+
+    if (application.status === 'approved' && !application.acknowledged) {
+        showDecisionModal({
+            icon: 'check',
+            title: 'Application Accepted! 🎉',
+            message: 'Congratulations — you\'re officially a Tuners member. Press OK to unlock your member courses.',
+            onOk: acknowledgeAcceptance
+        });
+    } else if (application.status === 'rejected') {
+        showDecisionModal({
+            icon: 'x',
+            title: 'Application Rejected',
+            message: 'Unfortunately your application wasn\'t accepted this time. Pressing OK will delete this account — you\'re welcome to apply again in the future.',
+            onOk: deleteAccountAfterRejection
+        });
+    }
+}
+
+function showCoursesCard() {
+    document.getElementById('applicationStatusCard').style.display = 'none';
+    document.getElementById('coursesCard').style.display = 'flex';
+    loadCourses();
+}
+
+function showStatusCard(application) {
+    document.getElementById('coursesCard').style.display = 'none';
+    const card = document.getElementById('applicationStatusCard');
+    card.style.display = 'flex';
+
+    const copy = {
+        pending: { cls: 'status-pending', label: 'Pending Review', body: 'Your application is being reviewed by the Tuners admin team. Check back here for updates!' },
+        approved: { cls: 'status-available', label: 'Approved', body: 'Your application has been approved.' },
+        rejected: { cls: 'status-occupied', label: 'Rejected', body: 'Your application was not approved.' }
+    }[application.status];
+
+    document.getElementById('applicationStatusData').innerHTML = `
+        <p class="mb-4"><span class="${copy.cls}">${copy.label}</span></p>
+        <p class="text-sm text-white/70 leading-relaxed">${copy.body}</p>
+    `;
+}
+
+function showDecisionModal({ icon, title, message, onOk }) {
+    const isAccept = icon === 'check';
+    document.getElementById('decision-icon').innerHTML =
+        `<i data-lucide="${isAccept ? 'check-circle' : 'x-circle'}" class="w-8 h-8 ${isAccept ? 'text-green-500' : 'text-destructive'}"></i>`;
+    document.getElementById('decision-icon').className =
+        `w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 ${isAccept ? 'bg-green-500/20' : 'bg-destructive/20'}`;
+    document.getElementById('decision-title').textContent = title;
+    document.getElementById('decision-message').textContent = message;
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    const okBtn = document.getElementById('decision-ok-btn');
+    // Replace the button so the previous listener (if any) doesn't stack.
+    const freshBtn = okBtn.cloneNode(true);
+    okBtn.replaceWith(freshBtn);
+    freshBtn.addEventListener('click', async () => {
+        freshBtn.disabled = true;
+        try {
+            await onOk();
+        } finally {
+            freshBtn.disabled = false;
+        }
+    });
+
+    openModal('decisionModal');
+}
+
+async function acknowledgeAcceptance() {
+    try {
+        await apiFetch('/api/v1/applications/me/acknowledge', { method: 'PATCH' });
+    } catch (err) {
+        console.error('Failed to acknowledge acceptance:', err);
+    }
+    saveAuth(localStorage.getItem('token'), { ...getStoredUser(), status: 'approved' });
+    closeModal('decisionModal');
+    showCoursesCard();
+}
+
+async function deleteAccountAfterRejection() {
+    try {
+        await apiFetch('/api/v1/auth/me', { method: 'DELETE' });
+    } catch (err) {
+        console.error('Failed to delete account:', err);
+    }
+    clearAuth();
+    window.location.href = '/home';
 }
 
 // ─── COURSES ─────────────────────────────────────────────────────────────────
@@ -146,7 +260,7 @@ if (requireLogin()) {
         renderWelcome();
         renderProfile();
         syncProfile();
-        loadCourses();
+        loadApplicationStatus();
         loadRoomStatus();
     });
 }

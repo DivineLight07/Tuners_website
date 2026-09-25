@@ -133,6 +133,14 @@ body::after {
     border-radius: 9999px;
     font-size: 0.875rem;
 }
+.status-pending {
+    color: #fbbf24;
+    font-weight: 500;
+    background-color: rgba(251, 191, 36, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+}
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
     display: none;

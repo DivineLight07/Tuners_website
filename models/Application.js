@@ -1,6 +1,15 @@
 const mongoose = require('mongoose');
 
 const ApplicationSchema = new mongoose.Schema({
+  // One application per account — created right after the applicant signs up.
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    unique: true
+  },
+  // Denormalized copy of the account's name/email at submission time, so the
+  // admin dashboard can list applications without an extra lookup.
   name: {
     type: String,
     required: [true, 'Full name is required'],
@@ -9,11 +18,7 @@ const ApplicationSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: [true, 'Email is required'],
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'Please provide a valid email address'
-    ]
+    required: [true, 'Email is required']
   },
   studentId: {
     type: String,
@@ -24,7 +29,7 @@ const ApplicationSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Year is required'],
     enum: {
-      values: ['1st', '2nd', '3rd', '4th', '5th', "Graduate"],
+      values: ['1st', '2nd', '3rd', '4th', '5th', 'Graduate'],
       message: 'Year must be 1st, 2nd, 3rd, 4th, 5th, or Graduate'
     }
   },
@@ -54,24 +59,23 @@ const ApplicationSchema = new mongoose.Schema({
     required: [true, 'Phone number is required'],
     match: [/^[0-9]{11}$/, 'Phone must be exactly 11 digits']
   },
+  // Mirrors the linked User's status. Kept on the application too so the
+  // admin dashboard can list "pending" ones without joining against users.
   status: {
     type: String,
-    enum: ['pending', 'accepted', 'rejected'],
+    enum: ['pending', 'approved', 'rejected'],
     default: 'pending'
+  },
+  // Flips to true once the applicant has dismissed the accept/reject popup
+  // on their dashboard, so it only shows once.
+  acknowledged: {
+    type: Boolean,
+    default: false
   },
   date: {
     type: Date,
     default: Date.now
   }
 });
-
-// Create separate indexes for faster duplicate checking
-ApplicationSchema.index({ email: 1 });
-ApplicationSchema.index({ studentId: 1 });
-ApplicationSchema.index({ phone: 1 });
-ApplicationSchema.index({ name: 1 });
-
-// Compound unique index — one application per email+studentId combination (backup safety)
-ApplicationSchema.index({ email: 1, studentId: 1 }, { unique: true });
 
 module.exports = mongoose.model('Application', ApplicationSchema);
