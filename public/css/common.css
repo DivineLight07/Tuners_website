@@ -23,13 +23,12 @@ body::after {
 .lucide { width: 1em; height: 1em; }
 .hidden { display: none !important; }
 
-/* Admin Modal Styles */
+/* Modals — hidden by an inline style in the markup, opened with openModal() */
 .modal-overlay {
     position: fixed;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.8);
     z-index: 10000;
-    display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem;
@@ -118,9 +117,33 @@ body::after {
     display: none;
     font-weight: 500;
 }
+.status-available {
+    color: #4ade80;
+    font-weight: 500;
+    background-color: rgba(74, 222, 128, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+}
+.status-occupied {
+    color: #f87171;
+    font-weight: 500;
+    background-color: rgba(248, 113, 113, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+}
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
 
-#search-btn:hover {
-    background-color: #1f6feb;
-    color: #ffffff;
-    border-color: #1f6feb;
+/* Auth-dependent visibility. common.js sets these classes on <html> before
+   the page is painted, so the navbar never flashes the wrong state. */
+html.logged-in #nav-login-btn,
+html.logged-in .guest-only,
+html:not(.logged-in) #nav-logout-btn,
+html:not(.logged-in) #nav-dashboard,
+html:not(.is-admin) .admin-only {
+    display: none !important;
 }

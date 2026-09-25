@@ -1,0 +1,23 @@
+<%
+  // Visibility of the auth-dependent items is driven by classes on <html>
+  // (see common.js / common.css), so the right state shows on first paint.
+  const linkClass = 'font-sans text-[0.85rem] font-medium text-white/85 hover:text-white tracking-wider transition-colors';
+  const activeClass = ' text-primary font-bold';
+  const active = locals.active || '';
+%>
+  <nav id="navbar" class="w-full bg-[#133785]/85 backdrop-blur-md border-b border-white/15 grid grid-cols-[auto_1fr_auto] items-center px-8 py-2.5 sticky top-0 z-[100] transition-transform duration-300">
+    <a href="/home"><img src="/images/Tuners-Logo.png" alt="Tuners Logo" id="nav-logo" class="h-12 w-auto drop-shadow-md"/></a>
+    <ul class="flex gap-10 justify-center">
+      <li><a href="/home" class="<%= linkClass %>">Home</a></li>
+      <li><a href="/about" class="<%= linkClass %>">About Us</a></li>
+      <li class="guest-only"><a href="/apply" class="<%= linkClass %>">Apply</a></li>
+      <li><a href="#site-footer" class="<%= linkClass %>">Contact</a></li>
+      <li><a href="/courses" class="<%= linkClass %>">Courses</a></li>
+      <li><a href="/gallery" class="<%= linkClass %>">Gallery</a></li>
+      <li id="nav-dashboard"><a href="/member" id="nav-dashboard-link" class="<%= linkClass %><%= active === 'dashboard' ? activeClass : '' %>">Dashboard</a></li>
+    </ul>
+    <div class="flex gap-4 items-center">
+        <a href="/login" id="nav-login-btn" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all">Login</a>
+        <button id="nav-logout-btn" onclick="globalLogout()" class="px-4 py-2 bg-white/10 hover:bg-white/20 hover:-translate-y-[1px] border border-white/20 rounded-lg text-[0.9rem] font-semibold transition-all text-destructive border-destructive/50 hover:bg-destructive/20">Logout</button>
+    </div>
+  </nav>
